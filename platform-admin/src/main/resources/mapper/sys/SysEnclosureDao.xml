@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bettem.modules.sys.dao.SysEnclosureDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.bettem.modules.sys.entity.SysEnclosureEntity" id="BaseMap">
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="fileSuffix" column="FILE_SUFFIX"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="uploadDate" column="UPLOAD_DATE"/>
+    </resultMap>
+    <insert id="saveUploadData">
+        insert into ${businessType}_ENCLOSURE (id,data_id,data_type,FILE_NAME,FILE_SUFFIX,FILE_PATH,create_date,create_user_ID,DELETE_STATE)
+        values (#{id},#{dataId},#{dataType},#{fileName},#{fileSuffix},#{filePath},#{createDate},#{createUserId},#{deleteState})
+    </insert>
+    <select id="selectUploadData" resultType="java.util.Map">
+        select id as "id",data_id as "dataId",data_type as "dataType",FILE_NAME as "fileName",FILE_SUFFIX as "fileSuffix",FILE_PATH as "filePath",create_date as "createDate",create_user_ID as "createUserId",DELETE_STATE as "deleteState"
+        from ${businessType}_ENCLOSURE
+        <where>
+            <if test="dataId !=null and dataId !=''">
+                and data_id = #{dataId}
+            </if>
+            <if test="dataType !=null and dataType !=''">
+                and data_type = #{dataType}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+    <select id="selectByParams" resultType="java.util.Map">
+        select id as "id",data_id as "dataId",data_type as "dataType",FILE_NAME as "fileName",FILE_SUFFIX as "fileSuffix",FILE_PATH as "filePath",create_date as "createDate",create_user_ID as "createUserId",DELETE_STATE as "deleteState"
+        from ${businessType}_ENCLOSURE
+        <where>
+            <if test="fileId !=null and fileId !=''">
+                and id = #{fileId}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByParams">
+        delete ${businessType}_ENCLOSURE where id = #{id}
+    </delete>
+
+</mapper>

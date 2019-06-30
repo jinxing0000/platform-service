@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${comments}</title>
+    <script type="application/javascript" src="/statics/js/header.js"></script>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div class="card list" v-show="showList">
+        <!--<form class="hidden-secondary searchFrom">-->
+        <!--<div class="form-row">-->
+        <!--<div class="form-group  col-lg-4 col-md-6">-->
+        <!--<div class="row">-->
+        <!--<label class="col-3 col-form-label text-right">用户名</label>-->
+        <!--<div class="col">-->
+        <!--<input type="text" class="form-control" placeholder="请输入用户名" v-model="q.username" @keyup.enter="query">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group col-lg-4 col-md-6">-->
+        <!--<div class="row">-->
+        <!--<label class="col-3 col-form-label text-right">真实姓名</label>-->
+        <!--<div class="col">-->
+        <!--<input type="text" class="form-control" placeholder="真实姓名" v-model="q.nickName" @keyup.enter="query">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="form-group col-lg-4 col-md-6 secondary">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="date1" class="col-3 col-form-label text-right">调用次数</label>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="input-group">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="text" class="form-control" id="date1" required placeholder="开始日期 ~ 结束日期">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="input-group-append">&ndash;&gt;-->
+        <!--&lt;!&ndash;<span class="input-group-text anticon">&#xe641;</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="form-group col-lg-4 col-md-6 secondary">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="inputPassword2" class="col-3 col-form-label text-right">调用次数</label>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="password" class="form-control" id="inputPassword2" placeholder="Password">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="form-group col-lg-4 col-md-6 secondary">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="inputPassword3" class="col-3 col-form-label text-right">调用次数</label>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="password" class="form-control" id="inputPassword3" placeholder="Password">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="form-group col-lg-4 col-md-6 secondary">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="select1" class="col-3 col-form-label text-right">调用次数</label>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col">&ndash;&gt;-->
+        <!--&lt;!&ndash;<select name="select" id="select1" class="form-control">&ndash;&gt;-->
+        <!--&lt;!&ndash;<option value="0">1</option>&ndash;&gt;-->
+        <!--&lt;!&ndash;<option value="0">2</option>&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--<div class=" col-lg-4 col-md-6">-->
+        <!--<div class="row">-->
+        <!--<div class="col-3"></div>-->
+        <!--<div class="col search-btn-group">-->
+        <!--<button class="btn btn-primary" type="button" @click="query">查 询</button>-->
+        <!--<button class="btn btn-outline-secondary" type="reset">重 置</button>-->
+        <!--&lt;!&ndash;<button class="btn btn-link searchToggle" type="button" @click="searchToggle"><b>展开</b> <span class="anticon icon-down"></span></button>&ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</form>-->
+        <!--<hr>-->
+        <div class="text-left btn-table" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary"  @click="add" v-if="buttonAuthority['${moduleName}:${pathName}:save']===true"><span class="anticon icon-plus"></span>新建</button>
+            <button type="button" class="btn btn-outline-secondary" @click="update" v-if="buttonAuthority['${moduleName}:${pathName}:update']===true"><span class="anticon icon-edit"></span>编辑</button>
+            <button type="button" class="btn btn-outline-secondary" @click="del" v-if="buttonAuthority['${moduleName}:${pathName}:delete']===true"><span class="anticon icon-delete"></span>删除</button>
+            <!--<button type="button" class="btn btn-outline-secondary" id="tc"><span class="anticon icon-minussquareo"></span>弹窗</button>-->
+            <!--<button type="button" class="btn btn-outline-secondary" id="tc1"><span class="anticon icon-minussquareo"></span>弹窗1</button>-->
+            <!--<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+            <!--更多操作-->
+            <!--</button>-->
+            <!--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+            <!--<a class="dropdown-item" href="#"><span class="anticon icon-printer"></span> 打印？</a>-->
+            <!--<a class="dropdown-item" href="#"><span class="anticon icon-download"></span> 下载？</a>-->
+            <!--<a class="dropdown-item" href="#"><span class="anticon icon-infocirlceo"></span> Or? What are you doing?</a>-->
+            <!--</div>-->
+        </div>
+        <!--<div class="alert alert-primary" role="alert">-->
+        <!--<span class="anticon icon-infocirlce"></span> 已选择 <b>0</b> 项  服务调用次数总计 <b>0</b> 万 <a href="#">清空</a>-->
+        <!--</div>-->
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+    <div v-show="!showList" class="card cardNoBorder">
+        <div class="card-header">{{title}}信息</div>
+        <div class="card-body">
+            <form  class="needs-validation" novalidate>
+#foreach($newColumn in $newColumnList)
+                <div class="form-row">
+                #foreach($column in $newColumn)
+                    <div class="form-group input-group-sm col-md-4">
+                        <label>${column.comments}</label>
+                        <input type="text" class="form-control"  v-model="${classname}.${column.attrname}" placeholder="${column.comments}" >
+                    </div>
+                #end
+                </div>
+#end
+            </form>
+            <div class="form-group row">
+                <div class="col">
+                    <button class="btn btn-primary btn-sm" type="button" @click="saveOrUpdate">保存</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" @click="reload">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/statics/js/modules/${moduleName}/${classname}.js?_${.now?long}"></script>
+</body>
+</html>

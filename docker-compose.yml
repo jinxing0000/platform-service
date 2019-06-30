@@ -1,0 +1,14 @@
+version: '2'
+services:
+  renren-admin:
+    image: bettem/admin
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.profiles.active=dev
+  renren-api:
+    image: bettem/api
+    ports:
+      - "8081:8081"
+    environment:
+      - spring.profiles.active=dev

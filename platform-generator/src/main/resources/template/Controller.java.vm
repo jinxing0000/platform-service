@@ -1,0 +1,115 @@
+package ${package}.${moduleName}.controller;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Date;
+
+import com.bettem.common.utils.Constant;
+import com.bettem.common.utils.ShiroTokenUtils;
+import com.bettem.common.validator.group.AddGroup;
+import com.bettem.common.validator.ValidatorUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.bettem.common.annotation.SysLog;
+
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.service.${className}Service;
+import ${mainPath}.common.utils.PageUtils;
+import ${mainPath}.common.utils.R;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("/${moduleName}/${pathName}/")
+public class ${className}Controller {
+    @Autowired
+    private ${className}Service ${classname}Service;
+    @Autowired
+    private ShiroTokenUtils shiroTokenUtils;
+    /**
+      * @Param [params]
+      * @Return: R
+      * @Decription: 分页查询数据
+      * @CreateDate: ${datetime}
+      * @Author: ${author}
+      */
+    @SysLog("分页查询${comments}数据")
+    @RequestMapping(value = "list",method = RequestMethod.GET)
+    @RequiresPermissions("${moduleName}:${pathName}:list")
+    public R list(@RequestParam Map<String, Object> params){
+        Map<String,Object> dataMap=new HashedMap();
+        PageUtils page = ${classname}Service.queryPage(params);
+        dataMap.put("rows",page.getList());
+        dataMap.put("total",page.getTotalCount());
+        return R.ok(dataMap);
+    }
+    /**
+     * @Param [id]
+     * @Return: com.bettem.common.utils.R
+     * @Decription: 按照id查询信息详情
+     * @CreateDate: ${datetime}
+     * @Author: ${author}
+     */
+    @SysLog("按照id查询${comments}详情")
+    @RequestMapping(value = "info",method = RequestMethod.GET)
+    @RequiresPermissions("${moduleName}:${pathName}:info")
+    public R info(@RequestParam("id") String id){
+        ${className}Entity ${classname} = ${classname}Service.selectById(id);
+        return R.ok().put("${classname}", ${classname});
+    }
+    /**
+     * @Param [${classname}]
+     * @Return: com.bettem.common.utils.R
+     * @Decription: 新增数据
+     * @CreateDate: ${datetime}
+     * @Author: ${author}
+     */
+    @SysLog("新增${comments}数据")
+    @RequestMapping(value = "save",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequiresPermissions("${moduleName}:${pathName}:save")
+    public R save(@RequestBody ${className}Entity ${classname}){
+        ValidatorUtils.validateEntity(${classname}, AddGroup.class);
+        ${classname}.setCreateDate(new Date());
+        ${classname}.setCreateUserId(shiroTokenUtils.getUserId());
+        ${classname}.setDeleteState(Constant.DELETE_STATE_NO);
+        ${classname}Service.insert(${classname});
+        return R.ok();
+    }
+    /**
+     * @Param [${classname}]
+     * @Return: com.bettem.common.utils.R
+     * @Decription: 修改数据
+     * @CreateDate: ${datetime}
+     * @Author: ${author}
+     */
+    @SysLog("新增${comments}数据")
+    @RequestMapping(value = "update",method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @RequiresPermissions("${moduleName}:${pathName}:update")
+    public R update(@RequestBody ${className}Entity ${classname}){
+        ValidatorUtils.validateEntity(${classname}, AddGroup.class);
+        ${classname}.setModifyDate(new Date());
+        ${classname}.setModifyUserId(shiroTokenUtils.getUserId());
+        ${classname}Service.updateById(${classname});//全部更新
+        return R.ok();
+    }
+    /**
+     * @Param [ids]
+     * @Return: com.bettem.common.utils.R
+     * @Decription: 批量删除数据
+     * @CreateDate: ${datetime}
+     * @Author: ${author}
+     */
+    @SysLog("删除${comments}数据")
+    @RequestMapping(value = "delete",method = RequestMethod.DELETE)
+    @RequiresPermissions("${moduleName}:${pathName}:delete")
+    public R delete(@RequestBody String[] ids){
+        ${classname}Service.deleteByIds(ids);
+        return R.ok();
+    }
+}

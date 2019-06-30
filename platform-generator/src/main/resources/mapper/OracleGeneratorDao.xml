@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bettem.dao.OracleGeneratorDao">
+	<resultMap id="tableMap" type="map">
+		<result column="TABLENAME" property="tableName"></result>
+		<result column="TABLECOMMENT" property="tableComment"></result>
+		<result column="COLUMNNAME" property="columnName"></result>
+		<result column="DATATYPE" property="dataType"></result>
+		<result column="COLUMNCOMMENT" property="columnComment"></result>
+		<result column="COLUMNKEY" property="columnKey"></result>
+		<result column="EXTRA" property="extra"></result>
+		<result column="CREATETIME" property="createTime"></result>
+	</resultMap>
+
+	<select id="queryList" resultMap="tableMap">
+		select dt.table_name tableName,
+		dtc.comments tableComment,
+		uo.created createTime
+		from user_tables dt,
+		user_tab_comments dtc,
+		user_objects uo
+		where dt.table_name = dtc.table_name and dt.table_name = uo.object_name and uo.object_type='TABLE'
+		<if test="tableName != null and tableName.trim() != ''">
+			and dt.table_name like concat('%', UPPER(#{tableName}))
+		</if>
+		<if test="updateData !=null and updateData !=''">
+-- 			and dt.table_name in ('AAYEAR','ACT_GE_BYTEARRAY','ACT_HI_ACTINST','ACT_HI_ATTACHMENT','ACT_HI_COMMENT','ACT_HI_DETAIL','ACT_HI_IDENTITYLINK','ACT_HI_PROCINST','ACT_HI_TASKINST','ACT_HI_VARINST','ACT_ID_GROUP','ACT_ID_INFO','ACT_ID_USER','ACT_RE_DEPLOYMENT','ACT_RE_MODEL','ACT_RE_PROCDEF','ACT_RU_EVENT_SUBSCR','ACT_RU_EXECUTION','ACT_RU_IDENTITYLINK','ACT_RU_JOB','ACT_RU_TASK','ACT_RU_VARIABLE','CGFORM_BUTTON','CGFORM_BUTTON_SQL','CGFORM_ENHANCE_JS','CGFORM_FIELD','CGFORM_FTL','CGFORM_HEAD','CGFORM_UPLOADFILES','JFORM_CGREPORT_HEAD','JFORM_CGREPORT_ITEM','T_B_ACCOUNT','T_B_ANNUAL_FUND','T_B_ANNUAL_FUND_CLASS','T_B_BANK_ACCOUNT','T_B_BENEFIT_OBJECT','T_B_BUDGET_INDICATOR','T_B_CODE','T_B_NOTICE','T_B_PEOPLE_COUNT','T_B_PEOPLE_EXTEND','T_B_POVERTY_PEOPLE','T_B_PROJECT_CATEGORY','T_B_PROJECT_PAYMENT','T_B_PROJECT_PAYMENT_OFFLINE','T_B_PROJECT_PERF','T_B_PROJECT_PERF_EXE','T_B_PROJECT_PERF_EXED','T_B_PROJECT_PERF_SELF','T_B_PROJECT_PERF_SELFD','T_B_PROJECT_PERO','T_B_PROJECT_REFUND','T_B_PROJECT_R_CATEGORY','T_B_PROJECT_SCREEN','T_B_PROJECT_TERRITORY','T_B_P_ACCOUNT','T_B_P_AGREEMENT','T_B_P_AGREEMENT_ARCH_BONUS','T_B_P_AGREEMENT_ARCH_CONSTRUCT','T_B_P_AGREEMENT_PLAN','T_B_P_AGREEMENT_PROXY','T_B_P_AGREEMENT_REPORT','T_B_P_AGREEMENT_SYNC_CONSTRUCT','T_B_P_APPLYITEM','T_B_P_APPLYITEM_ACCT','T_B_P_APPLYITEM_BATCHLOAN','T_B_P_APPLYITEM_DETAIL_INFO','T_B_P_APPLYITEM_SITE','T_B_P_APPLYSITE_COLLECT_PRES','T_B_P_APPLYSITE_DETAIL_INFO','T_B_P_APPLYSITE_RELATE_PRES','T_B_P_APP_FILE_PROGRESS','T_B_P_APP_SCATTER','T_B_P_APP_SCATTER_ACCT','T_B_P_APP_SITE_ACCT','T_B_P_APP_SITE_TENDER','T_B_P_ASSISTANT_DOWN','T_B_P_CAPITALTRANSFERACCT','T_B_P_CAPITAL_TRANSFER','T_B_P_COLLECT_DETAIL_INFO','T_B_P_COLLECT_DISPONSE','T_B_P_COLLECT_RELY_IN','T_B_P_COUNTY_ACCT','T_B_P_FUND','T_B_P_FUND_ITEM','T_B_P_FUND_RECORD','T_B_P_ITEMONEY','T_B_P_LOAN_APPLICATION','T_B_P_LOAN_CONTRACT','T_B_P_MOVE_PLAN','T_B_P_PAY','T_B_P_POOR_LIVEIN','T_B_P_PUBLIC_ACCOUNT_INCOME','T_B_P_PUBLIC_INCOME_ACCT','T_B_P_SITE_COMPLETE_CHECK','T_B_P_SITE_EXTEND_INFO','T_B_P_SITE_PROJECT_PROGRESS','T_B_P_SITE_PROJECT_PRO_ACCT','T_B_P_SPEND','T_B_P_SPEND_ACCT','T_B_P_SPEND_BACK','T_B_P_SPEND_COUNTY','T_B_P_SPEND_DETAIL','T_B_P_USR','T_B_SSO_USER','T_B_TASK','T_B_TEST_BUSINESS','T_FILE_HISTORY','T_P_BPM_FILE','T_P_BPM_LOG','T_P_CITY','T_P_CITY_ROLE','T_P_FORM','T_P_FORMPRO','T_P_LISTENER','T_P_PAYMENT_MONEY_TRANSFER','T_P_PROCESS','T_P_PROCESSLISTENER','T_P_PROCESSNODE','T_P_PROCESSNODE_FUNCTION','T_P_PROCESSPRO','T_P_TASK_URL','T_S_ATTACHMENT','T_S_BASEBUS','T_S_BASE_USER','T_S_BUSCONFIG','T_S_DATA_RULE','T_S_DATA_SOURCE','T_S_DEPART','T_S_FUNCTION','T_S_ICON','T_S_LOG','T_S_MUTI_LANG','T_S_OPERATION','T_S_PRJSTATUS','T_S_QUICK_OPINION','T_S_ROLE','T_S_ROLE_FUNCTION','T_S_ROLE_ORG','T_S_ROLE_USER','T_S_SMS','T_S_SMS_SQL','T_S_SMS_TEMPLATE','T_S_SMS_TEMPLATE_SQL','T_S_SSO_LOG','T_S_SSO_USER','T_S_TABLE','T_S_TERRITORY','T_S_TIMETASK','T_S_TYPE','T_S_TYPEGROUP','T_S_USER','T_S_USERTYPE','T_S_USERTYPE_ROLE','T_S_USER_ORG','T_UPLOAD_HISTORY')
+		    and dt.table_name in ('T_B_PROJECT','T_B_PROJECT_HIS','T_B_INDICATOR','T_B_CATEGORY_IFMS','T_B_DEPT','T_S_TERRITORY_JOIN_DEPT','T_B_P_ACTHIPROCINST','T_B_INDICATOR_NUMBER_FILE','ACT_ID_MEMBERSHIP','ACT_GE_PROPERTY')
+		</if>
+		order by uo.CREATED desc
+	</select>
+
+	<select id="queryTable" resultMap="tableMap">
+		select dt.table_name tableName,dtc.comments tableComment,dt.last_analyzed createTime from user_tables dt,user_tab_comments dtc where dt.table_name=dtc.table_name and dt.table_name = UPPER(#{tableName})
+	</select>
+
+	<select id="queryColumns" resultMap="tableMap">
+        select temp.column_name columnname,
+        temp.data_type dataType,
+        temp.comments columnComment,
+        case temp.constraint_type when 'P' then 'PRI' when 'C' then 'UNI' else '' end "COLUMNKEY",
+        '' "EXTRA"
+        from (
+        select col.column_id,
+        col.column_name,
+        col.data_type,
+        colc.comments,
+        uc.constraint_type,
+        row_number() over (partition by col.column_name order by uc.constraint_type desc) as row_flg
+        from user_tab_columns col
+        left join user_col_comments colc
+        on colc.table_name = col.table_name
+        and colc.column_name = col.column_name
+        left join user_cons_columns ucc
+        on ucc.table_name = col.table_name
+        and ucc.column_name = col.column_name
+        left join user_constraints uc
+        on uc.constraint_name = ucc.constraint_name
+        where col.table_name = upper(#{tableName})
+        ) temp
+        where temp.row_flg = 1
+        and temp.column_name not in ('CREATE_DATE','CREATE_USER_ID','MODIFY_DATE','MODIFY_USER_ID','DELETE_STATE','ID')
+--         and temp.column_name not in ('ID','ID_')
+        order by temp.column_id
+	</select>
+
+</mapper>

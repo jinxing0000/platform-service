@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bettem.modules.sys.dao.SysUserDao">
+
+	<sql id="baseSql">
+		a.USER_ID,
+		a.USERNAME,
+		a.PASSWORD,
+		a.SALT,
+		a.EMAIL,
+		a.MOBILE,
+		a.STATUS,
+		a.DEPT_ID,
+		a.CREATE_TIME,
+		a.NICK_NAME,
+		a.POSITION,
+		a.CARD_NUMBER
+	</sql>
+
+	<!-- 查询用户的所有权限 -->
+	<select id="queryAllPerms" resultType="java.lang.String">
+		select m.perms from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id 
+		where ur.user_id = #{userId}
+	</select>
+	
+	<!-- 查询用户的所有菜单ID --> 
+	<select id="queryAllMenuId" resultType="java.lang.String">
+		select distinct rm.menu_id from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+		where ur.user_id = #{userId}
+	</select>
+    <select id="selectByPage" resultType="com.bettem.modules.sys.entity.SysUserEntity">
+		select
+		   <include refid="baseSql"/>,
+		    b.NAME as dept_name
+		from SYS_USER a,SYS_DEPT b
+		<where>
+			a.DEPT_ID = b.DEPT_ID
+			and USERNAME !='admin'
+			<if test="nickName !=null and nickName !=''">
+				and a.NICK_NAME like CONCAT(CONCAT('%', #{nickName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="username !=null and username !=''">
+				and a.USERNAME like CONCAT(CONCAT('%', #{username,jdbcType=VARCHAR}),'%')
+			</if>
+		</where>
+	</select>
+</mapper>

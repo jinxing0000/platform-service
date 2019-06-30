@@ -1,0 +1,102 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      first:  #数据源1
+#        url: jdbc:oracle:thin:@192.168.2.243:1521:ORCL
+        url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+        username: root
+        password: root
+      second:  #数据源2
+#        url: jdbc:oracle:thin:@192.168.2.243:1521:ORCL
+        url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+        username: root
+        password: root
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      #validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /sys/druid/*
+        #login-username: admin
+        #login-password: admin
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+  redis:
+      database: 3
+      host: 127.0.0.1
+      port: 6379
+      password:      # 密码（默认为空）
+      timeout: 6000ms  # 连接超时时长（毫秒）
+      jedis:
+        pool:
+          max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+          max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-idle: 10      # 连接池中的最大空闲连接
+          min-idle: 5       # 连接池中的最小空闲连接
+#  rabbitmq:
+#      host: 127.0.0.1
+#      port: 5672
+#      username: guest
+#      password: guest
+#      publisher-confirms: true
+#      publisher-returns: true
+#      listener:
+#         direct:
+#           acknowledge-mode: manual
+#         simple:
+#           acknowledge-mode: manual
+bettem:
+   uploadFilePath:
+       E:\\FTP\\site
+   ftpServerIP:
+       192.168.2.221
+   ftpServerPort:
+       21
+   ftpUserName:
+       nongbuFTP
+   ftpPassword:
+       nongbuFTP
+   imagePath:
+       http://192.168.2.221:8090
+   isOpenSms:
+       false
+   uploadFileType:
+       doc,docx,xls,xlsx,ppt,pptx,pdf,rtf,txt,vsd,
+       aiff,mp3,
+       mp4,asf,avi,fla,flv,rmvb,rm,mpg,mpeg,swf,
+       bmp,gif,jpeg,jpg,tif,tiff,png,
+       gz,gzip,rar,zip
+#       doc,docx,xls,xlsx,pdf,jpg,png,gif,zip,mp4,flv,text
+   #允许上传100M以内文件
+   uploadFileSize:
+       102400000
+   rabbitListener:
+       fanout.A
+   serverUrl:
+       http://127.0.0.1:8080/api
+   jwtExpiration:
+       # 以小时计算
+       4
+   #防止重复提交时间间隔
+   resubmitTime:
+       1
+   #ftp根目录配置
+   ftpPath:
+       bettem
