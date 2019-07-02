@@ -60,7 +60,7 @@ public class SysMenuEntity implements Serializable {
 	/**
 	 * 菜单URL
 	 */
-	private String url;
+	private String path;
 
 	/**
 	 * 授权(多个用逗号分隔，如：user:list,user:create)
@@ -89,7 +89,7 @@ public class SysMenuEntity implements Serializable {
 	private Boolean open;
 
 	@TableField(exist=false)
-	private List<?> list;
+	private List<?> children;
 
 	public void setMenuId(String menuId) {
 		this.menuId = menuId;
@@ -129,22 +129,6 @@ public class SysMenuEntity implements Serializable {
 	 */
 	public String getName() {
 		return name;
-	}
-	
-	/**
-	 * 设置：菜单URL
-	 * @param url 菜单URL
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	/**
-	 * 获取：菜单URL
-	 * @return String
-	 */
-	public String getUrl() {
-		return url;
 	}
 	
 	public String getPerms() {
@@ -195,14 +179,6 @@ public class SysMenuEntity implements Serializable {
 		return orderNum;
 	}
 
-	public List<?> getList() {
-		return list;
-	}
-
-	public void setList(List<?> list) {
-		this.list = list;
-	}
-
 	public String getParentName() {
 		return parentName;
 	}
@@ -217,5 +193,21 @@ public class SysMenuEntity implements Serializable {
 
 	public void setOpen(Boolean open) {
 		this.open = open;
+	}
+
+	public void setChildren(List<?> children) {
+		this.children = children;
+	}
+
+	public List<?> getChildren() {
+		return children;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getPath() {
+		return path;
 	}
 }

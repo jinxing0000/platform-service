@@ -5,20 +5,20 @@
 
 	<select id="queryListParentId" resultType="com.bettem.modules.sys.entity.SysMenuEntity">
 		select
-		   MENU_ID,PARENT_ID,NAME,URL,PERMS,TYPE,ICON,ORDER_NUM
+		   MENU_ID,PARENT_ID,NAME,PATH,PERMS,TYPE,ICON,ORDER_NUM
 		from sys_menu where parent_id = #{parentId} order by order_num asc
 	</select>
 	
 	<select id="queryNotButtonList" resultType="com.bettem.modules.sys.entity.SysMenuEntity">
 		select
-		   MENU_ID,PARENT_ID,NAME,URL,PERMS,TYPE,ICON,ORDER_NUM
+		   MENU_ID,PARENT_ID,NAME,PATH,PERMS,TYPE,ICON,ORDER_NUM
 		from sys_menu where type != 2 order by order_num asc
 	</select>
 
 	<!--  条件查询菜单 -->
 	<select id="queryListMenu" resultType="com.bettem.modules.sys.entity.SysMenuEntity">
 		select
-		   MENU_ID,PARENT_ID,NAME,URL,PERMS,TYPE,ICON,ORDER_NUM
+		   MENU_ID,PARENT_ID,NAME,PATH,PERMS,TYPE,ICON,ORDER_NUM
 		from SYS_MENU
 		<where>
 			<if test="userId !=null and userId !=''">

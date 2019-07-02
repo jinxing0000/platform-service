@@ -82,7 +82,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 			//判断是否为根节点
 			if("0".equals(parentId)){
 				List<SysMenuEntity> childrenList=setChildren(sysMenu.getMenuId(),menuList);
-				sysMenu.setList(childrenList);
+				sysMenu.setChildren(childrenList);
 				menuTree.add(sysMenu);
 			}
 		}
@@ -117,7 +117,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 		for(SysMenuEntity entity : menuList){
 			//目录
 			if(entity.getType() == Constant.MenuType.CATALOG.getValue()){
-				entity.setList(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
+				entity.setChildren(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
 			}
 			subMenuList.add(entity);
 		}
@@ -138,7 +138,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 			//有下级子节点
 			if(id.equals(sysMenuVO.getParentId())){
 				List<SysMenuEntity> childrenList=setChildren(sysMenuVO.getMenuId(),menuVOList);
-				sysMenuVO.setList(childrenList);
+				sysMenuVO.setChildren(childrenList);
 				menuList.add(sysMenuVO);
 			}
 		}
