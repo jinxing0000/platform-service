@@ -80,11 +80,10 @@ public class ShiroConfig {
         shiroFilter.setLoginUrl("/login.html");
         shiroFilter.setUnauthorizedUrl("/");
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/sys/getVerifyCode", "anon");
-        filterMap.put("/sys/getUserInfoByUserName", "anon");
-        filterMap.put("/sys/login", "anon");
-        filterMap.put("/sys/druid/**", "anon");
-        filterMap.put("/favicon.ico", "anon");
+        filterMap.put("/api/sys/getVerifyCode", "anon");
+        filterMap.put("/api/sys/getUserInfoByUserName", "anon");
+        filterMap.put("/api/sys/login", "anon");
+        filterMap.put("/api/sys/druid/**", "anon");
         filterMap.put("/**", "jwt");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         //加入ajax请求拦截器

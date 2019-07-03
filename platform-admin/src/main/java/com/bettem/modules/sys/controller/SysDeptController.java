@@ -39,7 +39,7 @@ import java.util.List;
  * @date 2017-06-20 15:23:47
  */
 @RestController
-@RequestMapping("/sys/dept/")
+@RequestMapping("/api/sys/dept/")
 public class SysDeptController{
 	@Autowired
 	private SysDeptService sysDeptService;

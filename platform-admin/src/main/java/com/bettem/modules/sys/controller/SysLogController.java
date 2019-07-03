@@ -38,7 +38,7 @@ import java.util.Map;
  * @date 2017-03-08 10:40:56
  */
 @Controller
-@RequestMapping("/sys/log/")
+@RequestMapping("/api/sys/log/")
 public class SysLogController {
 	@Autowired
 	private SysLogService sysLogService;

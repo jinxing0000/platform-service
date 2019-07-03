@@ -48,7 +48,7 @@ import java.util.Set;
  * @date 2016年11月10日 下午1:15:31
  */
 @Controller
-@RequestMapping("/sys/")
+@RequestMapping("/api/sys/")
 public class SysLoginController{
 	@Autowired
 	private Producer producer;

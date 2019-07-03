@@ -41,7 +41,7 @@ import java.util.List;
  * @date 2016年10月27日 下午9:58:15
  */
 @RestController
-@RequestMapping("/sys/menu/")
+@RequestMapping("/api/sys/menu/")
 public class SysMenuController {
 	@Autowired
 	private SysMenuService sysMenuService;
