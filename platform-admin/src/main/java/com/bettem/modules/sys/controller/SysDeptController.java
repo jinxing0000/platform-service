@@ -16,7 +16,9 @@
 
 package com.bettem.modules.sys.controller;
 
+import com.bettem.common.exception.RRException;
 import com.bettem.common.utils.Constant;
+import com.bettem.common.utils.ErrorCodeConstant;
 import com.bettem.common.utils.R;
 import com.bettem.common.utils.ShiroTokenUtils;
 import com.bettem.common.validator.ValidatorUtils;
@@ -51,9 +53,9 @@ public class SysDeptController{
 	 */
 	@RequestMapping(value="list",method = RequestMethod.GET)
 	@RequiresPermissions({"sys:dept:list"})
-	public List<SysDeptEntity> list(){
+	public R list(){
 		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
-		return deptList;
+		return R.ok(deptList);
 	}
 
 	/**
@@ -69,7 +71,6 @@ public class SysDeptController{
 			root.setDeptId("0");
 			root.setName("一级部门");
 			root.setParentId("-1");
-			root.setOpen(true);
 			deptList.add(root);
 		}
 		return R.ok().put("deptList", deptList);
@@ -92,6 +93,7 @@ public class SysDeptController{
 	@RequiresPermissions("sys:dept:save")
 	public R save(@RequestBody SysDeptEntity dept){
 		ValidatorUtils.validateEntity(dept, AddGroup.class);
+		dept.setDelFlag(0);
 		sysDeptService.insert(dept);
 		return R.ok();
 	}

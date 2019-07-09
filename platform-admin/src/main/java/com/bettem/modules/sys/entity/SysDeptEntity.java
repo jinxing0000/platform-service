@@ -60,13 +60,9 @@ public class SysDeptEntity implements Serializable {
 
 	@TableLogic
 	private Integer delFlag;
-	/**
-	 * ztree属性
-	 */
+
 	@TableField(exist=false)
-	private Boolean open;
-	@TableField(exist=false)
-	private List<?> list;
+	private List<SysDeptEntity> children;
 
 
 	public void setDeptId(String deptId) {
@@ -129,22 +125,6 @@ public class SysDeptEntity implements Serializable {
 		this.parentName = parentName;
 	}
 
-	public Boolean getOpen() {
-		return open;
-	}
-
-	public void setOpen(Boolean open) {
-		this.open = open;
-	}
-
-	public List<?> getList() {
-		return list;
-	}
-
-	public void setList(List<?> list) {
-		this.list = list;
-	}
-
 	public void setCode(String code) {
 		this.code = code;
 	}
@@ -159,5 +139,14 @@ public class SysDeptEntity implements Serializable {
 
 	public String getRegionCode() {
 		return regionCode;
+	}
+
+
+	public void setChildren(List<SysDeptEntity> children) {
+		this.children = children;
+	}
+
+	public List<SysDeptEntity> getChildren() {
+		return children;
 	}
 }

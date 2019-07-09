@@ -43,13 +43,21 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 	
 	@Override
 	public List<SysDeptEntity> queryList(Map<String, Object> params){
+		List<SysDeptEntity> resultDeptTreeList=new ArrayList<>();
 		List<SysDeptEntity> deptList =
 			this.selectList(new EntityWrapper<SysDeptEntity>()
 			.addFilterIfNeed(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
 			.eq("DEL_FLAG",Constant.DELETE_STATE_NO)
 		    .orderBy("ORDER_NUM ")
 			);
-		return deptList;
+        for(SysDeptEntity dept:deptList){
+        	if("0".equals(dept.getParentId())){
+				List<SysDeptEntity> resultList=getLowerDept(deptList,dept.getDeptId());
+				dept.setChildren(resultList);
+				resultDeptTreeList.add(dept);
+			}
+		}
+		return resultDeptTreeList;
 	}
 
 	@Override
@@ -96,8 +104,21 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 			if(list.size() > 0){
 				getDeptTreeList(list, deptIdList);
 			}
-
 			deptIdList.add(deptId);
 		}
+	}
+	/**
+	 * 递归寻找下级部门
+	 */
+	private List<SysDeptEntity> getLowerDept(List<SysDeptEntity> deptList,String deptId){
+		List<SysDeptEntity> resultList=new ArrayList<>();
+		for(SysDeptEntity dept:deptList){
+			if(deptId.equals(dept.getParentId())){
+				List<SysDeptEntity> list=this.getLowerDept(deptList,dept.getDeptId());
+				dept.setChildren(list);
+				resultList.add(dept);
+			}
+		}
+		return resultList;
 	}
 }
