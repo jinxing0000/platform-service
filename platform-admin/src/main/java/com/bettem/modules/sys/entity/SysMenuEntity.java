@@ -70,7 +70,7 @@ public class SysMenuEntity implements Serializable {
 	/**
 	 * 类型     0：目录   1：菜单   2：按钮
 	 */
-	private Integer type;
+	private String type;
 
 	/**
 	 * 菜单图标
@@ -81,15 +81,9 @@ public class SysMenuEntity implements Serializable {
 	 * 排序
 	 */
 	private Integer orderNum;
-	
-	/**
-	 * ztree属性
-	 */
-	@TableField(exist=false)
-	private Boolean open;
 
 	@TableField(exist=false)
-	private List<?> children;
+	private List<SysMenuEntity> children;
 
 	public void setMenuId(String menuId) {
 		this.menuId = menuId;
@@ -139,12 +133,12 @@ public class SysMenuEntity implements Serializable {
 		this.perms = perms;
 	}
 
-	public Integer getType() {
-		return type;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public void setType(Integer type) {
-		this.type = type;
+	public String getType() {
+		return type;
 	}
 
 	/**
@@ -187,27 +181,19 @@ public class SysMenuEntity implements Serializable {
 		this.parentName = parentName;
 	}
 
-	public Boolean getOpen() {
-		return open;
-	}
-
-	public void setOpen(Boolean open) {
-		this.open = open;
-	}
-
-	public void setChildren(List<?> children) {
-		this.children = children;
-	}
-
-	public List<?> getChildren() {
-		return children;
-	}
-
 	public void setPath(String path) {
 		this.path = path;
 	}
 
 	public String getPath() {
 		return path;
+	}
+
+	public void setChildren(List<SysMenuEntity> children) {
+		this.children = children;
+	}
+
+	public List<SysMenuEntity> getChildren() {
+		return children;
 	}
 }

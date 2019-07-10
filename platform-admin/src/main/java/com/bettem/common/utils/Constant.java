@@ -56,23 +56,23 @@ public class Constant {
         /**
          * 目录
          */
-        CATALOG(0),
+        CATALOG("0"),
         /**
          * 菜单
          */
-        MENU(1),
+        MENU("1"),
         /**
          * 按钮
          */
-        BUTTON(2);
+        BUTTON("2");
 
-        private int value;
+        private String value;
 
-        MenuType(int value) {
+        MenuType(String value) {
             this.value = value;
         }
 
-        public int getValue() {
+        public String getValue() {
             return value;
         }
     }

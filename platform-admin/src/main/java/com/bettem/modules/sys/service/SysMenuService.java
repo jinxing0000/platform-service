@@ -59,4 +59,10 @@ public interface SysMenuService extends IService<SysMenuEntity> {
 	 * 删除
 	 */
 	void delete(String menuId);
+
+	/**
+	 * 获取菜单TreeList
+	 * @return
+	 */
+	List<SysMenuEntity> queryMenuTreeList();
 }

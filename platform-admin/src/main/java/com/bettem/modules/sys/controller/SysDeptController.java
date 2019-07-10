@@ -59,31 +59,13 @@ public class SysDeptController{
 	}
 
 	/**
-	 * 选择部门(添加、修改菜单)
-	 */
-	@RequestMapping(value = "select",method = RequestMethod.GET)
-	@RequiresPermissions({"sys:dept:select"})
-	public R select(){
-		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
-		//添加一级部门
-		if(Constant.SUPER_ADMIN.equals(shiroTokenUtils.getUserId())){
-			SysDeptEntity root = new SysDeptEntity();
-			root.setDeptId("0");
-			root.setName("一级部门");
-			root.setParentId("-1");
-			deptList.add(root);
-		}
-		return R.ok().put("deptList", deptList);
-	}
-
-	/**
 	 * 信息
 	 */
 	@RequestMapping(value="info",method = RequestMethod.GET)
 	@RequiresPermissions("sys:dept:info")
 	public R info(@RequestParam String  deptId){
 		SysDeptEntity dept = sysDeptService.selectById(deptId);
-		return R.ok().put("dept", dept);
+		return R.ok(dept);
 	}
 	
 	/**

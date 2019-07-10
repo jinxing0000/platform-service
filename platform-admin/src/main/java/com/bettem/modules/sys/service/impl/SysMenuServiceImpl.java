@@ -97,6 +97,23 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 		sysRoleMenuService.deleteByMap(new MapUtils().put("menu_id", menuId));
 	}
 
+	@Override
+	public List<SysMenuEntity> queryMenuTreeList() {
+		Map<String,Object> params=new HashMap<>();
+		List<SysMenuEntity> menuList=this.baseMapper.queryListMenu(params);
+		List<SysMenuEntity> menuTree=new ArrayList<>();
+		for(SysMenuEntity sysMenu:menuList){
+			String parentId=sysMenu.getParentId();
+			//判断是否为根节点
+			if("0".equals(parentId)){
+				List<SysMenuEntity> childrenList=setChildren(sysMenu.getMenuId(),menuList);
+				sysMenu.setChildren(childrenList);
+				menuTree.add(sysMenu);
+			}
+		}
+		return menuTree;
+	}
+
 	/**
 	 * 获取所有菜单列表
 	 */
@@ -116,7 +133,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 
 		for(SysMenuEntity entity : menuList){
 			//目录
-			if(entity.getType() == Constant.MenuType.CATALOG.getValue()){
+			if((Constant.MenuType.CATALOG.getValue()+"").equals(entity.getType())){
 				entity.setChildren(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
 			}
 			subMenuList.add(entity);

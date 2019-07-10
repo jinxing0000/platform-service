@@ -63,26 +63,8 @@ public class SysMenuController {
 	@RequestMapping(value = "list",method = RequestMethod.GET)
 	@RequiresPermissions("sys:menu:list")
 	public List<SysMenuEntity> list(){
-		List<SysMenuEntity> menuList = sysMenuService.selectList(new EntityWrapper<SysMenuEntity>().orderBy("order_num"));
+		List<SysMenuEntity> menuList = sysMenuService.queryMenuTreeList();
 		return menuList;
-	}
-	
-	/**
-	 * 选择菜单(添加、修改菜单)
-	 */
-	@RequestMapping(value = "select",method = RequestMethod.GET)
-	@RequiresPermissions("sys:menu:select")
-	public R select(){
-		//查询列表数据
-		List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
-		//添加顶级菜单
-		SysMenuEntity root = new SysMenuEntity();
-		root.setMenuId("0");
-		root.setName("一级菜单");
-		root.setParentId("-1");
-		root.setOpen(true);
-		menuList.add(root);
-		return R.ok().put("menuList", menuList);
 	}
 	
 	/**
@@ -154,15 +136,15 @@ public class SysMenuController {
 			}
 		}
 		//上级菜单类型
-		int parentType = Constant.MenuType.CATALOG.getValue();
+		String  parentType = Constant.MenuType.CATALOG.getValue();
 		if(!"0".equals(menu.getParentId())){
 			SysMenuEntity parentMenu = sysMenuService.selectById(menu.getParentId());
 			parentType = parentMenu.getType();
 		}
 		//目录、菜单
-		if(menu.getType() == Constant.MenuType.CATALOG.getValue() ||
-				menu.getType() == Constant.MenuType.MENU.getValue()){
-			if(parentType != Constant.MenuType.CATALOG.getValue()){
+		if(Constant.MenuType.CATALOG.getValue().equals(menu.getType() ) ||
+				 Constant.MenuType.MENU.getValue().equals(menu.getType())){
+			if(!Constant.MenuType.CATALOG.getValue().equals(parentType)){
 				throw new RRException("上级菜单只能为目录类型！！");
 			}
 			return ;
