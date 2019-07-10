@@ -56,7 +56,7 @@ public class SysRoleController {
 	@RequiresPermissions("sys:role:list")
 	public R list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysRoleService.queryPage(params);
-		return R.ok().put("page", page);
+		return R.ok(page);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class SysRoleController {
 		//查询角色对应的部门
 //		List<String> deptIdList = sysRoleDeptService.queryDeptIdList(new String[]{roleId});
 //		role.setDeptIdList(deptIdList);
-		return R.ok().put("role", role);
+		return R.ok(role);
 	}
 	
 	/**

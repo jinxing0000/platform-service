@@ -130,7 +130,7 @@ public class SysMenuController {
 			throw new RRException("上级菜单不能为空！！");
 		}
 		//菜单
-		if(menu.getType() == Constant.MenuType.MENU.getValue()){
+		if(Constant.MenuType.MENU.getValue().equals(menu.getType())){
 			if(StringUtils.isBlank(menu.getPath())){
 				throw new RRException("菜单URL不能为空！！");
 			}
