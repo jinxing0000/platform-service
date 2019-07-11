@@ -64,7 +64,7 @@ public class SysUserController{
 	@RequiresPermissions("sys:user:list")
 	public R list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysUserService.queryPage(params);
-		return R.ok().put("page", page);
+		return R.ok(page);
 	}
 	
 	/**
