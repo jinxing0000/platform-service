@@ -95,7 +95,7 @@ public class SysUserController{
 		//获取用户所属的角色列表
 		List<SysRoleEntity> roleIdList = sysUserRoleService.queryRoleIdList(userId);
 		user.setRoleIdList(roleIdList);
-		return R.ok().put("user", user);
+		return R.ok(user);
 	}
 	
 	/**

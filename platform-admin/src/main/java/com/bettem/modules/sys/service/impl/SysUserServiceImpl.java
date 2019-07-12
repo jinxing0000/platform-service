@@ -197,6 +197,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		if(!loginPassword.equals(user.getPassword())){
 			throw new RRException(ErrorCodeConstant.USER_PASSWORD_ERROR,"密码不匹配！！");
 		}
+		String state=user.getStatus();
+		if(!"01".equals(state)){
+			throw new RRException(ErrorCodeConstant.ERROR,"该用户已被禁用，请联系管理员！！");
+		}
 		String deptId=user.getDeptId();
 		String userId=user.getUserId();
 		//用户部门数据

@@ -35,11 +35,14 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String key = (String)params.get("key");
-
+        String userName = (String)params.get("userName");
+        String operation = (String)params.get("operation");
         Page<SysLogEntity> page = this.selectPage(
             new Query<SysLogEntity>(params).getPage(),
-            new EntityWrapper<SysLogEntity>().like(StringUtils.isNotBlank(key),"username", key).orderBy("CREATE_DATE desc")
+            new EntityWrapper<SysLogEntity>().
+                    like(StringUtils.isNotBlank(userName)&&(!"".equals(userName)),"username", userName)
+                    .like(StringUtils.isNotBlank(operation)&&(!"".equals(operation)),"operation", operation)
+                    .orderBy("CREATE_DATE desc")
         );
 
         return new PageUtils(page);

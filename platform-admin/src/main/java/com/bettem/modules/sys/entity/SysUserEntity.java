@@ -89,7 +89,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 状态  0：禁用   1：正常
 	 */
-	private Integer status;
+	private String status;
 	
 	/**
 	 * 角色ID列表
@@ -216,23 +216,15 @@ public class SysUserEntity implements Serializable {
 	public String getMobile() {
 		return mobile;
 	}
-	
-	/**
-	 * 设置：状态  0：禁用   1：正常
-	 * @param status 状态  0：禁用   1：正常
-	 */
-	public void setStatus(Integer status) {
+
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	/**
-	 * 获取：状态  0：禁用   1：正常
-	 * @return Integer
-	 */
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
-	
+
 	/**
 	 * 设置：创建时间
 	 * @param createTime 创建时间
