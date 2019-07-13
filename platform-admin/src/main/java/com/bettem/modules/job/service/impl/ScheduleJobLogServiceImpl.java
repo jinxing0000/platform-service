@@ -38,7 +38,7 @@ public class ScheduleJobLogServiceImpl extends ServiceImpl<ScheduleJobLogDao, Sc
 
 		Page<ScheduleJobLogEntity> page = this.selectPage(
 				new Query<ScheduleJobLogEntity>(params).getPage(),
-				new EntityWrapper<ScheduleJobLogEntity>().like(StringUtils.isNotBlank(jobId),"job_id", jobId)
+				new EntityWrapper<ScheduleJobLogEntity>().eq(StringUtils.isNotBlank(jobId),"job_id", jobId)
 				.orderBy(" CREATE_TIME desc ")
 		);
 
