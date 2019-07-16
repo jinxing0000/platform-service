@@ -62,9 +62,9 @@ public class SysMenuController {
 	 */
 	@RequestMapping(value = "list",method = RequestMethod.GET)
 	@RequiresPermissions("sys:menu:list")
-	public List<SysMenuEntity> list(){
+	public R list(){
 		List<SysMenuEntity> menuList = sysMenuService.queryMenuTreeList();
-		return menuList;
+		return R.ok(menuList);
 	}
 	
 	/**

@@ -1,12 +1,12 @@
 -- 菜单SQL
-INSERT INTO sys_menu (parent_id, name, url, perms, type, icon, order_num,menu_id)
-    VALUES ('1', '${comments}', 'modules/${moduleName}/${classname}.html', NULL, '1', 'fa fa-file-code-o', '6','${uuid1}');
+INSERT INTO sys_menu (parent_id, name, path, perms, type, icon, order_num,menu_id)
+    VALUES ('1', '${comments}', '/${moduleName}/${pathName}', NULL, '1', '', '6','${uuid1}');
 -- 菜单对应按钮SQL
-INSERT INTO sys_menu (parent_id, name, url, perms, type, icon, order_num,menu_id)
-    SELECT '${uuid1}', '查看', null, '${moduleName}:${pathName}:list,${moduleName}:${pathName}:info', '2', null, '6','${uuid2}' from dual;
-INSERT INTO sys_menu (parent_id, name, url, perms, type, icon, order_num,menu_id)
+INSERT INTO sys_menu (parent_id, name, path, perms, type, icon, order_num,menu_id)
+    SELECT '${uuid1}', '查看数据', null, '${moduleName}:${pathName}:getPageList,${moduleName}:${pathName}:info', '2', null, '6','${uuid2}' from dual;
+INSERT INTO sys_menu (parent_id, name, path, perms, type, icon, order_num,menu_id)
     SELECT '${uuid1}', '新增', null, '${moduleName}:${pathName}:save', '2', null, '6','${uuid3}' from dual;
-INSERT INTO sys_menu (parent_id, name, url, perms, type, icon, order_num,menu_id)
+INSERT INTO sys_menu (parent_id, name, path, perms, type, icon, order_num,menu_id)
     SELECT '${uuid1}', '修改', null, '${moduleName}:${pathName}:update', '2', null, '6','${uuid4}' from dual;
-INSERT INTO sys_menu (parent_id, name, url, perms, type, icon, order_num,menu_id)
+INSERT INTO sys_menu (parent_id, name, path, perms, type, icon, order_num,menu_id)
     SELECT '${uuid1}', '删除', null, '${moduleName}:${pathName}:delete', '2', null, '6','${uuid5}' from dual;

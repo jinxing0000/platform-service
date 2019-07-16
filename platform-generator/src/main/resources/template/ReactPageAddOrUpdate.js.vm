@@ -1,0 +1,46 @@
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import { Col, Form, Input, Row, Select, Tree ,message} from 'antd';
+import BTreeSelect from '../../../components/nd_component/BTreeSelect';
+const { TreeNode } = Tree;
+
+const { Item: FormItem } = Form;
+const Option = Select.Option;
+@Form.create()
+@connect(({ ${pathName} }) => ({ ${pathName} }))
+export default class ${jsFileName}AddOrUpdate extends Component {
+    state = {
+        checkedKeys: [],
+    };
+    componentDidMount() {
+        const { record, dispatch} = this.props;
+    }
+    okHandler = () => {
+        this.props.form.validateFields((err, fields) => {
+            if (!err) {
+            const dataToSubmit = {
+                ...fields,
+            };
+            this.props.onSubmit(err, dataToSubmit);
+            }
+        });
+    };
+    render() {
+        const { form, record } = this.props;
+        return (
+            <Form onSubmit={this.okHandler}>
+                {form.getFieldDecorator('id', {
+                    initialValue: record.id ? record.id : null,
+                })(<Input type="hidden" />)}
+#foreach ($column in $columns)
+            <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="$column.comments">
+                {form.getFieldDecorator('$column.attrname', {
+                    rules: [{ required: true, message: '请输入$column.comments' }],
+                    initialValue: record.$column.attrname ? record.$column.attrname : null,
+                })(<Input placeholder="请输入$column.comments" />)}
+            </FormItem>
+#end
+            </Form>
+        );
+    }
+}

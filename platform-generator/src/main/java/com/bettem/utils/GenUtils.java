@@ -52,9 +52,14 @@ public class GenUtils {
 		templates.add("template/Service.java.vm");
 		templates.add("template/ServiceImpl.java.vm");
 		templates.add("template/Controller.java.vm");
-		templates.add("template/list.html.vm");
-		templates.add("template/list.js.vm");
+//		templates.add("template/list.html.vm");
+//		templates.add("template/list.js.vm");
 		templates.add("template/menu.sql.vm");
+		templates.add("template/ReactPage.js.vm");
+		templates.add("template/ReactPage.less.vm");
+		templates.add("template/ReactPageAddOrUpdate.js.vm");
+		templates.add("template/ReactModel.js.vm");
+		templates.add("template/ReactService.js.vm");
 		return templates;
 	}
 
@@ -127,6 +132,7 @@ public class GenUtils {
 		String pathName=tableEntity.getClassname().replace(module,"");
 		pathName=pathName.substring(0, 1).toLowerCase() + pathName.substring(1,pathName.length());
 		map.put("pathName", pathName);
+		map.put("jsFileName",tableEntity.getClassname().replace(module,""));
 		map.put("columns", tableEntity.getColumns());
 		List<ColumnEntity> columnList=tableEntity.getColumns();
 		List<List<ColumnEntity>> newColumnList=new ArrayList<>();
@@ -148,6 +154,8 @@ public class GenUtils {
 		map.put("mainPath", mainPath);
 		map.put("package", config.getString("package" ));
 		map.put("moduleName", module);
+		String jsModuleName= module.substring(0, 1).toUpperCase() + module.substring(1);
+		map.put("jsModuleName",jsModuleName);
 		map.put("author", author);
 		map.put("email", config.getString("email"));
 		map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
@@ -169,7 +177,7 @@ public class GenUtils {
 			
 			try {
 				//添加到zip
-				zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package"), module,tableEntity.getClassname())));
+				zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package"), module,tableEntity.getClassname(),(String)map.get("jsFileName"),(String)map.get("jsModuleName"))));
 				IOUtils.write(sw.toString(), zip, "UTF-8");
 				IOUtils.closeQuietly(sw);
 				zip.closeEntry();
@@ -212,7 +220,7 @@ public class GenUtils {
 	/**
 	 * 获取文件名
 	 */
-	public static String getFileName(String template, String className, String packageName, String moduleName,String classname) {
+	public static String getFileName(String template, String className, String packageName, String moduleName,String classname,String jsFileName,String jsModuleName) {
 		String packagePath = "main" + File.separator + "java" + File.separator;
 		if (StringUtils.isNotBlank(packageName)) {
 			packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
@@ -235,12 +243,27 @@ public class GenUtils {
 		if (template.contains("Dao.xml.vm" )) {
 			return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + moduleName + File.separator + className + "Dao.xml";
 		}
-		if (template.contains("list.html.vm" )) {
-			return "web" + File.separator+ "modules" + File.separator + moduleName + File.separator + classname + ".html";
+//		if (template.contains("list.html.vm" )) {
+//			return "web" + File.separator+ "modules" + File.separator + moduleName + File.separator + classname + ".html";
+//		}
+//		if (template.contains("list.js.vm" )) {
+//			return "web" + File.separator+ "statics" + File.separator + "js" + File.separator
+//					+ "modules" + File.separator + moduleName + File.separator + classname + ".js";
+//		}
+		if(template.contains("ReactPage.js.vm" )){
+			return "react" + File.separator+ "pages" +File.separator+ jsModuleName + File.separator + jsFileName + File.separator + jsFileName + ".js";
 		}
-		if (template.contains("list.js.vm" )) {
-			return "web" + File.separator+ "statics" + File.separator + "js" + File.separator
-					+ "modules" + File.separator + moduleName + File.separator + classname + ".js";
+		if(template.contains("ReactPage.less.vm" )){
+			return "react" + File.separator+ "pages" +File.separator+ jsModuleName + File.separator + jsFileName + File.separator + jsFileName + ".less";
+		}
+		if(template.contains("ReactPageAddOrUpdate.js.vm" )){
+			return "react" + File.separator+ "pages" +File.separator+ jsModuleName + File.separator + jsFileName + File.separator + jsFileName + "AddOrUpdate.js";
+		}
+		if(template.contains("ReactModel.js.vm" )){
+			return "react" + File.separator+ "models" +File.separator+ moduleName + File.separator  + jsFileName + ".js";
+		}
+		if(template.contains("ReactService.js.vm" )){
+			return "react" + File.separator+ "services" +File.separator+ moduleName + File.separator  + jsFileName + ".js";
 		}
 		if (template.contains("menu.sql.vm" )) {
 			return classname + "_menu.sql";
