@@ -25,6 +25,7 @@ import com.bettem.common.utils.*;
 import com.bettem.modules.sys.entity.*;
 import com.bettem.modules.sys.dao.SysMenuDao;
 import com.bettem.modules.sys.dao.SysUserDao;
+import com.bettem.modules.sys.entity.VO.SysUserVO;
 import com.bettem.modules.sys.service.SysDeptService;
 import com.bettem.modules.sys.service.SysUserRoleService;
 import org.apache.commons.lang.StringUtils;
@@ -81,10 +82,10 @@ public class UserRealm extends AuthorizingRealm {
      */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		SysUserEntity user = shiroTokenUtils.getUserInfo();
+		SysUserVO sysUserVO = shiroTokenUtils.getUserInfo();
 		logger.debug("校验用户权限++++++++++++++++++++++++++++++++++++++++");
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		info.setStringPermissions(user.getPermsSet());
+		info.setStringPermissions(sysUserVO.getPermsSet());
 		return info;
 	}
 

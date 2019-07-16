@@ -13,9 +13,7 @@
 		a.STATUS,
 		a.DEPT_ID,
 		a.CREATE_TIME,
-		a.NICK_NAME,
-		a.POSITION,
-		a.CARD_NUMBER
+		a.NICK_NAME
 	</sql>
 
 	<!-- 查询用户的所有权限 -->
@@ -32,7 +30,7 @@
 			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
 		where ur.user_id = #{userId}
 	</select>
-    <select id="selectByPage" resultType="com.bettem.modules.sys.entity.SysUserEntity">
+    <select id="selectByPage" resultType="com.bettem.modules.sys.entity.VO.SysUserVO">
 		select
 		   <include refid="baseSql"/>,
 		    b.NAME as dept_name
@@ -48,4 +46,27 @@
 			</if>
 		</where>
 	</select>
+	<select id="selectUserById" resultType="com.bettem.modules.sys.entity.VO.SysUserVO">
+       select
+		<include refid="baseSql"/>
+	   from SYS_USER a
+	   <where>
+		   user_id = #{userId,jdbcType=VARCHAR}
+	   </where>
+	</select>
+	<select id="selectByUserNameOrMobile" resultType="com.bettem.modules.sys.entity.VO.SysUserVO">
+		select
+		<include refid="baseSql"/>
+		from SYS_USER a
+		<where>
+			<if test="isMobile==false">
+				username = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="isMobile==true">
+				mobile = #{userName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+
 </mapper>

@@ -142,25 +142,4 @@ public class SysLoginController{
 		shiroTokenUtils.deleteUserInfo();
 		return R.ok();
 	}
-	/**
-	 * @Param []
-	 * @Return: com.bettem.common.utils.R
-	 * @Decription: 获取按钮权限
-	 * @CreateDate: Created in 2019/3/14 18:50
-	 * @Author: 颜金星
-	 */
-	@ResponseBody
-	@RequestMapping(value = "getButtonAuthority", method = RequestMethod.GET)
-	@SysLog("用户获取按钮权限")
-	public R getButtonAuthority() {
-		//获取用户信息
-		SysUserEntity sysUserEntity=shiroTokenUtils.getUserInfo();
-		Set<String> permsSet=sysUserEntity.getPermsSet();
-		Map<String,Boolean> permsMap=new HashedMap();
-		for(String perm:permsSet){
-			permsMap.put(perm,true);
-		}
-		return R.ok().put("permsMap",permsMap);
-	}
-	
 }

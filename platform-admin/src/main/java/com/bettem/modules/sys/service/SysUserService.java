@@ -19,6 +19,7 @@ package com.bettem.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.bettem.common.utils.PageUtils;
 import com.bettem.modules.sys.entity.SysUserEntity;
+import com.bettem.modules.sys.entity.VO.SysUserVO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -44,12 +45,12 @@ public interface SysUserService extends IService<SysUserEntity> {
 	/**
 	 * 保存用户
 	 */
-	void save(SysUserEntity user);
+	void save(SysUserVO sysUserVO);
 	
 	/**
 	 * 修改用户
 	 */
-	void update(SysUserEntity user);
+	void update(SysUserVO sysUserVO);
 
 	/**
 	 * 修改密码
@@ -70,12 +71,12 @@ public interface SysUserService extends IService<SysUserEntity> {
      * @CreateDate: Created in 2019/3/21 11:37
      * @Author: 颜金星
      */
-	SysUserEntity login(HttpServletResponse response,Map<String,Object> params,String token);
+	 void login(HttpServletResponse response,Map<String,Object> params,String token);
 
 	/**
-	 * 条件查询用户个数
-	 * @param params
+	 * 按照userid查询用户信息
+	 * @param userId
 	 * @return
 	 */
-	int findCountByParam(Map<String,Object> params);
+	SysUserVO findUserById(String userId);
 }

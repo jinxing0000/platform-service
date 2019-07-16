@@ -1,6 +1,7 @@
 package com.bettem.common.utils;
 
 import com.bettem.modules.sys.entity.SysUserEntity;
+import com.bettem.modules.sys.entity.VO.SysUserVO;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -55,12 +56,12 @@ public class ShiroTokenUtils {
      * @CreateDate: Created in 2019/3/21 17:26
      * @Author: 颜金星
      */
-    public SysUserEntity getUserInfo(){
+    public SysUserVO getUserInfo(){
         Map<String,Object> data=this.getJwtTokenData();
         String userId=(String)data.get("userId");
         String token=(String)data.get("token");
-        SysUserEntity sysUserEntity=redisUtils.get(RedisKeys.getShiroSessionKey(userId,token),SysUserEntity.class);
-        return sysUserEntity;
+        SysUserVO sysUserVO=redisUtils.get(RedisKeys.getShiroSessionKey(userId,token),SysUserVO.class);
+        return sysUserVO;
     }
     /**
      * @Param []

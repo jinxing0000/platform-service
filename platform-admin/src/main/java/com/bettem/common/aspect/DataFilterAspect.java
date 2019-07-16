@@ -23,6 +23,7 @@ import com.bettem.common.utils.Constant;
 import com.bettem.common.utils.ShiroTokenUtils;
 import com.bettem.modules.sys.entity.SysRoleEntity;
 import com.bettem.modules.sys.entity.SysUserEntity;
+import com.bettem.modules.sys.entity.VO.SysUserVO;
 import com.bettem.modules.sys.service.SysUserRoleService;
 import com.bettem.modules.sys.shiro.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
@@ -64,11 +65,11 @@ public class DataFilterAspect {
     public void dataFilter(JoinPoint point) throws Throwable {
         Object params = point.getArgs()[0];
         if(params != null && params instanceof Map){
-            SysUserEntity user = shiroTokenUtils.getUserInfo();
+            SysUserVO sysUserVO = shiroTokenUtils.getUserInfo();
             //如果不是超级管理员，则进行数据过滤
-            if(user.getUserId() != Constant.SUPER_ADMIN){
+            if(sysUserVO.getUserId() != Constant.SUPER_ADMIN){
                 Map map = (Map)params;
-                map.put(Constant.SQL_FILTER, getSQLFilter(user, point));
+                map.put(Constant.SQL_FILTER, getSQLFilter(sysUserVO, point));
             }
             return ;
         }
@@ -78,7 +79,7 @@ public class DataFilterAspect {
     /**
      * 获取数据过滤的SQL
      */
-    private String getSQLFilter(SysUserEntity user, JoinPoint point){
+    private String getSQLFilter(SysUserVO sysUserVO, JoinPoint point){
         MethodSignature signature = (MethodSignature) point.getSignature();
         StringBuilder sqlFilter = new StringBuilder();
         DataFilter dataFilter = signature.getMethod().getAnnotation(DataFilter.class);
@@ -86,15 +87,12 @@ public class DataFilterAspect {
         String businessType=dataFilter.businessType();
         logger.debug("业务类型："+businessType);
         //角色信息
-        SysRoleEntity roleInfo=user.getRoleIdList().get(0);
+        SysRoleEntity roleInfo=sysUserVO.getRoleIdList().get(0);
         //角色code
         String roleCode=roleInfo.getRoleCode();
         //角色id
         String roleId=roleInfo.getRoleId();
         logger.debug("用户角色Id："+roleId+"；角色code:"+roleCode);
-        //用户区域code
-        String regionCode=user.getRegionCode();
-        logger.debug("用户区域code："+regionCode);
         //判断业务
         switch (businessType){
             default:

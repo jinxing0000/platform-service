@@ -27,6 +27,7 @@ import com.bettem.common.validator.group.AddGroup;
 import com.bettem.common.validator.group.UpdateGroup;
 import com.bettem.modules.sys.entity.SysRoleEntity;
 import com.bettem.modules.sys.entity.SysUserEntity;
+import com.bettem.modules.sys.entity.VO.SysUserVO;
 import com.bettem.modules.sys.service.SysUserRoleService;
 import com.bettem.modules.sys.service.SysUserService;
 import com.bettem.modules.sys.shiro.ShiroUtils;
@@ -51,8 +52,6 @@ import java.util.Map;
 public class SysUserController{
 	@Autowired
 	private SysUserService sysUserService;
-	@Autowired
-	private SysUserRoleService sysUserRoleService;
 
 	@Autowired
 	private ShiroTokenUtils shiroTokenUtils;
@@ -91,11 +90,8 @@ public class SysUserController{
 	@RequestMapping(value = "info",method = RequestMethod.GET)
 	@RequiresPermissions("sys:user:info")
 	public R info(@RequestParam String userId){
-		SysUserEntity user = sysUserService.selectById(userId);
-		//获取用户所属的角色列表
-		List<SysRoleEntity> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-		user.setRoleIdList(roleIdList);
-		return R.ok(user);
+		SysUserVO sysUserVO=sysUserService.findUserById(userId);
+		return R.ok(sysUserVO);
 	}
 	
 	/**
@@ -104,9 +100,9 @@ public class SysUserController{
 	@SysLog("保存用户")
 	@RequestMapping(value= "save",method = RequestMethod.POST,produces = "application/json; charset=UTF-8")
 	@RequiresPermissions("sys:user:save")
-	public R save(@RequestBody SysUserEntity user){
-		ValidatorUtils.validateEntity(user, AddGroup.class);
-		sysUserService.save(user);
+	public R save(@RequestBody SysUserVO sysUserVO){
+		ValidatorUtils.validateEntity(sysUserVO, AddGroup.class);
+		sysUserService.save(sysUserVO);
 		return R.ok();
 	}
 	
@@ -116,9 +112,9 @@ public class SysUserController{
 	@SysLog("修改用户")
 	@RequestMapping(value = "update",method = RequestMethod.PUT,produces = "application/json; charset=UTF-8")
 	@RequiresPermissions("sys:user:update")
-	public R update(@RequestBody SysUserEntity user){
-		ValidatorUtils.validateEntity(user, UpdateGroup.class);
-		sysUserService.update(user);
+	public R update(@RequestBody SysUserVO sysUserVO){
+		ValidatorUtils.validateEntity(sysUserVO, UpdateGroup.class);
+		sysUserService.update(sysUserVO);
 		return R.ok();
 	}
 	
@@ -137,18 +133,5 @@ public class SysUserController{
 		}
 		sysUserService.deleteBatchIds(Arrays.asList(userIds));
 		return R.ok();
-	}
-
-	/**
-	 *  条件查询用户个数
-	 * @param params
-	 * @return
-	 */
-	@RequestMapping(value = "findCountByParam",method = RequestMethod.GET)
-	@RequiresPermissions("sys:user:findCountByParam")
-	@SysLog("条件查询用户个数")
-	public R findCountByParam(@RequestParam Map<String, Object> params){
-		int count = sysUserService.findCountByParam(params);
-		return R.ok().put("count", count);
 	}
 }

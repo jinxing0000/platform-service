@@ -29,6 +29,7 @@ import com.bettem.modules.sys.entity.SysDeptEntity;
 import com.bettem.modules.sys.entity.SysMenuEntity;
 import com.bettem.modules.sys.entity.SysRoleEntity;
 import com.bettem.modules.sys.entity.SysUserEntity;
+import com.bettem.modules.sys.entity.VO.SysUserVO;
 import com.bettem.modules.sys.service.SysDeptService;
 import com.bettem.modules.sys.service.SysMenuService;
 import com.bettem.modules.sys.service.SysUserRoleService;
@@ -73,6 +74,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
 	@Autowired
 	private ShiroTokenUtils shiroTokenUtils;
+
+	/** 生成主键策略 */
+	public String createId() {
+		return UUID.randomUUID().toString().replaceAll("\\-", "");
+	}
+
+
     //手机号验证码
 	public final static String PHONE_PATTERN="^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\\d{8})$";
 
@@ -83,37 +91,39 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-		Page<SysUserEntity> page=new Query<SysUserEntity>(params).getPage();
-		List<SysUserEntity> list=this.baseMapper.selectByPage(page,params);
+		Page<SysUserVO> page=new Query<SysUserVO>(params).getPage();
+		List<SysUserVO> list=this.baseMapper.selectByPage(page,params);
 		page.setRecords(list);
 		return new PageUtils(page);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void save(SysUserEntity user) {
-		user.setCreateTime(new Date());
+	public void save(SysUserVO sysUserVO) {
+		String userId=createId();
+		sysUserVO.setUserId(userId);
+		sysUserVO.setCreateTime(new Date());
 		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
-		user.setSalt(salt);
-		user.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
-		this.insert(user);
+		sysUserVO.setSalt(salt);
+		sysUserVO.setPassword(ShiroUtils.sha256(sysUserVO.getPassword(), sysUserVO.getSalt()));
+		this.insert(sysUserVO);
 		//保存用户与角色关系
-		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+		sysUserRoleService.saveOrUpdate(userId, sysUserVO.getRoleIdList());
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void update(SysUserEntity user) {
-		if(StringUtils.isBlank(user.getPassword())){
-			user.setPassword(null);
+	public void update(SysUserVO sysUserVO) {
+		if(StringUtils.isBlank(sysUserVO.getPassword())){
+			sysUserVO.setPassword(null);
 		}else{
-			user.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
+			sysUserVO.setPassword(ShiroUtils.sha256(sysUserVO.getPassword(), sysUserVO.getSalt()));
 		}
-		this.updateById(user);
+		this.updateById(sysUserVO);
 		
 		//保存用户与角色关系
-		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+		sysUserRoleService.saveOrUpdate(sysUserVO.getUserId(), sysUserVO.getRoleIdList());
 	}
 
 
@@ -160,7 +170,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	}
 
 	@Override
-	public SysUserEntity login(HttpServletResponse response, Map<String, Object> params,String token) {
+	public void login(HttpServletResponse response, Map<String, Object> params,String token) {
 		//用户名
 		String userName=(String)params.get("userName");
 		//密码
@@ -187,7 +197,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		//判断是否为手机号
 		boolean isPhone = Pattern.compile(PHONE_PATTERN).matcher(userName).matches();
 		//查询用户
-		SysUserEntity user=this.selectOne(new EntityWrapper<SysUserEntity>().eq(!isPhone,"username",userName).eq(isPhone,"mobile",userName));
+//		SysUserEntity user=this.selectOne(new EntityWrapper<SysUserEntity>().eq(!isPhone,"username",userName).eq(isPhone,"mobile",userName));
+		SysUserVO user=this.baseMapper.selectByUserNameOrMobile(userName,isPhone);
 		if(user==null){
 			throw new RRException(ErrorCodeConstant.USER_NONE,"用户或者手机号不存在！！");
 		}
@@ -207,7 +218,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		SysDeptEntity sysDeptEntity=sysDeptService.selectOne(new EntityWrapper<SysDeptEntity>().eq("dept_id",deptId));
 		if(sysDeptEntity!=null){
 			user.setDeptName(sysDeptEntity.getName());
-			user.setRegionCode(sysDeptEntity.getRegionCode());
 		}
 		//获取用户所属的角色列表
 		List<SysRoleEntity> roleIdList = sysUserRoleService.queryRoleIdList(user.getUserId());
@@ -243,16 +253,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		String sessionToken=JwtTokenUtils.generateToken(data,60*60*jwtExpiration);
 		redisUtils.set(RedisKeys.getShiroSessionKey(userId,sessionToken),user,60*60*jwtExpiration);
 		response.setHeader("Authorization", sessionToken);
-		return user;
 	}
 
 	@Override
-	public int findCountByParam(Map<String, Object> params) {
-		int count=this.selectCount(new EntityWrapper<SysUserEntity>()
-				         .eq("mobile".equals(params.get("checkType")),"mobile",params.get("param"))
-		                 .eq("userName".equals(params.get("checkType")),"username",params.get("param"))
-		              );
-		return count;
+	public SysUserVO findUserById(String userId) {
+		SysUserVO sysUserVO=this.baseMapper.selectUserById(userId);
+		//获取用户所属的角色列表
+		List<SysRoleEntity> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+		sysUserVO.setRoleIdList(roleIdList);
+		return sysUserVO;
 	}
-
 }

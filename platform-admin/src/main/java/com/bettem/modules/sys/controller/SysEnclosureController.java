@@ -92,7 +92,7 @@ public class SysEnclosureController{
 
         Map<String,Object> map=new HashMap<>();
         SysUserEntity u = shiroTokenUtils.getUserInfo();
-        String regionCode =  u.getRegionCode();
+        String regionCode = "";
         int length = 0;
         if(regionCode !=null && regionCode.length()>0){
             length = regionCode.length();

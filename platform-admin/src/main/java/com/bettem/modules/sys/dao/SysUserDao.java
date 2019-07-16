@@ -19,6 +19,7 @@ package com.bettem.modules.sys.dao;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.bettem.modules.sys.entity.SysUserEntity;
+import com.bettem.modules.sys.entity.VO.SysUserVO;
 
 import java.util.List;
 import java.util.Map;
@@ -50,5 +51,21 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 	 * @Author: 颜金星
 	 */
 
-	List<SysUserEntity> selectByPage(Page<SysUserEntity> page, Map<String,Object> params);
+	List<SysUserVO> selectByPage(Page<SysUserVO> page, Map<String,Object> params);
+
+	/**
+	 * 按照userId查询用户信息
+	 * @param userId
+	 * @return
+	 */
+	SysUserVO selectUserById(String userId);
+
+	/**
+	 * 按照用户名或者手机号查询
+	 * @param userName
+	 * @param isMobile
+	 * @return
+	 */
+	SysUserVO selectByUserNameOrMobile(String userName,boolean isMobile);
+
 }

@@ -90,12 +90,6 @@ public class SysUserEntity implements Serializable {
 	 * 状态  0：禁用   1：正常
 	 */
 	private String status;
-	
-	/**
-	 * 角色ID列表
-	 */
-	@TableField(exist=false)
-	private List<SysRoleEntity> roleIdList;
 
 	/**
 	 * 创建时间
@@ -107,36 +101,6 @@ public class SysUserEntity implements Serializable {
 	 */
 	@NotNull(message="部门不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private String deptId;
-
-	/**
-	 * 部门名称
-	 */
-	@TableField(exist=false)
-	private String deptName;
-
-	/**
-	 *  权限set
-	 */
-	@TableField(exist=false)
-	private Set<String> permsSet=new HashSet<>();
-	/**
-	 *   用户菜单数据
-	 */
-	@TableField(exist=false)
-	private List<SysMenuEntity> menuList=new ArrayList<>();
-
-	//区域编码
-	@TableField(exist=false)
-	private String regionCode;
-	/**
-	 *  职位名称
-	 */
-	private String position;
-	/**
-	 *  身份证号
-	 */
-	private String cardNumber;
-
 	/**
 	 * 设置：List<SysMenuEntity>
 	 * @param userId 
@@ -241,14 +205,6 @@ public class SysUserEntity implements Serializable {
 		return createTime;
 	}
 
-	public List<SysRoleEntity> getRoleIdList() {
-		return roleIdList;
-	}
-
-	public void setRoleIdList(List<SysRoleEntity> roleIdList) {
-		this.roleIdList = roleIdList;
-	}
-
 	public String getSalt() {
 		return salt;
 	}
@@ -265,59 +221,11 @@ public class SysUserEntity implements Serializable {
 		this.deptId = deptId;
 	}
 
-	public String getDeptName() {
-		return deptName;
-	}
-
-	public void setDeptName(String deptName) {
-		this.deptName = deptName;
-	}
-
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
 
 	public String getNickName() {
 		return nickName;
-	}
-
-	public void setPermsSet(Set<String> permsSet) {
-		this.permsSet = permsSet;
-	}
-
-	public Set<String> getPermsSet() {
-		return permsSet;
-	}
-
-	public void setMenuList(List<SysMenuEntity> menuList) {
-		this.menuList = menuList;
-	}
-
-	public List<SysMenuEntity> getMenuList() {
-		return menuList;
-	}
-
-	public void setRegionCode(String regionCode) {
-		this.regionCode = regionCode;
-	}
-
-	public String getRegionCode() {
-		return regionCode;
-	}
-
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
-
-	public String getCardNumber() {
-		return cardNumber;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
-	public String getPosition() {
-		return position;
 	}
 }
