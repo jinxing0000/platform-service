@@ -10,8 +10,9 @@ const { confirm } = Modal;
 
 
 
-@connect(({ ${pathName}, loading }) => ({
+@connect(({ ${pathName}, loading,user }) => ({
     ${pathName},
+    user,
     getListLoading: loading.effects['${pathName}/getPageList'],
     saveLoading: loading.effects['${pathName}/saveInfo'],
     editLoading: loading.effects['${pathName}/editInfo'],
@@ -169,13 +170,8 @@ class ${jsFileName} extends PureComponent {
             <Form onSubmit={this.handleSearch} layout="inline">
                 <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
                     <Col md={6} sm={24}>
-                        <FormItem label="用户名">
-                            {getFieldDecorator('username',{initialValue: params.userName,})(<Input placeholder="请输入用户名" />)}
-                        </FormItem>
-                    </Col>
-                    <Col md={6} sm={24}>
-                        <FormItem label="昵称">
-                            {getFieldDecorator('nickName',{initialValue: params.nickName,})(<Input placeholder="请输入昵称" />)}
+                        <FormItem label="名称">
+                            {getFieldDecorator('name',{initialValue: params.name,})(<Input placeholder="请输入名称" />)}
                         </FormItem>
                     </Col>
                     <Col md={8} sm={24}>
@@ -195,6 +191,7 @@ class ${jsFileName} extends PureComponent {
     render() {
         const {
             ${pathName}: { ${pathName}List},
+            user:{ currentUser },
             getListLoading,
             saveLoading,
             editLoading,
@@ -220,6 +217,7 @@ class ${jsFileName} extends PureComponent {
             title: '操作',
                 render: (text, record) => (
             <Fragment>
+                { currentUser.permsSet && currentUser.permsSet.includes('${moduleName}:${pathName}:update') &&
                 <Tooltip placement="bottom" title="编辑">
                     <Icon
                         type="edit"
@@ -236,23 +234,28 @@ class ${jsFileName} extends PureComponent {
                         }}
                     />
                 </Tooltip>
-                <Divider type="vertical" />
-                <Popconfirm
+                }
+                {currentUser.permsSet && currentUser.permsSet.includes('${moduleName}:${pathName}:update') &&
+                < Divider type="vertical" />
+                }
+                {currentUser.permsSet && currentUser.permsSet.includes('${moduleName}:${pathName}:delete') &&
+                < Popconfirm
                     title="确认删除吗？"
                     okText="删除"
                     cancelText="取消"
                     onConfirm={() => {
-                        let ids=new Array();
-                        ids[0]=record.id;
-                        this.deleteByIds(ids);
+                    let ids=new Array();
+                    ids[0]=record.id;
+                    this.deleteByIds(ids);
                     }}
                 >
                     <a>
-                        <Tooltip placement="bottom" title="删除">
-                            <Icon type="delete" style={{ fontSize: '15px', color: '#EE4000' }} />
-                        </Tooltip>
+                    <Tooltip placement="bottom" title="删除">
+                    <Icon type="delete" style={{fontSize: '15px', color: '#EE4000'}} />
+                    </Tooltip>
                     </a>
-                </Popconfirm>
+                 </Popconfirm>
+                }
             </Fragment>
         ),
         },
@@ -262,6 +265,7 @@ class ${jsFileName} extends PureComponent {
                 <div className={styles.tableList}>
                     <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
                     <div className={styles.tableListOperator}>
+                        {currentUser.permsSet && currentUser.permsSet.includes('${moduleName}:${pathName}:save') &&
                         <Button
                             icon="plus"
                             type="primary"
@@ -278,6 +282,8 @@ class ${jsFileName} extends PureComponent {
                         >
                             新增
                         </Button>
+                        }
+                        {currentUser.permsSet && currentUser.permsSet.includes('${moduleName}:${pathName}:delete') &&
                         <Button
                             icon="delete"
                             type="danger"
@@ -287,6 +293,7 @@ class ${jsFileName} extends PureComponent {
                         >
                             批量删除
                         </Button>
+                        }
                     </div>
                     <StandardTable
                         rowKey="id"
