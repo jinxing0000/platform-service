@@ -72,7 +72,7 @@ public class SysUserController{
 	 */
 	@RequestMapping(value ="sessionInfo",method = RequestMethod.GET)
 	public R info(){
-		return R.ok().put("user", shiroTokenUtils.getUserInfo());
+		return R.ok(shiroTokenUtils.getUserInfo());
 	}
 	
 	/**
