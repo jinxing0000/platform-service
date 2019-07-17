@@ -79,4 +79,10 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @return
 	 */
 	SysUserVO findUserById(String userId);
+
+	/**
+	 * 初始化用户密码
+	 * @param userIds
+	 */
+	void initUserPassword(String[] userIds);
 }

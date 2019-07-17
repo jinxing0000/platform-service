@@ -78,7 +78,7 @@ public class SysUserController{
 	 * 修改登录用户密码
 	 */
 	@SysLog("修改密码")
-	@RequestMapping(value = "password",method = RequestMethod.PUT,produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "modifyPassword",method = RequestMethod.PUT,produces = "application/json;charset=UTF-8")
 	public R password(@RequestBody Map<String, Object> params){
 		params.put("userId",shiroTokenUtils.getUserId());
 		sysUserService.updatePassword(params);
@@ -132,6 +132,19 @@ public class SysUserController{
 			return R.error("当前用户不能删除");
 		}
 		sysUserService.deleteBatchIds(Arrays.asList(userIds));
+		return R.ok();
+	}
+
+	/**
+	 *  重置用户密码
+	 * @param userIds
+	 * @return
+	 */
+	@SysLog("重置用户密码")
+	@RequestMapping(value = "initUserPassword",method = RequestMethod.PUT,produces = "application/json; charset=UTF-8")
+	@RequiresPermissions("sys:user:initUserPassword")
+	public R initUserPassword(@RequestBody String[] userIds){
+		sysUserService.initUserPassword(userIds);
 		return R.ok();
 	}
 }

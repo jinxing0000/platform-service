@@ -263,4 +263,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		sysUserVO.setRoleIdList(roleIdList);
 		return sysUserVO;
 	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void initUserPassword(String[] userIds) {
+		List<SysUserEntity> userList=new ArrayList<>();
+		SysUserEntity sysUserEntity=null;
+		for(String userId:userIds){
+			sysUserEntity=new SysUserEntity();
+			sysUserEntity.setUserId(userId);
+			/**
+			 * 获取shiro盐
+			 */
+			String salt=RandomStringUtils.randomAlphanumeric(20);
+			sysUserEntity.setSalt(salt);
+			//初始化密码123456
+			sysUserEntity.setPassword(ShiroUtils.sha256("123456", salt));
+			userList.add(sysUserEntity);
+		}
+		this.updateBatchById(userList);
+	}
 }
