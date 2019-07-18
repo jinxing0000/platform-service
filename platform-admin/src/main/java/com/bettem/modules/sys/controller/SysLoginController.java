@@ -128,7 +128,7 @@ public class SysLoginController{
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	//@SysLog("用户登陆")
 	public R login(@RequestBody Map<String, Object> params, HttpServletResponse response,HttpServletRequest request) {
-		String token=request.getHeader("verifyCodeToken");
+		String token=request.getHeader("Authorization");
 		sysUserService.login(response,params,token);
 		return R.ok();
 	}
