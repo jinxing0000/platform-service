@@ -40,4 +40,10 @@ public interface SysUserRoleDao extends BaseMapper<SysUserRoleEntity> {
 	 * 根据角色ID数组，批量删除
 	 */
 	int deleteBatch(String[] roleIds);
+
+	/**
+	 * 根据用户id删除数据
+	 * @param userIds
+	 */
+	void deleteByUserIds(String[] userIds);
 }

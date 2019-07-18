@@ -85,4 +85,10 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @param userIds
 	 */
 	void initUserPassword(String[] userIds);
+
+	/**
+	 * 批量删除用户信息
+	 * @param userIds
+	 */
+	void deleteUserByUserIds(String[] userIds);
 }

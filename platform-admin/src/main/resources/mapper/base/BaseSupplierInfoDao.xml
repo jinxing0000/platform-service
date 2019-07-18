@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bettem.modules.base.dao.BaseSupplierInfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.bettem.modules.base.entity.BaseSupplierInfoEntity" id="BaseMap">
+        <result property="supplierName" column="supplier_name"/>
+        <result property="legalPerson" column="legal_person"/>
+        <result property="contactsName" column="contacts_name"/>
+        <result property="contactNumber" column="contact_number"/>
+        <result property="creditCode" column="credit_code"/>
+        <result property="registeredFunds" column="registered_funds"/>
+        <result property="supplierAddress" column="supplier_address"/>
+        <result property="state" column="state"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+
+</mapper>

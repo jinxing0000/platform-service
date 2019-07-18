@@ -24,6 +24,7 @@ import com.bettem.modules.sys.entity.SysRoleEntity;
 import com.bettem.modules.sys.entity.SysUserRoleEntity;
 import com.bettem.modules.sys.service.SysUserRoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,5 +68,11 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleDao, SysUserR
 	@Override
 	public int deleteBatch(String[] roleIds){
 		return baseMapper.deleteBatch(roleIds);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteByUserIds(String[] userIds) {
+		this.baseMapper.deleteByUserIds(userIds);
 	}
 }

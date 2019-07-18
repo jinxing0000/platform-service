@@ -41,7 +41,7 @@ public class ${className}Controller {
     @SysLog("分页查询${comments}数据")
     @RequestMapping(value = "getPageList",method = RequestMethod.GET)
     @RequiresPermissions("${moduleName}:${pathName}:getPageList")
-    public R list(@RequestParam Map<String, Object> params){
+    public R getPageList(@RequestParam Map<String, Object> params){
         PageUtils page = ${classname}Service.queryPage(params);
         return R.ok(page);
     }

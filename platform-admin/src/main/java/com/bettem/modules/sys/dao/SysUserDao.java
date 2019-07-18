@@ -68,4 +68,10 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 	 */
 	SysUserVO selectByUserNameOrMobile(String userName,boolean isMobile);
 
+	/**
+	 * 删除用户信息
+	 * @param userIds
+	 */
+	void deleteUserByUserIds(String[] userIds);
+
 }

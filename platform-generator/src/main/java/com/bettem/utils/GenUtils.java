@@ -177,7 +177,7 @@ public class GenUtils {
 			
 			try {
 				//添加到zip
-				zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package"), module,tableEntity.getClassname(),(String)map.get("jsFileName"),(String)map.get("jsModuleName"))));
+				zip.putNextEntry(new ZipEntry(getFileName(template, tableEntity.getClassName(), config.getString("package"), module,tableEntity.getClassname(),(String)map.get("jsFileName"),(String)map.get("jsModuleName"),(String)map.get("pathName"))));
 				IOUtils.write(sw.toString(), zip, "UTF-8");
 				IOUtils.closeQuietly(sw);
 				zip.closeEntry();
@@ -220,7 +220,7 @@ public class GenUtils {
 	/**
 	 * 获取文件名
 	 */
-	public static String getFileName(String template, String className, String packageName, String moduleName,String classname,String jsFileName,String jsModuleName) {
+	public static String getFileName(String template, String className, String packageName, String moduleName,String classname,String jsFileName,String jsModuleName,String pathName) {
 		String packagePath = "main" + File.separator + "java" + File.separator;
 		if (StringUtils.isNotBlank(packageName)) {
 			packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
@@ -260,10 +260,10 @@ public class GenUtils {
 			return "react" + File.separator+ "pages" +File.separator+ jsModuleName + File.separator + jsFileName + File.separator + jsFileName + "AddOrUpdate.js";
 		}
 		if(template.contains("ReactModel.js.vm" )){
-			return "react" + File.separator+ "models" +File.separator+ moduleName + File.separator  + jsFileName + ".js";
+			return "react" + File.separator+ "models" +File.separator+ moduleName + File.separator  + pathName + ".js";
 		}
 		if(template.contains("ReactService.js.vm" )){
-			return "react" + File.separator+ "services" +File.separator+ moduleName + File.separator  + jsFileName + ".js";
+			return "react" + File.separator+ "services" +File.separator+ moduleName + File.separator  + pathName + ".js";
 		}
 		if (template.contains("menu.sql.vm" )) {
 			return classname + "_menu.sql";

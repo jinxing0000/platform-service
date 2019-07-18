@@ -17,4 +17,10 @@
 			#{roleId}
 		</foreach>
 	</delete>
+	<delete id="deleteByUserIds">
+		delete from sys_user_role where user_id in
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
 </mapper>

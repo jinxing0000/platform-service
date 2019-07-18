@@ -34,9 +34,8 @@
 		select
 		   <include refid="baseSql"/>,
 		    b.NAME as dept_name
-		from SYS_USER a,SYS_DEPT b
+		from SYS_USER a left join SYS_DEPT b on a.DEPT_ID = b.DEPT_ID
 		<where>
-			a.DEPT_ID = b.DEPT_ID
 			and USERNAME !='admin'
 			<if test="nickName !=null and nickName !=''">
 				and a.NICK_NAME like CONCAT(CONCAT('%', #{nickName,jdbcType=VARCHAR}),'%')
@@ -67,6 +66,15 @@
 			</if>
 		</where>
 	</select>
+	<delete id="deleteUserByUserIds">
+		delete from sys_user
+		<where>
+		    user_id in
+			<foreach item="userId" collection="array" open="(" separator="," close=")">
+				#{userId}
+			</foreach>
+		</where>
+	</delete>
 
 
 </mapper>

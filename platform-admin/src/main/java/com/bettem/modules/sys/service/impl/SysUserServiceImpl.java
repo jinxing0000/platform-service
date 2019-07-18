@@ -100,8 +100,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void save(SysUserVO sysUserVO) {
-		String userId=createId();
-		sysUserVO.setUserId(userId);
+		String userId=sysUserVO.getUserId();
+		//判断是否有userId
+		if(userId==null){
+			userId=createId();
+			sysUserVO.setUserId(userId);
+		}
 		sysUserVO.setCreateTime(new Date());
 		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
@@ -195,10 +199,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 			throw new RRException(ErrorCodeConstant.CAPTCHA_ERROR,"验证码错误！！");
 		}
 		//判断是否为手机号
-		boolean isPhone = Pattern.compile(PHONE_PATTERN).matcher(userName).matches();
+//		boolean isPhone = Pattern.compile(PHONE_PATTERN).matcher(userName).matches();
 		//查询用户
 //		SysUserEntity user=this.selectOne(new EntityWrapper<SysUserEntity>().eq(!isPhone,"username",userName).eq(isPhone,"mobile",userName));
-		SysUserVO user=this.baseMapper.selectByUserNameOrMobile(userName,isPhone);
+		SysUserVO user=this.baseMapper.selectByUserNameOrMobile(userName,false);
 		if(user==null){
 			throw new RRException(ErrorCodeConstant.USER_NONE,"用户或者手机号不存在！！");
 		}
@@ -282,5 +286,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 			userList.add(sysUserEntity);
 		}
 		this.updateBatchById(userList);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteUserByUserIds(String[] userIds) {
+		this.baseMapper.deleteUserByUserIds(userIds);
+		sysUserRoleService.deleteByUserIds(userIds);
 	}
 }

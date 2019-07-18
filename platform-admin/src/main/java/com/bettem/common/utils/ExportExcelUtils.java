@@ -140,26 +140,26 @@ public class ExportExcelUtils {
         String countyId=(String)params.get("countyId");
         String groundTemplateType=(String)params.get("groundTemplateType");
         Map<String,Object> analysisParams=(Map<String,Object>)ConstantGround.SPECIAL_COUNTY_EXCEL_MAP.get(countyId);
-        //判断为dtl
-        if(Constant.GroundTemplateType.DTL.getValue().equals(groundTemplateType)){
-            if(analysisParams!=null){
-                templatePath+=groundTemplateType+"_"+countyId+".xls";
-            }else{
-                templatePath+=groundTemplateType+"_000000.xls";
-            }
-        }
-        // 判断为publicity
-        else if(Constant.GroundTemplateType.PUBLICITY.getValue().equals(groundTemplateType)){
-            if(analysisParams!=null){
-                templatePath+=groundTemplateType+"_"+countyId+".xls";
-            }else{
-                templatePath+=groundTemplateType+".xls";
-            }
-        }
-        //其他类型
-        else{
-            templatePath+=groundTemplateType+".xls";
-        }
+//        //判断为dtl
+//        if(Constant.GroundTemplateType.DTL.getValue().equals(groundTemplateType)){
+//            if(analysisParams!=null){
+//                templatePath+=groundTemplateType+"_"+countyId+".xls";
+//            }else{
+//                templatePath+=groundTemplateType+"_000000.xls";
+//            }
+//        }
+//        // 判断为publicity
+//        else if(Constant.GroundTemplateType.PUBLICITY.getValue().equals(groundTemplateType)){
+//            if(analysisParams!=null){
+//                templatePath+=groundTemplateType+"_"+countyId+".xls";
+//            }else{
+//                templatePath+=groundTemplateType+".xls";
+//            }
+//        }
+//        //其他类型
+//        else{
+//            templatePath+=groundTemplateType+".xls";
+//        }
         return templatePath;
     }
 }
