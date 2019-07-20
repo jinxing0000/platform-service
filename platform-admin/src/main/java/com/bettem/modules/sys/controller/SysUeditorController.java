@@ -57,37 +57,37 @@ public class SysUeditorController{
      */
     @RequestMapping(value = "ueditorConfig", method = RequestMethod.GET)
     public String ueditorUploadFile(HttpServletRequest request, String action, HttpServletResponse response) throws UnsupportedEncodingException {
-        request.setCharacterEncoding( "utf-8" );
-        response.setHeader("Content-Type" , "text/html");
-        logger.debug("请求action:"+action);
-        UploadFileUtil uploadFileUtil=new UploadFileUtil(ftpServerIP,ftpServerPort,ftpUserName,ftpPassword,uploadFileSize,ftpPath);
-        SysUeditorVO sysUeditorVO=null;
-        JSONObject data =null;
-        switch (action) {
-            case "config": // 此处即为获取配置文件的case
-                String myresult = UeditorConfig.CONFIG.getConfigStr();
-                logger.debug("配置文件内容："+myresult);
-                return myresult;
-            //图片上传
-            case "uploadimage":
-                sysUeditorVO=uploadFileUtil.ueditorUploadFileFTP(uploadFileType);
-                sysUeditorVO.setUrl(imagePath+sysUeditorVO.getUrl());
-                data = (JSONObject)  JSONObject.toJSON(sysUeditorVO);
-                return data.toJSONString();
-            //文件上传
-            case "uploadfile":
-                sysUeditorVO=uploadFileUtil.ueditorUploadFileFTP(uploadFileType);
-                sysUeditorVO.setUrl(imagePath+sysUeditorVO.getUrl());
-                data = (JSONObject)  JSONObject.toJSON(sysUeditorVO);
-                return data.toJSONString();
-            //上传视频
-            case "uploadvideo":
-                 sysUeditorVO=uploadFileUtil.ueditorUploadFileFTP(uploadFileType);
-                 sysUeditorVO.setUrl(imagePath+sysUeditorVO.getUrl());
-                 data = (JSONObject)  JSONObject.toJSON(sysUeditorVO);
-                 return data.toJSONString();
-        }
-        logger.debug("【调用接口失败】，没有匹配到操作！！");
+//        request.setCharacterEncoding( "utf-8" );
+//        response.setHeader("Content-Type" , "text/html");
+//        logger.debug("请求action:"+action);
+//        UploadFileUtil uploadFileUtil=new UploadFileUtil(ftpServerIP,ftpServerPort,ftpUserName,ftpPassword,uploadFileSize,ftpPath);
+//        SysUeditorVO sysUeditorVO=null;
+//        JSONObject data =null;
+//        switch (action) {
+//            case "config": // 此处即为获取配置文件的case
+//                String myresult = UeditorConfig.CONFIG.getConfigStr();
+//                logger.debug("配置文件内容："+myresult);
+//                return myresult;
+//            //图片上传
+//            case "uploadimage":
+//                sysUeditorVO=uploadFileUtil.ueditorUploadFileFTP(uploadFileType);
+//                sysUeditorVO.setUrl(imagePath+sysUeditorVO.getUrl());
+//                data = (JSONObject)  JSONObject.toJSON(sysUeditorVO);
+//                return data.toJSONString();
+//            //文件上传
+//            case "uploadfile":
+//                sysUeditorVO=uploadFileUtil.ueditorUploadFileFTP(uploadFileType);
+//                sysUeditorVO.setUrl(imagePath+sysUeditorVO.getUrl());
+//                data = (JSONObject)  JSONObject.toJSON(sysUeditorVO);
+//                return data.toJSONString();
+//            //上传视频
+//            case "uploadvideo":
+//                 sysUeditorVO=uploadFileUtil.ueditorUploadFileFTP(uploadFileType);
+//                 sysUeditorVO.setUrl(imagePath+sysUeditorVO.getUrl());
+//                 data = (JSONObject)  JSONObject.toJSON(sysUeditorVO);
+//                 return data.toJSONString();
+//        }
+//        logger.debug("【调用接口失败】，没有匹配到操作！！");
         return "【调用接口失败】，没有匹配到操作！！";
     }
 }

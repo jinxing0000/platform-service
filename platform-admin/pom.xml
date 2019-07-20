@@ -227,6 +227,12 @@
 			<version>2.6.0-rc1</version>
 		</dependency>
 		<!-- jxls end -->
+		<!--  minio 上传文件 -->
+		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>3.0.10</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -13,25 +13,20 @@ package com.bettem.common.utils;
 
 
 import com.bettem.common.exception.RRException;
-import com.bettem.modules.sys.entity.SysEnclosureEntity;
 import com.bettem.modules.sys.entity.VO.SysUeditorVO;
-import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.SocketException;
 import java.util.*;
 
 /**
@@ -48,299 +43,72 @@ public class UploadFileUtil {
 	// 本地异常日志记录对象
 	private static final Logger logger = LoggerFactory
 			.getLogger(UploadFileUtil.class);
-	private String ftpServerIP;
-	private int ftpServerPort;
-	private String  ftpUserName;
-	private String  ftpPassword;
+	//minio 服务端地址
+	private String minioServerUrl;
+	//minio用户名
+	private String accessKey;
+	//minio密码
+	private String secretKey;
+	//存储桶名称
+	private String bucketName;
+    //最大文件大小
 	private long uploadFileSize;
-	private String ftpPath;
+    //可以上传文件后缀
+	private String uploadFileType;
 
-	public UploadFileUtil(String ftpServerIP, int ftpServerPort, String  ftpUserName, String  ftpPassword,long uploadFileSize,String ftpPath){
-		this.ftpServerIP=ftpServerIP;
-		this.ftpServerPort=ftpServerPort;
-		this.ftpUserName=ftpUserName;
-		this.ftpPassword=ftpPassword;
+	/**
+	 * 构造方法
+	 * @param minioServerUrl
+	 * @param accessKey
+	 * @param secretKey
+	 * @param bucketName
+	 * @param uploadFileSize
+	 * @param uploadFileType
+	 */
+	public UploadFileUtil(String minioServerUrl,String accessKey,String secretKey,String bucketName,long uploadFileSize,String uploadFileType){
+		this.minioServerUrl=minioServerUrl;
+		this.accessKey=accessKey;
+		this.secretKey=secretKey;
+		this.bucketName=bucketName;
 		this.uploadFileSize=uploadFileSize;
-		this.ftpPath=ftpPath;
+		this.uploadFileType=uploadFileType;
 	}
 	public UploadFileUtil(){
 
 	}
-    /**
-     * 注意： 文件名不能用中文！
-     * 		文件夹名称以正斜杠结尾！
-     * 		如果文件夹不存在会自动创建！
-     * @Title saveinFTP
-     * @Description (描述)
-     * @author 颜金星
-     * @create 2016年5月23日-上午9:41:35
-     * @Param @param FolderName
-     * @Param @param FileName
-     * @Param @param data
-     * @Param @return
-     * @return boolean
-     * @throws
-     */
-	public void uploadFileFTP(String folderName, String fileName, byte[] data){
-		FTPClient ftpClient = new FTPClient();
-		ByteArrayInputStream bis = null;
-		folderName="/pub"+folderName;
-		try {
-			ftpClient.connect(ftpServerIP,ftpServerPort);
-			if(ftpClient.login(ftpUserName, ftpPassword)){
-				String[] a = folderName.split("/");
-				for (int i = 0; i < a.length; i++) {
-					if (!ftpClient.changeWorkingDirectory(a[i])) {
-						ftpClient.makeDirectory(a[i]);
-						ftpClient.changeWorkingDirectory(a[i]);
-					}
-				}
-				bis = new ByteArrayInputStream(data);
-				ftpClient.setBufferSize(1024);
-				ftpClient.setDataTimeout(20000);
-				ftpClient.enterLocalPassiveMode();
-				// 设置文件类型(二进制类型)
-				if (ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE)) {
-					ftpClient.storeFile(fileName, bis);
-				}
-				bis.close();
-			}else{
-				logger.debug("FTP登陆失败！！");
-				throw new RRException("FTP登陆失败！！");
-			}
-		} catch (SocketException e) {
-			logger.debug("FTP服务连接中断！！");
-			e.printStackTrace();
-			throw new RRException("FTP服务连接中断！！");
-		} catch (IOException e) {
-			logger.debug("IOException！！");
-			e.printStackTrace();
-			throw new RRException("FTP服务连接中断！！");
-		}finally {  
-            try {  
-                // 关闭连接  
-                ftpClient.disconnect();  
-            } catch (IOException e) {
-				logger.debug("FTP客户端关闭错误！！");
-                e.printStackTrace();
-				throw new RRException("FTP客户端关闭错误！！");
-            }  
-        }
-	}
-     
-     /**
-      * 
-      * @Title downloadFile
-      * @Description (FTP下载文件)
-      * @author 颜金星
-      * @create 2016年7月20日-下午12:45:42
-      * @Param @param filePath（文件的路径）
-      * @Param @return
-      * @return boolean
-      * @throws
-      */
-     public InputStream downloadFile(String filePath){
-    	 InputStream result = null ;
- 		 FTPClient ftpClient = new FTPClient();
- 		 try {
-			 String osName=System.getProperty("os.name");
-			 if(osName.indexOf("Windows")!=-1){
-				 filePath="/pub"+filePath;
-			 }else{
-				 filePath="/var/ftp/pub"+filePath;
-			 }
- 			 //判断下载的路径不为空
- 			if(StringUtils.isEmpty(filePath)){
- 				return result;
- 			}
- 			String str[]=filePath.split("/");
- 			String fileName=str[str.length-1];
- 			String remoteFile="";
- 			for(int i=0;i<str.length-1;i++){
- 				remoteFile+=str[i]+"/";
- 			}
- 			ftpClient.connect(ftpServerIP,ftpServerPort);
-			if(ftpClient.login(ftpUserName, ftpPassword)){
-				ftpClient.setBufferSize(1024);
-                ftpClient.setDataTimeout(18000);
-                ftpClient.enterLocalPassiveMode();
-                ftpClient.changeWorkingDirectory(remoteFile);
-                result=ftpClient.retrieveFileStream(fileName);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {  
-            try {  
-                // 关闭连接  
-                ftpClient.disconnect();  
-            } catch (IOException e) { 
-            	System.out.println("IOExceptionEND");
-                e.printStackTrace();  
-            }  
-        }  
-    	 return result;
-     }
-
-	/**
-	 *  上传文件到本地
-	 * @param file
-	 * @return
-	 */
-	public SysEnclosureEntity uploadFile(MultipartFile file,String systemPath) throws IOException {
-		SysEnclosureEntity sysEnclosureEntity=new SysEnclosureEntity();
-		String oldFileName=file.getOriginalFilename();
-		sysEnclosureEntity.setFileName(oldFileName);
-		String fileType=oldFileName.substring(oldFileName.lastIndexOf(".")+1);
-		sysEnclosureEntity.setFileSuffix(fileType);
-		sysEnclosureEntity.setUploadDate(new Date());
-		sysEnclosureEntity.setFileSize(file.getSize()/1000);
-		String filePath=getFolderName();
-		String newFileName=getFileName(fileType);
-		File dest = new File(systemPath +filePath);
-		dest.setWritable(true,false);
-		//判断文件夹是否存在
-		if (!dest.exists() && !dest.isDirectory()) {
-			//创建目录
-			dest.mkdirs();
-		}
-		logger.debug("存放位置："+systemPath +filePath+newFileName);
-		File newFile=new File(systemPath +filePath+newFileName);
-		newFile.setWritable(true,false);
-		BufferedOutputStream out = new BufferedOutputStream(
-				new FileOutputStream(newFile));
-		//写文件
-		out.write(file.getBytes());
-		out.flush();
-		out.close();
-		sysEnclosureEntity.setFilePath(filePath+newFileName);
-		return sysEnclosureEntity;
-	 }
-
-	/**
-	 * api上传文件(本地存放)
-	 * @param files
-	 * @return
-	 */
-	public List<SysEnclosureEntity> apiUploadFile(List<MultipartFile> files,String systemPath) throws IOException {
-		List<SysEnclosureEntity>  sysEnclosureEntityList=new ArrayList<>();
-		SysEnclosureEntity sysEnclosureEntity=null;
-		for(int i=0;i<files.size();i++){
-			MultipartFile file=files.get(i);
-			sysEnclosureEntity=new SysEnclosureEntity();
-			String oldFileName=files.get(i).getOriginalFilename();
-			sysEnclosureEntity.setFileName(oldFileName);
-			String fileType=oldFileName.substring(oldFileName.lastIndexOf(".")+1);
-			sysEnclosureEntity.setFileSuffix(fileType);
-			sysEnclosureEntity.setUploadDate(new Date());
-			//文件大小
-//			double fileSize=fileItem.getSize()/1024.00;
-			String filePath=getFolderName();
-			String newFileName=getFileName(fileType);
-			File dest = new File(systemPath +filePath);
-			dest.setWritable(true,false);
-			//判断文件夹是否存在
-			if (!dest.exists() && !dest.isDirectory()) {
-				//创建目录
-				dest.mkdirs();
-			}
-			logger.debug("存放位置："+systemPath +filePath+newFileName);
-			File newFile=new File(systemPath +filePath+newFileName);
-			newFile.setWritable(true,false);
-			BufferedOutputStream out = new BufferedOutputStream(
-					new FileOutputStream(newFile));
-			//写文件
-			out.write(file.getBytes());
-			out.flush();
-			out.close();
-			sysEnclosureEntity.setFilePath(filePath+newFileName);
-			sysEnclosureEntityList.add(sysEnclosureEntity);
-		}
-		return sysEnclosureEntityList;
-	}
-
 	/**
 	 * 文件上传到FTP
 	 * @param file
 	 * @return
 	 * @throws IOException
 	 */
-	public SysEnclosureEntity  uploadFileByFtp(MultipartFile file,String uploadFileType) throws IOException {
-		SysEnclosureEntity sysEnclosureEntity=new SysEnclosureEntity();
+	public Map<String,Object> uploadFile(MultipartFile file) throws IOException {
+		Map<String,Object> resultMap=new HashMap<>();
 		String oldFileName=file.getOriginalFilename();
-		sysEnclosureEntity.setFileName(oldFileName);
+		resultMap.put("fileName",oldFileName);
 		String fileType=oldFileName.substring(oldFileName.lastIndexOf(".")+1);
-		//checkFileHeader(file,fileType,uploadFileType);
+		checkFileHeader(file,fileType,uploadFileType);
 		//判断文件大小
 		if(file.getSize()>uploadFileSize){
 			throw new RRException("您上传的文件过大，请上传100M以内的文件！！");
 		}
-		sysEnclosureEntity.setFileSuffix(fileType);
-		sysEnclosureEntity.setUploadDate(new Date());
-		String filePath=getFolderName();
-		String newFileName=getFileName(fileType);
-		sysEnclosureEntity.setFilePath(filePath+newFileName);
+		resultMap.put("fileSize",file.getSize());
+		resultMap.put("fileSuffix",fileType);
+		String minioPath=getFolderName()+getFileName(fileType);
+		String contentType=file.getContentType();
 		InputStream in = file.getInputStream();
-		byte[] buffer = null;
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		//判断为图片类型，进行图片压缩
 		if("jpg".equals(fileType)||"png".equals(fileType)||"gif".equals(fileType)){
-			buffer=ImageUtils.imageCompress(in,fileType);
-		}else{
-			byte[] b = new byte[10240];
-			int n;
-			while ((n = in.read(b)) != -1)
-			{
-				bos.write(b, 0, n);
-			}
-			buffer = bos.toByteArray();
+			byte[] buffer=ImageUtils.imageCompress(in,fileType);
+			in=new ByteArrayInputStream(buffer);
 		}
-		in.close();
+		MinioClientUtils minioClientUtils=new MinioClientUtils(minioServerUrl,accessKey,secretKey,bucketName);
+		String fileUrl=minioClientUtils.uploadFile(in,minioPath,contentType);
 		bos.close();
-		uploadFileFTP(filePath,newFileName,buffer);
-		sysEnclosureEntity.setId(createId());
-		sysEnclosureEntity.setCreateDate(new Date());
-		sysEnclosureEntity.setDeleteState(Constant.DELETE_STATE_NO);
-		return sysEnclosureEntity;
-	}
-
-	/**
-	 * 上传文件到FTP
-	 * @param files
-	 * @return
-	 * @throws IOException
-	 */
-	public List<SysEnclosureEntity> apiUploadFileByFtp(List<MultipartFile> files) throws IOException {
-		List<SysEnclosureEntity>  sysEnclosureEntityList=new ArrayList<>();
-		SysEnclosureEntity sysEnclosureEntity=null;
-		for(int i=0;i<files.size();i++){
-			MultipartFile file=files.get(i);
-			sysEnclosureEntity=new SysEnclosureEntity();
-			String oldFileName=files.get(i).getOriginalFilename();
-			sysEnclosureEntity.setFileName(oldFileName);
-			String fileType=oldFileName.substring(oldFileName.lastIndexOf(".")+1);
-			sysEnclosureEntity.setFileSuffix(fileType);
-			sysEnclosureEntity.setUploadDate(new Date());
-			//文件大小
-//			double fileSize=fileItem.getSize()/1024.00;
-			String filePath=getFolderName();
-			String newFileName=getFileName(fileType);
-			sysEnclosureEntity.setFilePath(filePath+newFileName);
-			InputStream in = file.getInputStream();
-			byte[] buffer = null;
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			byte[] b = new byte[10240];
-			int n;
-			while ((n = in.read(b)) != -1)
-			{
-				bos.write(b, 0, n);
-			}
-			in.close();
-			bos.close();
-			buffer = bos.toByteArray();
-			uploadFileFTP(filePath,newFileName,buffer);
-			sysEnclosureEntityList.add(sysEnclosureEntity);
-		}
-		return sysEnclosureEntityList;
+		resultMap.put("minioPath",minioPath);
+		resultMap.put("fileUrl",fileUrl);
+		return resultMap;
 	}
 	/**
 	 * @Param [file, fileType, uploadFileType]
@@ -430,16 +198,75 @@ public class UploadFileUtil {
 			MultipartHttpServletRequest mRequest = resolver.resolveMultipart(request);
 			Map<String, MultipartFile> fileMap = mRequest.getFileMap();
 			MultipartFile file=fileMap.get("upfile");
-			SysEnclosureEntity sysEnclosureEntity=uploadFileByFtp(file,uploadFileType);
-			sysUeditorVO.setTitle(sysEnclosureEntity.getFileName());
-			sysUeditorVO.setUrl(sysEnclosureEntity.getFilePath());
-			sysUeditorVO.setSize((long)sysEnclosureEntity.getFileSize());
-			sysUeditorVO.setOriginal(sysEnclosureEntity.getFileName());
+			Map<String,Object> resultMap=uploadFile(file);
+			sysUeditorVO.setTitle((String)resultMap.get("fileName"));
+			sysUeditorVO.setUrl((String)resultMap.get("fileUrl"));
+			sysUeditorVO.setSize((long)resultMap.get("fileSize"));
+			sysUeditorVO.setOriginal((String)resultMap.get("fileName"));
 		}catch(Exception e){
 			e.printStackTrace();
 			sysUeditorVO.setState("ERROR");
 		}
 		return sysUeditorVO;
+	}
+
+
+	public void downFile(String filePath,String fileName, HttpServletRequest request, HttpServletResponse response){
+		try{
+			MinioClientUtils minioClientUtils=new MinioClientUtils(minioServerUrl,accessKey,secretKey,bucketName);
+			//解决乱码
+			String agent = request.getHeader("USER-AGENT");
+			if (null != agent){
+				if (-1 != agent.indexOf("Firefox")) {//Firefox
+					fileName = "=?UTF-8?B?" + (new String(org.apache.commons.codec.binary.Base64.encodeBase64(fileName.getBytes("UTF-8"))))+ "?=";
+				}else if (-1 != agent.indexOf("Chrome")) {//Chrome
+					fileName = new String(fileName.getBytes(), "ISO8859-1");
+				} else {//IE7+
+					fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
+					fileName = StringUtils.replace(fileName, "+", "%20");//替换空格
+				}
+			}
+			// 设置response的编码方式
+			response.setContentType("application/x-msdownload");
+			// 设置附加文件名
+			response.setHeader("Content-Disposition","attachment;filename="+fileName);
+			//获取FTP文件流
+			InputStream fileIs=minioClientUtils.downFile(filePath);
+			//重复利用文件流
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len=0;
+			while ((len = fileIs.read(buffer)) > -1) {
+				baos.write(buffer, 0, len);
+			}
+			baos.flush();
+			//新建下载文件流
+			InputStream fis = new ByteArrayInputStream(baos.toByteArray());
+			//新建获取文件size流
+			InputStream SizeIs = new ByteArrayInputStream(baos.toByteArray());
+			//获取apk文件大小
+			int count = 0;
+			byte[] bb = new byte[1024];
+			int size=0;
+			while ((size = SizeIs.read(bb)) > 0) {
+				count += size;
+			}
+			response.setContentLength(count);
+			OutputStream os = response.getOutputStream();
+			byte[] b = new byte[1024];
+			int length=0;
+			while ((length = fis.read(b)) > 0) {
+				os.write(b, 0, length);
+			}
+			// 这里主要关闭。
+			os.close();
+			SizeIs.close();
+			fis.close();
+			baos.close();
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new RRException(ErrorCodeConstant.ERROR,"下载文件失败！！");
+		}
 	}
 
 	/**
@@ -457,7 +284,7 @@ public class UploadFileUtil {
 	 */
 	public String  getFolderName(){
 		Calendar now = Calendar.getInstance();
-		return "/"+ftpPath+"/"+now.get(Calendar.YEAR)+"/"+(now.get(Calendar.MONTH) + 1) +"/"+now.get(Calendar.DAY_OF_MONTH)+"/";
+		return "/"+now.get(Calendar.YEAR)+"/"+(now.get(Calendar.MONTH) + 1) +"/"+now.get(Calendar.DAY_OF_MONTH)+"/";
 	}
 
 	/** 生成主键策略 */
