@@ -82,32 +82,40 @@ public class UploadFileUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	public Map<String,Object> uploadFile(MultipartFile file) throws IOException {
+	public Map<String,Object> uploadFile(MultipartFile file){
 		Map<String,Object> resultMap=new HashMap<>();
-		String oldFileName=file.getOriginalFilename();
-		resultMap.put("fileName",oldFileName);
-		String fileType=oldFileName.substring(oldFileName.lastIndexOf(".")+1);
-		checkFileHeader(file,fileType,uploadFileType);
-		//判断文件大小
-		if(file.getSize()>uploadFileSize){
-			throw new RRException("您上传的文件过大，请上传100M以内的文件！！");
+		try {
+			String oldFileName=file.getOriginalFilename();
+			resultMap.put("fileName",oldFileName);
+			String fileType=oldFileName.substring(oldFileName.lastIndexOf(".")+1);
+			checkFileHeader(file,fileType,uploadFileType);
+			//判断文件大小
+			if(file.getSize()>uploadFileSize){
+				throw new RRException("您上传的文件过大，请上传100M以内的文件！！");
+			}
+			resultMap.put("fileSize",file.getSize());
+			resultMap.put("fileSuffix",fileType);
+			String minioPath=getFolderName()+getFileName(fileType);
+			String contentType=file.getContentType();
+			InputStream in = file.getInputStream();
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			//判断为图片类型，进行图片压缩
+			if("jpg".equals(fileType)||"png".equals(fileType)||"gif".equals(fileType)){
+				byte[] buffer=ImageUtils.imageCompress(in,fileType);
+				in=new ByteArrayInputStream(buffer);
+			}
+			MinioClientUtils minioClientUtils=new MinioClientUtils(minioServerUrl,accessKey,secretKey,bucketName);
+			String fileUrl=minioClientUtils.uploadFile(in,minioPath,contentType);
+			bos.close();
+			resultMap.put("minioPath",minioPath);
+			resultMap.put("fileUrl",fileUrl);
 		}
-		resultMap.put("fileSize",file.getSize());
-		resultMap.put("fileSuffix",fileType);
-		String minioPath=getFolderName()+getFileName(fileType);
-		String contentType=file.getContentType();
-		InputStream in = file.getInputStream();
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		//判断为图片类型，进行图片压缩
-		if("jpg".equals(fileType)||"png".equals(fileType)||"gif".equals(fileType)){
-			byte[] buffer=ImageUtils.imageCompress(in,fileType);
-			in=new ByteArrayInputStream(buffer);
+		catch (RRException e) {
+			throw new RRException(e.getCode(),e.getMsg());
 		}
-		MinioClientUtils minioClientUtils=new MinioClientUtils(minioServerUrl,accessKey,secretKey,bucketName);
-		String fileUrl=minioClientUtils.uploadFile(in,minioPath,contentType);
-		bos.close();
-		resultMap.put("minioPath",minioPath);
-		resultMap.put("fileUrl",fileUrl);
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		return resultMap;
 	}
 	/**

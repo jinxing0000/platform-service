@@ -64,12 +64,14 @@ spring:
 #           acknowledge-mode: manual
 bettem:
    minio:
-     path:
+     serverUrl:
        http://127.0.0.1:9000
      accessKey:
        3CV82KKLJY6RPEJGQRYL
      secretKey:
        yswwfFNNbqFrQIXc+hIqL4mQbmKZTPZSbQWWUoUB
+     bucketName:
+       bettem
    uploadFilePath:
        E:\\FTP\\site
    ftpServerIP:
