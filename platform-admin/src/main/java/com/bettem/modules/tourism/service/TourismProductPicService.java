@@ -25,5 +25,11 @@ public interface TourismProductPicService extends IService<TourismProductPicEnti
      * @Author: 颜金星
      */
     void deleteByIds(String[] ids);
+
+    /**
+     * 按照产品id删除图片信息
+     * @param params
+     */
+    void deleteProductPicByProductId(Map<String,Object> params);
 }
 

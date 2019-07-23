@@ -40,9 +40,12 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String productName=(String)params.get("productName");
         Page<TourismProductInfoEntity> page = this.selectPage(
                 new Query<TourismProductInfoEntity>(params).getPage(),
                 new EntityWrapper<TourismProductInfoEntity>().eq("delete_state",Constant.DELETE_STATE_NO)
+                .like(productName!=null,"product_name",productName)
+                .orderBy("create_date desc,state")
         );
 
         return new PageUtils(page);
@@ -61,7 +64,14 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
             tourismProductInfoEntity.setDeleteState(Constant.DELETE_STATE_YES);
             TourismProductInfoList.add(tourismProductInfoEntity);
         }
+        Map<String,Object> params=new HashMap<>();
+        params.put("deleteState",Constant.DELETE_STATE_YES);
+        params.put("modifyDate",new Date());
+        params.put("modifyUserId",shiroTokenUtils.getUserId());
+        params.put("productIds",Arrays.asList(ids));
+        tourismProductPicService.deleteProductPicByProductId(params);
         this.updateBatchById(TourismProductInfoList);
+
     }
 
     @Override
@@ -100,6 +110,34 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
         List<TourismProductPicEntity>  picList=tourismProductPicService.selectList(new EntityWrapper<TourismProductPicEntity>().eq("product_id",id).eq("delete_state",Constant.DELETE_STATE_NO).orderBy("create_date desc"));
         tourismProductInfoVO.setPicList(picList);
         return tourismProductInfoVO;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void editTourismProductInfo(TourismProductInfoVO tourismProductInfoVO) {
+        String userId=shiroTokenUtils.getUserId();
+        String id=tourismProductInfoVO.getId();
+        Date date=new Date();
+        tourismProductInfoVO.setModifyDate(date);
+        tourismProductInfoVO.setModifyUserId(userId);
+        Map<String,Object> params=new HashMap<>();
+        params.put("product_id",id);
+        tourismProductPicService.deleteByMap(params);
+        List<TourismProductPicEntity> picList=tourismProductInfoVO.getPicList();
+        for(TourismProductPicEntity tourismProductPicEntity:picList){
+            tourismProductPicEntity.setProductId(id);
+            tourismProductPicEntity.setCreateDate(date);
+            tourismProductPicEntity.setCreateUserId(userId);
+            tourismProductPicEntity.setDeleteState(Constant.DELETE_STATE_NO);
+        }
+        String productGuidePicUrl="";
+        if(picList.size()>0){
+            productGuidePicUrl=picList.get(0).getThumbUrl();
+            tourismProductPicService.insertBatch(picList);
+        }
+        tourismProductInfoVO.setProductGuidePicUrl(productGuidePicUrl);
+        //新增产品
+        this.updateById(tourismProductInfoVO);
     }
 
 }

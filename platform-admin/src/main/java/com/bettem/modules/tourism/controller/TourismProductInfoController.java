@@ -85,11 +85,9 @@ public class TourismProductInfoController {
     @SysLog("新增旅游产品信息表数据")
     @RequestMapping(value = "update",method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
     @RequiresPermissions("tourism:productInfo:update")
-    public R update(@RequestBody TourismProductInfoEntity tourismProductInfo){
-        ValidatorUtils.validateEntity(tourismProductInfo, AddGroup.class);
-        tourismProductInfo.setModifyDate(new Date());
-        tourismProductInfo.setModifyUserId(shiroTokenUtils.getUserId());
-        tourismProductInfoService.updateById(tourismProductInfo);//全部更新
+    public R update(@RequestBody TourismProductInfoVO tourismProductInfoVO){
+        ValidatorUtils.validateEntity(tourismProductInfoVO, AddGroup.class);
+        tourismProductInfoService.editTourismProductInfo(tourismProductInfoVO);
         return R.ok();
     }
     /**

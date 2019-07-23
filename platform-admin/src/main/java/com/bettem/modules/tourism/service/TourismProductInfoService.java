@@ -39,5 +39,11 @@ public interface TourismProductInfoService extends IService<TourismProductInfoEn
      * @return
      */
     TourismProductInfoVO findProductInfoVOById(String id);
+
+    /**
+     * 修改产品信息
+     * @param tourismProductInfoVO
+     */
+    void editTourismProductInfo(TourismProductInfoVO tourismProductInfoVO);
 }
 

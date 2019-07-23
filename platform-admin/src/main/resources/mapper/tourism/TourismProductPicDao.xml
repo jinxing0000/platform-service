@@ -9,6 +9,19 @@
         <result property="thumbUrl" column="thumb_url"/>
         <result property="minioPath" column="minio_path"/>
     </resultMap>
+    <update id="deleteProductPicByProductId">
+        update tourism_product_pic
+           set
+           delete_state= #{deleteState,jdbcType=VARCHAR},
+           modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+           modify_user_id = #{modifyUserId,jdbcType=VARCHAR}
+        <where>
+            product_id in
+            <foreach item="item" collection="productIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </update>
 
 
 </mapper>

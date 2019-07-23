@@ -52,4 +52,9 @@ public class TourismProductPicServiceImpl extends ServiceImpl<TourismProductPicD
         this.updateBatchById(TourismProductPicList);
     }
 
+    @Override
+    public void deleteProductPicByProductId(Map<String, Object> params) {
+        this.baseMapper.deleteProductPicByProductId(params);
+    }
+
 }
