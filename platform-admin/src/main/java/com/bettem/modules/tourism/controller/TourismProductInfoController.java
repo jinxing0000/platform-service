@@ -7,6 +7,7 @@ import com.bettem.common.utils.Constant;
 import com.bettem.common.utils.ShiroTokenUtils;
 import com.bettem.common.validator.group.AddGroup;
 import com.bettem.common.validator.ValidatorUtils;
+import com.bettem.modules.tourism.entity.VO.TourismProductInfoVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,8 +57,8 @@ public class TourismProductInfoController {
     @RequestMapping(value = "info",method = RequestMethod.GET)
     @RequiresPermissions("tourism:productInfo:info")
     public R info(@RequestParam("id") String id){
-        TourismProductInfoEntity tourismProductInfo = tourismProductInfoService.selectById(id);
-        return R.ok(tourismProductInfo);
+        TourismProductInfoVO tourismProductInfoVO=tourismProductInfoService.findProductInfoVOById(id);
+        return R.ok(tourismProductInfoVO);
     }
     /**
      * @Param [tourismProductInfo]
@@ -69,12 +70,9 @@ public class TourismProductInfoController {
     @SysLog("新增旅游产品信息表数据")
     @RequestMapping(value = "save",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @RequiresPermissions("tourism:productInfo:save")
-    public R save(@RequestBody TourismProductInfoEntity tourismProductInfo){
-        ValidatorUtils.validateEntity(tourismProductInfo, AddGroup.class);
-        tourismProductInfo.setCreateDate(new Date());
-        tourismProductInfo.setCreateUserId(shiroTokenUtils.getUserId());
-        tourismProductInfo.setDeleteState(Constant.DELETE_STATE_NO);
-        tourismProductInfoService.insert(tourismProductInfo);
+    public R save(@RequestBody TourismProductInfoVO tourismProductInfoVO){
+        ValidatorUtils.validateEntity(tourismProductInfoVO, AddGroup.class);
+        tourismProductInfoService.saveTourismProductInfo(tourismProductInfoVO);
         return R.ok();
     }
     /**

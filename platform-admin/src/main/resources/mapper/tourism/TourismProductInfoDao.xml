@@ -27,6 +27,43 @@
         <result property="supplierName" column="supplier_name"/>
         <result property="state" column="state"/>
     </resultMap>
+    <sql id="baseSql">
+        id,
+        product_name,
+        product_guide_pic_url,
+        line_type,
+        starting_city,
+        trip_days,
+        trip_night_num,
+        start_date,
+        end_date,
+        adult_price,
+        children_price,
+        single_room_price,
+        product_characteristic,
+        travel_info,
+        cost_inclusion,
+        cost_excluded,
+        reservation_notes,
+        return_rules,
+        contact_number,
+        supplier_id,
+        supplier_name,
+        create_user_id,
+        create_date,
+        modify_user_id,
+        modify_date,
+        state
+    </sql>
+    <select id="selectProductInfoVOById"
+            resultType="com.bettem.modules.tourism.entity.VO.TourismProductInfoVO">
+         select
+           <include refid="baseSql"/>
+         from tourism_product_info
+         <where>
+             id = #{id,jdbcType=VARCHAR}
+         </where>
+    </select>
 
 
 </mapper>

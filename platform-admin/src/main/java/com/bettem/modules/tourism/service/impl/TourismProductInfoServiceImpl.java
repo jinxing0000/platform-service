@@ -2,12 +2,14 @@ package com.bettem.modules.tourism.service.impl;
 
 import com.bettem.common.utils.Constant;
 import com.bettem.common.utils.ShiroTokenUtils;
+import com.bettem.modules.tourism.entity.TourismProductPicEntity;
+import com.bettem.modules.tourism.entity.VO.TourismProductInfoVO;
+import com.bettem.modules.tourism.service.TourismProductPicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Map;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -25,6 +27,16 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
 
     @Autowired
     private ShiroTokenUtils shiroTokenUtils;
+
+
+    @Autowired
+    private TourismProductPicService tourismProductPicService;
+
+
+    /** 生成主键策略 */
+    public String createId() {
+        return UUID.randomUUID().toString().replaceAll("\\-", "");
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -50,6 +62,44 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
             TourismProductInfoList.add(tourismProductInfoEntity);
         }
         this.updateBatchById(TourismProductInfoList);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveTourismProductInfo(TourismProductInfoVO tourismProductInfoVO) {
+        String id=createId();
+        String userId=shiroTokenUtils.getUserId();
+        Date date=new Date();
+        tourismProductInfoVO.setId(id);
+        tourismProductInfoVO.setState(Constant.PRODUCT_STATE_INIT);
+        tourismProductInfoVO.setSupplierId(userId);
+        tourismProductInfoVO.setSupplierName(shiroTokenUtils.getUserName());
+        tourismProductInfoVO.setCreateUserId(userId);
+        tourismProductInfoVO.setCreateDate(date);
+        tourismProductInfoVO.setDeleteState(Constant.DELETE_STATE_NO);
+        List<TourismProductPicEntity> picList=tourismProductInfoVO.getPicList();
+        for(TourismProductPicEntity tourismProductPicEntity:picList){
+            tourismProductPicEntity.setProductId(id);
+            tourismProductPicEntity.setCreateDate(date);
+            tourismProductPicEntity.setCreateUserId(userId);
+            tourismProductPicEntity.setDeleteState(Constant.DELETE_STATE_NO);
+        }
+        String productGuidePicUrl="";
+        if(picList.size()>0){
+            productGuidePicUrl=picList.get(0).getThumbUrl();
+            tourismProductPicService.insertBatch(picList);
+        }
+        tourismProductInfoVO.setProductGuidePicUrl(productGuidePicUrl);
+        //新增产品
+        this.insert(tourismProductInfoVO);
+    }
+
+    @Override
+    public TourismProductInfoVO findProductInfoVOById(String id) {
+        TourismProductInfoVO tourismProductInfoVO=this.baseMapper.selectProductInfoVOById(id);
+        List<TourismProductPicEntity>  picList=tourismProductPicService.selectList(new EntityWrapper<TourismProductPicEntity>().eq("product_id",id).eq("delete_state",Constant.DELETE_STATE_NO).orderBy("create_date desc"));
+        tourismProductInfoVO.setPicList(picList);
+        return tourismProductInfoVO;
     }
 
 }

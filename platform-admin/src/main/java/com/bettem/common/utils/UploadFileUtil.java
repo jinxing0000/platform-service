@@ -115,6 +115,7 @@ public class UploadFileUtil {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			throw new RRException("上传文件失败！！");
 		}
 		return resultMap;
 	}

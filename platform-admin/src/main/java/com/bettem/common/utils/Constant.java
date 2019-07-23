@@ -163,4 +163,20 @@ public class Constant {
      * 供应商角色id
      */
     public static final String SUPPLIER_ROLE_ID = "7f97ee9779504115b2e3e909459d3d97";
+
+
+    /**
+     *   产品状态-初始(未上架)
+     */
+    public static final String PRODUCT_STATE_INIT = "0";
+
+    /**
+     *   产品状态-上架
+     */
+    public static final String PRODUCT_STATE_UPPER_SHELF = "1";
+
+    /**
+     *   产品状态-下架
+     */
+    public static final String PRODUCT_STATE_INIT_LOWER_SHELF = "2";
 }

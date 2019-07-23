@@ -13,7 +13,7 @@ import java.util.Date;
  * 
  * @author 颜金星
  * @email sunlightcs@gmail.com
- * @date 2019-07-20 16:24:27
+ * @date 2019-07-23 17:11:10
  */
 @TableName("tourism_product_pic")
 public class TourismProductPicEntity extends BaseEntity {
@@ -23,13 +23,13 @@ public class TourismProductPicEntity extends BaseEntity {
 	 */
 	private String productId;
 	/**
-	 * 图片路径
+	 * 图片展示路径
 	 */
-	private String picPath;
+	private String thumbUrl;
 	/**
-	 * 图片类型
+	 * minio下载路径
 	 */
-	private String picType;
+	private String minioPath;
 
 	/**
 	 * 设置：产品id
@@ -44,27 +44,27 @@ public class TourismProductPicEntity extends BaseEntity {
 		return productId;
 	}
 	/**
-	 * 设置：图片路径
+	 * 设置：图片展示路径
 	 */
-	public void setPicPath(String picPath) {
-		this.picPath = picPath;
+	public void setThumbUrl(String thumbUrl) {
+		this.thumbUrl = thumbUrl;
 	}
 	/**
-	 * 获取：图片路径
+	 * 获取：图片展示路径
 	 */
-	public String getPicPath() {
-		return picPath;
+	public String getThumbUrl() {
+		return thumbUrl;
 	}
 	/**
-	 * 设置：图片类型
+	 * 设置：minio下载路径
 	 */
-	public void setPicType(String picType) {
-		this.picType = picType;
+	public void setMinioPath(String minioPath) {
+		this.minioPath = minioPath;
 	}
 	/**
-	 * 获取：图片类型
+	 * 获取：minio下载路径
 	 */
-	public String getPicType() {
-		return picType;
+	public String getMinioPath() {
+		return minioPath;
 	}
 }

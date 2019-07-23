@@ -6,8 +6,8 @@
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.bettem.modules.tourism.entity.TourismProductPicEntity" id="BaseMap">
         <result property="productId" column="product_id"/>
-        <result property="picPath" column="pic_path"/>
-        <result property="picType" column="pic_type"/>
+        <result property="thumbUrl" column="thumb_url"/>
+        <result property="minioPath" column="minio_path"/>
     </resultMap>
 
 

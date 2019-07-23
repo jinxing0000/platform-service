@@ -45,12 +45,12 @@ public class TourismProductInfoEntity extends BaseEntity {
 	/**
 	 * 日期范围开始
 	 */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
 	/**
 	 * 日期范围结束
 	 */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	/**
 	 * 成人价格
@@ -186,7 +186,7 @@ public class TourismProductInfoEntity extends BaseEntity {
 	/**
 	 * 获取：日期范围开始
 	 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -199,7 +199,7 @@ public class TourismProductInfoEntity extends BaseEntity {
 	/**
 	 * 获取：日期范围结束
 	 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	public Date getEndDate() {
 		return endDate;
 	}
