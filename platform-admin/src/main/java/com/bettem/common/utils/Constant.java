@@ -178,5 +178,5 @@ public class Constant {
     /**
      *   产品状态-下架
      */
-    public static final String PRODUCT_STATE_INIT_LOWER_SHELF = "2";
+    public static final String PRODUCT_STATE_LOWER_SHELF = "2";
 }

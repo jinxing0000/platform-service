@@ -1,5 +1,6 @@
 package com.bettem.modules.tourism.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Date;
 
@@ -102,6 +103,34 @@ public class TourismProductInfoController {
     @RequiresPermissions("tourism:productInfo:delete")
     public R delete(@RequestBody String[] ids){
         tourismProductInfoService.deleteByIds(ids);
+        return R.ok();
+    }
+
+    /**
+     * 旅游产品上架
+     * @param params
+     * @return
+     */
+    @SysLog("旅游产品上架操作")
+    @RequestMapping(value = "upperShelf",method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @RequiresPermissions("tourism:productInfo:upperShelf")
+    public R upperShelf(@RequestBody Map<String, Object> params){
+        params.put("state",Constant.PRODUCT_STATE_UPPER_SHELF);
+        tourismProductInfoService.editTourismProductInfoStateById(params);
+        return R.ok();
+    }
+
+    /**
+     * 旅游产品下架操作
+     * @param params
+     * @return
+     */
+    @SysLog("旅游产品下架操作")
+    @RequestMapping(value = "lowerShelf",method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @RequiresPermissions("tourism:productInfo:lowerShelf")
+    public R lowerShelf(@RequestBody Map<String, Object> params){
+        params.put("state",Constant.PRODUCT_STATE_LOWER_SHELF);
+        tourismProductInfoService.editTourismProductInfoStateById(params);
         return R.ok();
     }
 }

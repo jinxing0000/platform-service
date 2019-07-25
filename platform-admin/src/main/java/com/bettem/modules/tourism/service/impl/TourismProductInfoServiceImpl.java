@@ -140,4 +140,22 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
         this.updateById(tourismProductInfoVO);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void editTourismProductInfoStateById(Map<String, Object> params) {
+        List<String> ids=(List<String>)params.get("ids");
+        String state=(String)params.get("state");
+        List<TourismProductInfoEntity> TourismProductInfoList=new ArrayList<>();
+        TourismProductInfoEntity tourismProductInfoEntity=null;
+        for(String id:ids){
+            tourismProductInfoEntity=new TourismProductInfoEntity();
+            tourismProductInfoEntity.setId(id);
+            tourismProductInfoEntity.setModifyUserId(shiroTokenUtils.getUserId());
+            tourismProductInfoEntity.setModifyDate(new Date());
+            tourismProductInfoEntity.setState(state);
+            TourismProductInfoList.add(tourismProductInfoEntity);
+        }
+        this.updateBatchById(TourismProductInfoList);
+    }
+
 }

@@ -45,5 +45,11 @@ public interface TourismProductInfoService extends IService<TourismProductInfoEn
      * @param tourismProductInfoVO
      */
     void editTourismProductInfo(TourismProductInfoVO tourismProductInfoVO);
+
+    /**
+     * 旅游产品上架、下架修改状态
+     * @param params
+     */
+    void editTourismProductInfoStateById(Map<String, Object> params);
 }
 
