@@ -86,6 +86,9 @@ public class DataFilterAspect {
         //业务类型
         String businessType=dataFilter.businessType();
         logger.debug("业务类型："+businessType);
+        //用户id
+        String userId=sysUserVO.getUserId();
+        logger.debug("用户Id："+userId);
         //角色信息
         SysRoleEntity roleInfo=sysUserVO.getRoleIdList().get(0);
         //角色code
@@ -95,6 +98,13 @@ public class DataFilterAspect {
         logger.debug("用户角色Id："+roleId+"；角色code:"+roleCode);
         //判断业务
         switch (businessType){
+            //查询产品列表
+            case Constant.BUSINESS_TYPE_QUERY_PRODUCT_LIST:
+                //供应商角色
+                if(Constant.SUPPLIER_ROLE_ID.equals(roleId)){
+                    sqlFilter.append(" supplier_id = '"+userId+"'");
+                }
+                break;
             default:
                 break;
         }

@@ -166,6 +166,12 @@ public class Constant {
 
 
     /**
+     *  查询产品列表
+     */
+    public static final String BUSINESS_TYPE_QUERY_PRODUCT_LIST = "queryProductList";
+
+
+    /**
      *   产品状态-初始(未上架)
      */
     public static final String PRODUCT_STATE_INIT = "0";

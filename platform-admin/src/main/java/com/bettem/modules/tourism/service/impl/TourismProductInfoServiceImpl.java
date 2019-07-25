@@ -1,5 +1,6 @@
 package com.bettem.modules.tourism.service.impl;
 
+import com.bettem.common.annotation.DataFilter;
 import com.bettem.common.utils.Constant;
 import com.bettem.common.utils.ShiroTokenUtils;
 import com.bettem.modules.tourism.entity.TourismProductPicEntity;
@@ -39,12 +40,14 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
     }
 
     @Override
+    @DataFilter(businessType = Constant.BUSINESS_TYPE_QUERY_PRODUCT_LIST)
     public PageUtils queryPage(Map<String, Object> params) {
         String productName=(String)params.get("productName");
         Page<TourismProductInfoEntity> page = this.selectPage(
                 new Query<TourismProductInfoEntity>(params).getPage(),
                 new EntityWrapper<TourismProductInfoEntity>().eq("delete_state",Constant.DELETE_STATE_NO)
                 .like(productName!=null,"product_name",productName)
+                .addFilterIfNeed(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
                 .orderBy("create_date desc,state")
         );
 
