@@ -50,6 +50,10 @@ spring:
           max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
           max-idle: 10      # 连接池中的最大空闲连接
           min-idle: 5       # 连接池中的最小空闲连接
+  data:
+      mongodb:
+        uri: mongodb://192.168.3.171:27017,192.168.3.177:27017,192.168.3.50:27017
+        database: bettem
 #  rabbitmq:
 #      host: 127.0.0.1
 #      port: 5672

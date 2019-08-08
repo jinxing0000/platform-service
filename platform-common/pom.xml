@@ -10,33 +10,11 @@
 	<description>platform-common</description>
 
 	<dependencies>
-		<!--  百度富文本编辑器开始 -->
+		<!--mongodb依赖-->
 		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.3.1</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.gitee.qdbp.thirdparty</groupId>
-			<artifactId>ueditor</artifactId>
-			<version>1.4.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.9</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20180813</version>
-		</dependency>
-		<!--  百度富文本编辑器结束 -->
 	</dependencies>
 
 	<build>

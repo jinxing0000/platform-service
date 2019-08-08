@@ -20,15 +20,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.bettem</groupId>
-			<artifactId>nongbu-common</artifactId>
+			<groupId>com.platform</groupId>
+			<artifactId>platform-common</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-		<!-- 集群环境，需要打开注释 -->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.session</groupId>-->
-			<!--<artifactId>spring-session-data-redis</artifactId>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
@@ -181,12 +176,6 @@
 <!--			<artifactId>flowable-spring-boot-starter-process</artifactId>-->
 <!--			<version>${flowable.version}</version>-->
 <!--		</dependency>-->
-		<!-- lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.6</version>
-		</dependency>
 		<!--itext5-->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
@@ -209,12 +198,6 @@
 			<artifactId>itext-asian</artifactId>
 			<version>5.2.0</version>
 		</dependency>
-		<!-- easyexcel -->
-<!--		<dependency>-->
-<!--			<groupId>com.alibaba</groupId>-->
-<!--			<artifactId>easyexcel</artifactId>-->
-<!--			<version>1.1.2-beta5</version>-->
-<!--		</dependency>-->
 		<!-- jxls start -->
 		<dependency>
 			<groupId>org.jxls</groupId>

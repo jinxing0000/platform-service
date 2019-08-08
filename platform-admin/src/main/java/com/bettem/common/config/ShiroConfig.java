@@ -83,6 +83,7 @@ public class ShiroConfig {
         filterMap.put("/api/sys/getVerifyCode", "anon");
         filterMap.put("/api/sys/getUserInfoByUserName", "anon");
         filterMap.put("/api/sys/login", "anon");
+        filterMap.put("/api/sys/file/mongdb", "anon");
         filterMap.put("/api/sys/druid/**", "anon");
         filterMap.put("/**", "jwt");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

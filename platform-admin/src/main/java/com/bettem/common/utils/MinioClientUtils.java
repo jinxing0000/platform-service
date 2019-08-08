@@ -66,6 +66,7 @@ public class MinioClientUtils {
             minioClient.putObject(bucketName,filePath,fileInputStream, contentType);
             path=minioClient.presignedGetObject(bucketName,filePath);
         }catch(Exception e){
+            e.printStackTrace();
             throw new RRException(ErrorCodeConstant.ERROR,"上传文件失败！！");
         }
         return path;
