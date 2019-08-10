@@ -111,7 +111,7 @@ public class SysDicController {
     @SysLog("按照条件查询数据字典列表")
     @RequestMapping(value = "findList",method = RequestMethod.GET)
     public R findList(@RequestParam Map<String, Object> params){
-        Map<String,Object> map=sysDicService.findListByParams(params);
-        return R.ok(map);
+        List<Map<String,Object>> mapList=sysDicService.findListByParams(params);
+        return R.ok(mapList);
     }
 }

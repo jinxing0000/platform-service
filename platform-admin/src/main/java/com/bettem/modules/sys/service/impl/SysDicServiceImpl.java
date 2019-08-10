@@ -181,19 +181,20 @@ public class SysDicServiceImpl extends ServiceImpl<SysDicDao, SysDicEntity> impl
     }
 
     @Override
-    public Map<String,Object> findListByParams(Map<String, Object> params) {
+    public List<Map<String,Object>> findListByParams(Map<String, Object> params) {
         String parentCode=(String)params.get("parentCode");
-//        String code=(String)params.get("code");
-//        String value=(String)params.get("value");
-//        List<SysDicEntity>  sysDicList=this.selectList(new EntityWrapper<SysDicEntity>().
-//                eq("delete_state",Constant.DELETE_STATE_NO)
-//                .eq(parentCode!=null,"parent_code",parentCode)
-//                .eq(code!=null,"code",code)
-//                .eq(value!=null,"value",value)
-//                .orderBy("sort")
-//        );
         Map<String,Object> resultMap=redisUtils.getMap(RedisKeys.getSysDicDataKey(parentCode));
-        return resultMap;
+        List<Map<String,Object>> mapList=new ArrayList<>();
+        Map<String,Object> map=null;
+        for(Map.Entry<String, Object> entry : resultMap.entrySet()){
+            map=new HashMap<>();
+            String mapKey = entry.getKey();
+            String mapValue = (String)entry.getValue();
+            map.put("code",mapKey);
+            map.put("value",mapValue);
+            mapList.add(map);
+        }
+        return mapList;
     }
 
     @Override

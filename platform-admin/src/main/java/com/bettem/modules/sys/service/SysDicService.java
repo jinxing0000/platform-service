@@ -44,7 +44,7 @@ public interface SysDicService extends IService<SysDicEntity> {
      * @param params
      * @return
      */
-    Map<String,Object> findListByParams(Map<String, Object> params);
+    List<Map<String,Object>> findListByParams(Map<String, Object> params);
 
     /**
      * 将系统字典表
