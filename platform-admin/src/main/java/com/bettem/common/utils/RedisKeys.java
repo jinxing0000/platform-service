@@ -31,4 +31,9 @@ public class RedisKeys {
     public static String getShiroSessionKey(String key,String token){
         return "userId:" + key + ":" + token;
     }
+
+    public static String getSysDicDataKey(String code)
+    {
+        return "sysDicKey:" + code ;
+    }
 }

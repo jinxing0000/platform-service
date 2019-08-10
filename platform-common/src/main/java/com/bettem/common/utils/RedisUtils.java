@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,6 +45,23 @@ public class RedisUtils {
 
     public void set(String key, Object value){
         set(key, value, DEFAULT_EXPIRE);
+    }
+
+    /**
+     * 设置哈希数据
+     * @param key
+     * @param value
+     */
+    public void setMap(String key, Map<String,Object> value){
+        hashOperations.putAll(key,value);
+    }
+    /**
+     * 获取哈希数据
+     * @param key
+     * @return
+     */
+    public Map<String,Object> getMap(String key){
+        return hashOperations.entries(key);
     }
 
     public <T> T get(String key, Class<T> clazz, long expire) {

@@ -3,6 +3,9 @@ package com.bettem.common.base.service.impl;
 import com.bettem.common.base.dao.BaseMongdbDao;
 import com.bettem.common.base.entity.BaseEntity;
 import com.bettem.common.utils.PageUtils;
+import com.mongodb.CommandResult;
+import com.mongodb.client.MongoCursor;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -144,6 +147,12 @@ public abstract class BaseMongdbServiceImpl<baseMongdbDao extends BaseMongdbDao<
         //查询
         List<? extends BaseEntity> list = this.mongoTemplate.find(query.with(pageRequest), cla);
         return new PageUtils(list,(int)count,limit,page);
+    }
+
+    public List<T> exeJsonSQL(String jsonSQL){
+        Document commandResult=this.mongoTemplate.executeCommand(jsonSQL);
+        //this.mongoTemplate.e
+                return null;
     }
 
 }

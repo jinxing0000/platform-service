@@ -1,7 +1,7 @@
 package com.bettem.modules.tourism.dao;
 
 import com.bettem.common.base.dao.BaseMongdbDao;
-import com.bettem.modules.tourism.entity.TourismProductInfoEntity;
+import com.bettem.modules.sys.entity.GroundDtlEntity;
 
 /**
  * 旅游产品信息表
@@ -10,6 +10,6 @@ import com.bettem.modules.tourism.entity.TourismProductInfoEntity;
  * @email sunlightcs@gmail.com
  * @date 2019-07-20 16:24:27
  */
-public interface TourismProductInfoMongdbDao extends BaseMongdbDao<TourismProductInfoEntity> {
+public interface TourismProductInfoMongdbDao extends BaseMongdbDao<GroundDtlEntity> {
 
 }

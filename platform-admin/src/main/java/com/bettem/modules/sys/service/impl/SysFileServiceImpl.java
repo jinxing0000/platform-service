@@ -4,12 +4,18 @@ package com.bettem.modules.sys.service.impl;
 import com.bettem.common.base.service.impl.BaseMongdbServiceImpl;
 import com.bettem.common.utils.PageUtils;
 import com.bettem.common.utils.UploadFileUtil;
+import com.bettem.modules.sys.entity.GroundDtlEntity;
 import com.bettem.modules.sys.service.SysFileService;
 import com.bettem.modules.tourism.dao.TourismProductInfoMongdbDao;
 import com.bettem.modules.tourism.entity.TourismProductInfoEntity;
+import com.mongodb.BasicDBObject;
+import com.mongodb.QueryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -20,7 +26,12 @@ import java.util.*;
 
 
 @Service("sysFileService")
-public class SysFileServiceImpl extends BaseMongdbServiceImpl<TourismProductInfoMongdbDao,TourismProductInfoEntity> implements SysFileService {
+public class SysFileServiceImpl extends BaseMongdbServiceImpl<TourismProductInfoMongdbDao, GroundDtlEntity> implements SysFileService {
+
+
+    // 本地异常日志记录对象
+    private static final Logger logger = LoggerFactory
+            .getLogger(SysFileServiceImpl.class);
 
     @Autowired
     public void setDao(TourismProductInfoMongdbDao tourismProductInfoMongdbDao) {
@@ -84,29 +95,41 @@ public class SysFileServiceImpl extends BaseMongdbServiceImpl<TourismProductInfo
 
 
         //""内为您要查询所对应的字段名
+//        Query query =new Query();
+//        //字段相等查询
+//        //query.addCriteria(Criteria.where("lineType").is("1"));
+//        //字段不等查询
+//        query.addCriteria(Criteria.where("deleteState").ne("1"));
+////        //字段模糊查询
+//        //query.addCriteria(Criteria.where("productName").regex(".*?\\" +"海南"+ ".*"));
+//        List<Sort.Order> orders = new ArrayList<>();
+//        //time为您要作为查询排序的字段
+//        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "endDate");
+//        orders.add(order);
+//        Date date=new Date();
+//        //时间范围查询
+//        if(date != null ){
+//            Criteria sub = Criteria.where("endDate");
+//            //gte:>=   gt:>
+//            //sub = sub.gte(date);
+////            //lte:<=   lt:<
+//            sub = sub.lte(date);
+//            query.addCriteria(sub);
+//        }
+//        PageUtils page=this.findPageList(query,orders,1,10,TourismProductInfoEntity.class);
+//        List<TourismProductInfoEntity> list=this.findListByParam(query,orders,TourismProductInfoEntity.class);
+        long startDate = System.currentTimeMillis();
         Query query =new Query();
-        //字段相等查询
-        //query.addCriteria(Criteria.where("lineType").is("1"));
-        //字段不等查询
-        query.addCriteria(Criteria.where("deleteState").ne("1"));
-//        //字段模糊查询
-        //query.addCriteria(Criteria.where("productName").regex(".*?\\" +"海南"+ ".*"));
+        query.addCriteria(Criteria.where("DELETE_STATE").is("0"));
         List<Sort.Order> orders = new ArrayList<>();
-        //time为您要作为查询排序的字段
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "endDate");
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "SUBSIDY_MONEY");
         orders.add(order);
-        Date date=new Date();
-        //时间范围查询
-        if(date != null ){
-            Criteria sub = Criteria.where("endDate");
-            //gte:>=   gt:>
-            //sub = sub.gte(date);
-            //lte:<=   lt:<
-            sub = sub.lte(date);
-            query.addCriteria(sub);
-        }
-        PageUtils page=this.findPageList(query,orders,1,10,TourismProductInfoEntity.class);
-        List<TourismProductInfoEntity> list=this.findListByParam(query,orders,TourismProductInfoEntity.class);
+        //query.limit(10);
+        //query.skip(0);
+        //List<GroundDtlEntity> dtlList=this.findListByParam(query,orders,GroundDtlEntity.class);
+        PageUtils page=this.findPageList(query,null,2,10,GroundDtlEntity.class);
+        long endDate = System.currentTimeMillis();
+        logger.debug("索引文档花费了" + (endDate - startDate) + " 毫秒");
     }
 
 

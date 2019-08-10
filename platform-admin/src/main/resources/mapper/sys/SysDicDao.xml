@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bettem.modules.sys.dao.SysDicDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.bettem.modules.sys.entity.SysDicEntity" id="BaseMap">
+        <result property="code" column="code"/>
+        <result property="value" column="value"/>
+        <result property="parentCode" column="parent_code"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+    <sql id="baseSql">
+        id,
+        code,
+        value,
+        parent_code,
+        sort,
+        remarks,
+        create_user_id,
+        create_date,
+        modify_user_id,
+        modify_date,
+        delete_state
+    </sql>
+    <update id="deleteSysDicByIds">
+        update sys_dic b
+          set
+            b.delete_state = '1'
+         <where>
+             b.parent_code in
+             (
+             select c.code from (select a.code from sys_dic a where a.id in
+             <foreach item="id" collection="array" open="(" separator="," close=")">
+                 #{id}
+             </foreach>) c
+             )
+         </where>
+    </update>
+    <select id="selectSysDicByIds" resultType="com.bettem.modules.sys.entity.SysDicEntity">
+        select
+        <include refid="baseSql"/>
+        from sys_dic
+        <where>
+            id in
+            <foreach item="id" collection="array" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+
+</mapper>

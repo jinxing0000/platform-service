@@ -160,6 +160,10 @@ public class Constant {
         }
     };
     /**
+     *  数据字典根目录
+     */
+    public static final String SYS_DIC_PARENT_CODE_ROOT= "0";
+    /**
      * 供应商角色id
      */
     public static final String SUPPLIER_ROLE_ID = "7f97ee9779504115b2e3e909459d3d97";
