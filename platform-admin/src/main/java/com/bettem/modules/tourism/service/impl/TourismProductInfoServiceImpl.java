@@ -50,7 +50,14 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
                 .addFilterIfNeed(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
                 .orderBy("create_date desc,state")
         );
+        return new PageUtils(page);
+    }
 
+    @Override
+    public PageUtils queryPageApp(Map<String, Object> params) {
+        Page<Map<String,Object>> page = new Query<Map<String,Object>>(params).getPage();
+        List<Map<String,Object>> list=this.baseMapper.selectProductListByParams(params,page);
+        page.setRecords(list);
         return new PageUtils(page);
     }
 

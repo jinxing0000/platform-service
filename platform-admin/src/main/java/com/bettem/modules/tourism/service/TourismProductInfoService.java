@@ -19,6 +19,13 @@ public interface TourismProductInfoService extends IService<TourismProductInfoEn
     PageUtils queryPage(Map<String, Object> params);
 
     /**
+     * app端查询产品
+     * @param params
+     * @return
+     */
+    PageUtils queryPageApp(Map<String, Object> params);
+
+    /**
      * @Param [ids]
      * @Return:
      * @Decription: 按照ids批量逻辑删除

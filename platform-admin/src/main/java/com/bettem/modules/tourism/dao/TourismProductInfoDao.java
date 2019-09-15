@@ -1,8 +1,12 @@
 package com.bettem.modules.tourism.dao;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.bettem.modules.tourism.entity.TourismProductInfoEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.bettem.modules.tourism.entity.VO.TourismProductInfoVO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 旅游产品信息表
@@ -18,4 +22,12 @@ public interface TourismProductInfoDao extends BaseMapper<TourismProductInfoEnti
      * @return
      */
     TourismProductInfoVO selectProductInfoVOById(String id);
+
+    /**
+     * 按照条件查询产品信息
+     * @param params
+     * @param page
+     * @return
+     */
+    List<Map<String,Object>> selectProductListByParams(Map<String, Object> params, Page<Map<String,Object>> page);
 }

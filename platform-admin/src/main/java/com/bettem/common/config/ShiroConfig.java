@@ -85,6 +85,7 @@ public class ShiroConfig {
         filterMap.put("/api/sys/login", "anon");
         filterMap.put("/api/sys/file/mongdb", "anon");
         filterMap.put("/api/sys/druid/**", "anon");
+        filterMap.put("/app/**", "anon");
         filterMap.put("/**", "jwt");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         //加入ajax请求拦截器

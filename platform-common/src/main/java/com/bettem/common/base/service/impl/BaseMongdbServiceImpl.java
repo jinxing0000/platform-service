@@ -5,7 +5,10 @@ import com.bettem.common.base.entity.BaseEntity;
 import com.bettem.common.utils.PageUtils;
 import com.mongodb.CommandResult;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.DBCollectionCountOptions;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,6 +17,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.util.List;
 
 public abstract class BaseMongdbServiceImpl<baseMongdbDao extends BaseMongdbDao<T>, T extends BaseEntity> {
+
+    // 本地异常日志记录对象
+    private static final Logger logger = LoggerFactory
+            .getLogger(BaseMongdbServiceImpl.class);
 
     protected  baseMongdbDao mongdbDao;
 
@@ -142,10 +149,16 @@ public abstract class BaseMongdbServiceImpl<baseMongdbDao extends BaseMongdbDao<
             pageRequest = new PageRequest(page - 1 < 0 ? 0
                     : page - 1, limit);
         }
+        long startDate = System.currentTimeMillis();
         //查询出一共的条数
         long count =  this.mongoTemplate.count(query, cla);
+        long endDate = System.currentTimeMillis();
+        logger.debug("查询count花费：" + (endDate - startDate) + " 毫秒");
+        startDate = System.currentTimeMillis();
         //查询
         List<? extends BaseEntity> list = this.mongoTemplate.find(query.with(pageRequest), cla);
+        endDate = System.currentTimeMillis();
+        logger.debug("查询分页查询花费：" + (endDate - startDate) + " 毫秒");
         return new PageUtils(list,(int)count,limit,page);
     }
 

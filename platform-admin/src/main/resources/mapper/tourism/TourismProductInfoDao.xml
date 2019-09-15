@@ -64,6 +64,22 @@
              id = #{id,jdbcType=VARCHAR}
          </where>
     </select>
+    <select id="selectProductListByParams" resultType="Map">
+        select
+           id as "id",
+           product_name as "productName",
+           product_guide_pic_url  as "productGuidePicUrl",
+           adult_price as "adultPrice"
+        from tourism_product_info
+        <where>
+            <!--  没有删除的并且为发布的 -->
+            delete_state = '0' and state = '1'
+            <if test="productName !=null and productName != ''">
+                and product_name  like CONCAT(CONCAT('%', #{productName,jdbcType=VARCHAR}),'%')
+            </if>
+            order by create_date desc,state
+        </where>
+    </select>
 
 
 </mapper>
