@@ -28,11 +28,14 @@ public class BaseChannelMerchantsPeopleServiceImpl extends ServiceImpl<BaseChann
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String channelId= (String) params.get("channelId");
         Page<BaseChannelMerchantsPeopleEntity> page = this.selectPage(
                 new Query<BaseChannelMerchantsPeopleEntity>(params).getPage(),
-                new EntityWrapper<BaseChannelMerchantsPeopleEntity>().eq("delete_state",Constant.DELETE_STATE_NO)
+                new EntityWrapper<BaseChannelMerchantsPeopleEntity>()
+                .eq("delete_state",Constant.DELETE_STATE_NO)
+                .eq("channel_id",channelId)
+                .orderBy("create_date desc")
         );
-
         return new PageUtils(page);
     }
 
