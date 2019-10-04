@@ -2,6 +2,7 @@ package com.bettem.common.base.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.Date;
  * @CreateDate: Created in 2018/10/9 09:06 <br>
  * @Author: 颜金星
  */
+@JsonIgnoreProperties(value={"createDate","createUserId","modifyUserId","modifyDate","deleteState"})
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     //实体主键id

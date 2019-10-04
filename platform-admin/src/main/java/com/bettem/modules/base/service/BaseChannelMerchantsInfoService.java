@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author 颜金星
  * @email sunlightcs@gmail.com
- * @date 2019-10-04 11:43:19
+ * @date 2019-10-04 18:43:12
  */
 public interface BaseChannelMerchantsInfoService extends IService<BaseChannelMerchantsInfoEntity> {
 
@@ -21,7 +21,7 @@ public interface BaseChannelMerchantsInfoService extends IService<BaseChannelMer
      * @Param [ids]
      * @Return:
      * @Decription: 按照ids批量逻辑删除
-     * @CreateDate: 2019-10-04 11:43:19
+     * @CreateDate: 2019-10-04 18:43:12
      * @Author: 颜金星
      */
     void deleteByIds(String[] ids);

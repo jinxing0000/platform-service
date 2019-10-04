@@ -22,7 +22,7 @@ import com.bettem.common.utils.R;
  *
  * @author 颜金星
  * @email sunlightcs@gmail.com
- * @date 2019-10-04 11:43:20
+ * @date 2019-10-04 18:43:12
  */
 @RestController
 @RequestMapping("/api/base/channelMerchantsPeople/")
@@ -35,7 +35,7 @@ public class BaseChannelMerchantsPeopleController {
       * @Param [params]
       * @Return: R
       * @Decription: 分页查询数据
-      * @CreateDate: 2019-10-04 11:43:20
+      * @CreateDate: 2019-10-04 18:43:12
       * @Author: 颜金星
       */
     @SysLog("分页查询渠道商出行人信息表数据")
@@ -49,7 +49,7 @@ public class BaseChannelMerchantsPeopleController {
      * @Param [id]
      * @Return: com.bettem.common.utils.R
      * @Decription: 按照id查询信息详情
-     * @CreateDate: 2019-10-04 11:43:20
+     * @CreateDate: 2019-10-04 18:43:12
      * @Author: 颜金星
      */
     @SysLog("按照id查询渠道商出行人信息表详情")
@@ -63,7 +63,7 @@ public class BaseChannelMerchantsPeopleController {
      * @Param [baseChannelMerchantsPeople]
      * @Return: com.bettem.common.utils.R
      * @Decription: 新增数据
-     * @CreateDate: 2019-10-04 11:43:20
+     * @CreateDate: 2019-10-04 18:43:12
      * @Author: 颜金星
      */
     @SysLog("新增渠道商出行人信息表数据")
@@ -81,7 +81,7 @@ public class BaseChannelMerchantsPeopleController {
      * @Param [baseChannelMerchantsPeople]
      * @Return: com.bettem.common.utils.R
      * @Decription: 修改数据
-     * @CreateDate: 2019-10-04 11:43:20
+     * @CreateDate: 2019-10-04 18:43:12
      * @Author: 颜金星
      */
     @SysLog("新增渠道商出行人信息表数据")
@@ -98,7 +98,7 @@ public class BaseChannelMerchantsPeopleController {
      * @Param [ids]
      * @Return: com.bettem.common.utils.R
      * @Decription: 批量删除数据
-     * @CreateDate: 2019-10-04 11:43:20
+     * @CreateDate: 2019-10-04 18:43:12
      * @Author: 颜金星
      */
     @SysLog("删除渠道商出行人信息表数据")

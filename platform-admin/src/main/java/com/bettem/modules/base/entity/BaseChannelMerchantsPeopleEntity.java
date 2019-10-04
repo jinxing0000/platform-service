@@ -13,7 +13,7 @@ import java.util.Date;
  * 
  * @author 颜金星
  * @email sunlightcs@gmail.com
- * @date 2019-10-04 11:43:20
+ * @date 2019-10-04 18:43:12
  */
 @TableName("base_channel_merchants_people")
 public class BaseChannelMerchantsPeopleEntity extends BaseEntity {

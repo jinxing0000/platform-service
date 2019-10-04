@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * 
  * @author 颜金星
  * @email sunlightcs@gmail.com
- * @date 2019-10-04 11:43:20
+ * @date 2019-10-04 18:43:12
  */
 public interface BaseChannelMerchantsPeopleDao extends BaseMapper<BaseChannelMerchantsPeopleEntity> {
 	

@@ -10,7 +10,9 @@
         <result property="contactNumber" column="contact_number"/>
         <result property="wechatNumber" column="wechat_number"/>
         <result property="cardNumber" column="card_number"/>
-        <result property="openid" column="openId"/>
+        <result property="openId" column="open_id"/>
+        <result property="headPortraitUrl" column="head_portrait_url"/>
+        <result property="level" column="level"/>
         <result property="state" column="state"/>
     </resultMap>
 

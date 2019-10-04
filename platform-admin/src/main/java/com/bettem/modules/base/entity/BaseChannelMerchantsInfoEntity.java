@@ -13,7 +13,7 @@ import java.util.Date;
  * 
  * @author 颜金星
  * @email sunlightcs@gmail.com
- * @date 2019-10-04 11:43:19
+ * @date 2019-10-04 18:43:12
  */
 @TableName("base_channel_merchants_info")
 public class BaseChannelMerchantsInfoEntity extends BaseEntity {
@@ -41,7 +41,15 @@ public class BaseChannelMerchantsInfoEntity extends BaseEntity {
 	/**
 	 * 微信小程序唯一识别码
 	 */
-	private String openid;
+	private String openId;
+	/**
+	 * 头像地址
+	 */
+	private String headPortraitUrl;
+	/**
+	 * 级别，后期使用
+	 */
+	private String level;
 	/**
 	 * 状态，1为未开通，2为开通，3为禁用
 	 */
@@ -110,14 +118,38 @@ public class BaseChannelMerchantsInfoEntity extends BaseEntity {
 	/**
 	 * 设置：微信小程序唯一识别码
 	 */
-	public void setOpenid(String openid) {
-		this.openid = openid;
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 	/**
 	 * 获取：微信小程序唯一识别码
 	 */
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
+	}
+	/**
+	 * 设置：头像地址
+	 */
+	public void setHeadPortraitUrl(String headPortraitUrl) {
+		this.headPortraitUrl = headPortraitUrl;
+	}
+	/**
+	 * 获取：头像地址
+	 */
+	public String getHeadPortraitUrl() {
+		return headPortraitUrl;
+	}
+	/**
+	 * 设置：级别，后期使用
+	 */
+	public void setLevel(String level) {
+		this.level = level;
+	}
+	/**
+	 * 获取：级别，后期使用
+	 */
+	public String getLevel() {
+		return level;
 	}
 	/**
 	 * 设置：状态，1为未开通，2为开通，3为禁用
