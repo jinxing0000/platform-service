@@ -113,3 +113,10 @@ bettem:
    #ftp根目录配置
    ftpPath:
        bettem
+#微信小程序配置
+WeChat:
+  appId:
+    wxff3949a3c4fb6334
+  appSecret:
+    4d553abfebf8a502ecb0dba3151dcdab
+
