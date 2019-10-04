@@ -3,6 +3,7 @@ package com.bettem.modules.tourism.controller;
 import com.bettem.common.annotation.SysLog;
 import com.bettem.common.utils.PageUtils;
 import com.bettem.common.utils.R;
+import com.bettem.modules.tourism.entity.VO.TourismProductInfoVO;
 import com.bettem.modules.tourism.service.TourismProductInfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,16 @@ public class AppTourismProductInfoController {
     public R getPageList(@RequestParam Map<String, Object> params){
         PageUtils page = tourismProductInfoService.queryPageApp(params);
         return R.ok(page);
+    }
+
+    /**
+     * 获取产品详情接口
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "info",method = RequestMethod.GET)
+    public R info(@RequestParam("id") String id){
+        TourismProductInfoVO productInfoVO=tourismProductInfoService.findProductInfoVOById(id);
+        return R.ok(productInfoVO);
     }
 }

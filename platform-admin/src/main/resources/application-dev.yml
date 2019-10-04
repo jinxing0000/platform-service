@@ -71,11 +71,11 @@ bettem:
      serverUrl:
        http://127.0.0.1:9000
      accessKey:
-       3CV82KKLJY6RPEJGQRYL
+       91IU3P04CR3BKDPRX7WM
      secretKey:
-       yswwfFNNbqFrQIXc+hIqL4mQbmKZTPZSbQWWUoUB
+       F5wZx1vFQIK8nJbTcDScFQ55mmd+zP++NIDnetRE
      bucketName:
-       bettem
+       platform
    uploadFilePath:
        E:\\FTP\\site
    ftpServerIP:
