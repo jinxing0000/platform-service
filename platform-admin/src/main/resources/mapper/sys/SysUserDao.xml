@@ -76,5 +76,18 @@
 		</where>
 	</delete>
 
+	<select id="selectUserNameOrMobile" resultType="java.util.Map">
+		select
+		user_id as "userId",
+		username as "userName",
+		mobile as "mobile"
+		from sys_user
+		<where>
+			username = #{userName,jdbcType=VARCHAR}
+			or
+			mobile = #{mobile,jdbcType=VARCHAR}
+		</where>
+	</select>
+
 
 </mapper>

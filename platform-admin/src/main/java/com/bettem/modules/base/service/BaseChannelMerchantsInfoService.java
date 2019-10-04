@@ -25,5 +25,11 @@ public interface BaseChannelMerchantsInfoService extends IService<BaseChannelMer
      * @Author: 颜金星
      */
     void deleteByIds(String[] ids);
+
+    /**
+     * 保存渠道商信息
+     * @param channelMerchantsInfoEntity
+     */
+    void saveChannelMerchantsInfo(BaseChannelMerchantsInfoEntity channelMerchantsInfoEntity);
 }
 

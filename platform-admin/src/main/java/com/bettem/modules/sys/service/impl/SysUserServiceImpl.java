@@ -294,4 +294,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		this.baseMapper.deleteUserByUserIds(userIds);
 		sysUserRoleService.deleteByUserIds(userIds);
 	}
+
+	@Override
+	public Map<String, Boolean> checkUserNameOrMobileExistence(String userName, String mobile) {
+		Map<String, Boolean> resultMap=new HashMap<>();
+		resultMap.put("userName",true);
+		resultMap.put("mobile",true);
+		List<Map<String, Object>> userList=this.baseMapper.selectUserNameOrMobile(userName,mobile);
+		for(Map<String, Object> userMap:userList){
+			String oldUserName= (String) userMap.get("userName");
+			String oldMobile= (String) userMap.get("mobile");
+			if(oldUserName.equals(userName)){
+				resultMap.put("userName",false);
+			}
+			else if(oldMobile.equals(mobile)){
+				resultMap.put("mobile",false);
+			}
+		}
+		return resultMap;
+	}
 }

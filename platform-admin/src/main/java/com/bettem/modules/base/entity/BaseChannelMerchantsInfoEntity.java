@@ -2,8 +2,11 @@ package com.bettem.modules.base.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.bettem.common.base.entity.BaseEntity;
+import com.bettem.common.validator.group.AddGroup;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.io.Serializable;
 import java.util.Date;
@@ -21,30 +24,37 @@ public class BaseChannelMerchantsInfoEntity extends BaseEntity {
 	/**
 	 * 渠道商名称
 	 */
+	@NotBlank(message="渠道商名称不能为空！！", groups = {AddGroup.class,})
 	private String channelName;
 	/**
 	 * 联系人
 	 */
+	@NotBlank(message="联系人不能为空！！", groups = {AddGroup.class,})
 	private String contactsName;
 	/**
 	 * 联系电话
 	 */
+	@NotBlank(message="联系电话不能为空！！", groups = {AddGroup.class,})
 	private String contactNumber;
 	/**
 	 * 微信号
 	 */
+	@NotBlank(message="微信号不能为空！！", groups = {AddGroup.class,})
 	private String wechatNumber;
 	/**
 	 * 身份证号
 	 */
+	@NotBlank(message="身份证号不能为空！！", groups = {AddGroup.class,})
 	private String cardNumber;
 	/**
 	 * 微信小程序唯一识别码
 	 */
+	@NotBlank(message="openId不能为空！！", groups = {AddGroup.class,})
 	private String openId;
 	/**
 	 * 头像地址
 	 */
+	@NotBlank(message="头像地址不能为空！！", groups = {AddGroup.class,})
 	private String headPortraitUrl;
 	/**
 	 * 级别，后期使用

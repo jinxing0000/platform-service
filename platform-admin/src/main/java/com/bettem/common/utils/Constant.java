@@ -168,6 +168,11 @@ public class Constant {
      */
     public static final String SUPPLIER_ROLE_ID = "7f97ee9779504115b2e3e909459d3d97";
 
+    /**
+     * 渠道商角色id
+     */
+    public static final String CHANNEL_MERCHANTS_ROLE_ID = "29897a94f7c74f1ea2f07fb37762e083";
+
 
     /**
      *  查询产品列表

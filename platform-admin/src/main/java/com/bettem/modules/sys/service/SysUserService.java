@@ -91,4 +91,13 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @param userIds
 	 */
 	void deleteUserByUserIds(String[] userIds);
+
+
+	/**
+	 * 检测用户名或者手机号是否存在
+	 * @param userName
+	 * @param mobile
+	 * @return
+	 */
+	Map<String,Boolean> checkUserNameOrMobileExistence(String userName,String mobile);
 }
