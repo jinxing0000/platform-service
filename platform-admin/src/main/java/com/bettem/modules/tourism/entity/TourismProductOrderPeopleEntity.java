@@ -41,7 +41,7 @@ public class TourismProductOrderPeopleEntity extends BaseEntity {
 	/**
 	 * 出生日期
 	 */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthDate;
 	/**
 	 * 年龄
@@ -117,7 +117,7 @@ public class TourismProductOrderPeopleEntity extends BaseEntity {
 	/**
 	 * 获取：出生日期
 	 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	public Date getBirthDate() {
 		return birthDate;
 	}

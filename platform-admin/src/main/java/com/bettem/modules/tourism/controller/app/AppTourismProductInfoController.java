@@ -1,4 +1,4 @@
-package com.bettem.modules.tourism.controller;
+package com.bettem.modules.tourism.controller.app;
 
 import com.bettem.common.annotation.SysLog;
 import com.bettem.common.utils.PageUtils;
