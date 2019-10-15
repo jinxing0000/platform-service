@@ -194,4 +194,9 @@ public class Constant {
      *   产品状态-下架
      */
     public static final String PRODUCT_STATE_LOWER_SHELF = "2";
+
+    /**
+     *   订单状态-待处理订单
+     */
+    public static final String ORDER_STATE_PENDING_DISPOSAL = "01";
 }

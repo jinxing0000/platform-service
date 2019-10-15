@@ -1,7 +1,14 @@
 package com.bettem.modules.tourism.service.impl;
 
-import com.bettem.common.utils.Constant;
-import com.bettem.common.utils.ShiroTokenUtils;
+import com.bettem.common.exception.RRException;
+import com.bettem.common.utils.*;
+import com.bettem.modules.base.entity.BaseChannelMerchantsInfoEntity;
+import com.bettem.modules.base.service.BaseChannelMerchantsInfoService;
+import com.bettem.modules.tourism.entity.TourismProductInfoEntity;
+import com.bettem.modules.tourism.entity.TourismProductOrderPeopleEntity;
+import com.bettem.modules.tourism.entity.VO.TourismProductOrderVO;
+import com.bettem.modules.tourism.service.TourismProductInfoService;
+import com.bettem.modules.tourism.service.TourismProductOrderPeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
@@ -11,8 +18,6 @@ import java.util.List;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.bettem.common.utils.PageUtils;
-import com.bettem.common.utils.Query;
 
 import com.bettem.modules.tourism.dao.TourismProductOrderDao;
 import com.bettem.modules.tourism.entity.TourismProductOrderEntity;
@@ -25,6 +30,12 @@ public class TourismProductOrderServiceImpl extends ServiceImpl<TourismProductOr
 
     @Autowired
     private ShiroTokenUtils shiroTokenUtils;
+
+    @Autowired
+    private BaseChannelMerchantsInfoService baseChannelMerchantsInfoService;
+
+    @Autowired
+    private TourismProductOrderPeopleService tourismProductOrderPeopleService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -50,6 +61,37 @@ public class TourismProductOrderServiceImpl extends ServiceImpl<TourismProductOr
             TourismProductOrderList.add(tourismProductOrderEntity);
         }
         this.updateBatchById(TourismProductOrderList);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveTourismProductOrderVO(TourismProductOrderVO tourismProductOrderVO) {
+        Date toDay=new Date();
+        String channelMerchantsId=tourismProductOrderVO.getChannelMerchantsId();
+        BaseChannelMerchantsInfoEntity channelMerchantsInfo=baseChannelMerchantsInfoService.selectById(channelMerchantsId);
+        if(channelMerchantsInfo==null){
+            throw new RRException(ErrorCodeConstant.ERROR,"请先注册成为渠道商！！");
+        }
+        //订单id
+        String orderId= PrimaryKeyUtils.createId();
+        tourismProductOrderVO.setId(orderId);
+        tourismProductOrderVO.setChannelMerchantsName(channelMerchantsInfo.getChannelName());
+        tourismProductOrderVO.setState(Constant.ORDER_STATE_PENDING_DISPOSAL);
+        tourismProductOrderVO.setCreateDate(toDay);
+        tourismProductOrderVO.setCreateUserId(tourismProductOrderVO.getChannelMerchantsId());
+        tourismProductOrderVO.setDeleteState(Constant.DELETE_STATE_NO);
+        List<TourismProductOrderPeopleEntity>  productOrderPeopleList=tourismProductOrderVO.getProductOrderPeopleList();
+        for(TourismProductOrderPeopleEntity productOrderPeople:productOrderPeopleList){
+            productOrderPeople.setId(PrimaryKeyUtils.createId());
+            productOrderPeople.setOrderId(orderId);
+            productOrderPeople.setCreateUserId(tourismProductOrderVO.getChannelMerchantsId());
+            productOrderPeople.setCreateDate(toDay);
+            productOrderPeople.setDeleteState(Constant.DELETE_STATE_NO);
+        }
+        this.insert(tourismProductOrderVO);
+        if(productOrderPeopleList.size()>0){
+            tourismProductOrderPeopleService.insertBatch(productOrderPeopleList);
+        }
     }
 
 }

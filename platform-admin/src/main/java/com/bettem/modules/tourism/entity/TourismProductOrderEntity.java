@@ -43,6 +43,11 @@ public class TourismProductOrderEntity extends BaseEntity {
 	 */
 	private BigDecimal orderTotal;
 	/**
+	 *  出发时间
+	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date setOutDate;
+	/**
 	 * 实际成交价格
 	 */
 	private BigDecimal transactionPrice;
@@ -274,5 +279,13 @@ public class TourismProductOrderEntity extends BaseEntity {
 	 */
 	public String getSupplierName() {
 		return supplierName;
+	}
+
+	public void setSetOutDate(Date setOutDate) {
+		this.setOutDate = setOutDate;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	public Date getSetOutDate() {
+		return setOutDate;
 	}
 }

@@ -7,7 +7,9 @@ import com.bettem.common.validator.ValidatorUtils;
 import com.bettem.common.validator.group.AddGroup;
 import com.bettem.modules.tourism.entity.TourismProductOrderEntity;
 import com.bettem.modules.tourism.entity.VO.TourismProductOrderVO;
+import com.bettem.modules.tourism.service.TourismProductOrderService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +28,10 @@ import java.util.Date;
 @RequestMapping("/app/tourism/productOrder/")
 public class AppTourismProductOrderController {
 
+
+    @Autowired
+    private TourismProductOrderService tourismProductOrderService;
+
     /**
      * @Param [tourismProductOrder]
      * @Return: com.bettem.common.utils.R
@@ -37,6 +43,7 @@ public class AppTourismProductOrderController {
     @RequestMapping(value = "save",method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public R save(@RequestBody TourismProductOrderVO tourismProductOrderVO){
         ValidatorUtils.validateEntity(tourismProductOrderVO, AddGroup.class);
+        tourismProductOrderService.saveTourismProductOrderVO(tourismProductOrderVO);
         return R.ok();
     }
 }
