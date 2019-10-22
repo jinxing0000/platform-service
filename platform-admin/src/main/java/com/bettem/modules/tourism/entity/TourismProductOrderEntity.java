@@ -22,6 +22,17 @@ public class TourismProductOrderEntity extends BaseEntity {
 	 * 产品id
 	 */
 	private String productId;
+
+	/**
+	 * 产品名称
+	 */
+	private String productName;
+
+	/**
+	 * 产品引导图地址
+	 */
+	private String productGuidePicUrl;
+
 	/**
 	 * 订单类型，1为旅游产品订单
 	 */
@@ -71,6 +82,7 @@ public class TourismProductOrderEntity extends BaseEntity {
 	 * 状态，0为未提交，1为待处理，2为处理完成
 	 */
 	private String state;
+
 	/**
 	 * 渠道商id
 	 */
@@ -287,5 +299,21 @@ public class TourismProductOrderEntity extends BaseEntity {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	public Date getSetOutDate() {
 		return setOutDate;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductGuidePicUrl(String productGuidePicUrl) {
+		this.productGuidePicUrl = productGuidePicUrl;
+	}
+
+	public String getProductGuidePicUrl() {
+		return productGuidePicUrl;
 	}
 }

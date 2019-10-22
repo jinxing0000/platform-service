@@ -3,6 +3,7 @@ package com.bettem.modules.tourism.service.impl;
 import com.bettem.common.annotation.DataFilter;
 import com.bettem.common.utils.Constant;
 import com.bettem.common.utils.ShiroTokenUtils;
+import com.bettem.modules.sys.entity.VO.SysUserVO;
 import com.bettem.modules.tourism.entity.TourismProductPicEntity;
 import com.bettem.modules.tourism.entity.VO.TourismProductInfoVO;
 import com.bettem.modules.tourism.service.TourismProductPicService;
@@ -88,12 +89,13 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
     @Transactional(rollbackFor = Exception.class)
     public void saveTourismProductInfo(TourismProductInfoVO tourismProductInfoVO) {
         String id=createId();
-        String userId=shiroTokenUtils.getUserId();
+        SysUserVO user=shiroTokenUtils.getUserInfo();
+        String userId=user.getUserId();
         Date date=new Date();
         tourismProductInfoVO.setId(id);
         tourismProductInfoVO.setState(Constant.PRODUCT_STATE_INIT);
         tourismProductInfoVO.setSupplierId(userId);
-        tourismProductInfoVO.setSupplierName(shiroTokenUtils.getUserName());
+        tourismProductInfoVO.setSupplierName(user.getNickName());
         tourismProductInfoVO.setCreateUserId(userId);
         tourismProductInfoVO.setCreateDate(date);
         tourismProductInfoVO.setDeleteState(Constant.DELETE_STATE_NO);

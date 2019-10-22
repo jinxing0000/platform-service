@@ -22,6 +22,4 @@
         <result property="supplierId" column="supplier_id"/>
         <result property="supplierName" column="supplier_name"/>
     </resultMap>
-
-
 </mapper>

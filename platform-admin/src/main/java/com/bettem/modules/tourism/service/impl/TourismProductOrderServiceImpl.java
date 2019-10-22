@@ -6,6 +6,7 @@ import com.bettem.modules.base.entity.BaseChannelMerchantsInfoEntity;
 import com.bettem.modules.base.service.BaseChannelMerchantsInfoService;
 import com.bettem.modules.tourism.entity.TourismProductInfoEntity;
 import com.bettem.modules.tourism.entity.TourismProductOrderPeopleEntity;
+import com.bettem.modules.tourism.entity.VO.TourismProductOrderDetailsVO;
 import com.bettem.modules.tourism.entity.VO.TourismProductOrderVO;
 import com.bettem.modules.tourism.service.TourismProductInfoService;
 import com.bettem.modules.tourism.service.TourismProductOrderPeopleService;
@@ -37,13 +38,26 @@ public class TourismProductOrderServiceImpl extends ServiceImpl<TourismProductOr
     @Autowired
     private TourismProductOrderPeopleService tourismProductOrderPeopleService;
 
+    @Autowired
+    private TourismProductInfoService tourismProductInfoService;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String state= (String) params.get("state");
+        //订单状态状态，全部订单
+        if("0".equals(state)){
+            state=null;
+        }
+        //渠道商
+        String channelMerchantsId= (String) params.get("channelMerchantsId");
         Page<TourismProductOrderEntity> page = this.selectPage(
                 new Query<TourismProductOrderEntity>(params).getPage(),
-                new EntityWrapper<TourismProductOrderEntity>().eq("delete_state",Constant.DELETE_STATE_NO)
+                new EntityWrapper<TourismProductOrderEntity>()
+                .eq("delete_state",Constant.DELETE_STATE_NO)
+                .eq(state!=null,"state",state)
+                .eq(channelMerchantsId!=null,"channel_merchants_id",channelMerchantsId)
+                .orderBy("create_date desc")
         );
-
         return new PageUtils(page);
     }
 
@@ -92,6 +106,26 @@ public class TourismProductOrderServiceImpl extends ServiceImpl<TourismProductOr
         if(productOrderPeopleList.size()>0){
             tourismProductOrderPeopleService.insertBatch(productOrderPeopleList);
         }
+    }
+
+    @Override
+    public TourismProductOrderDetailsVO getTourismProductOrderDetails(String id) {
+        TourismProductOrderDetailsVO productOrderDetailsVO=new TourismProductOrderDetailsVO();
+        TourismProductOrderEntity productOrderInfo=this.selectById(id);
+        if(productOrderInfo==null){
+            throw new RRException(ErrorCodeConstant.ERROR,"订单id有误！！");
+        }
+        productOrderDetailsVO.setProductOrderInfo(productOrderInfo);
+        List<TourismProductOrderPeopleEntity>  productOrderPeopleList=tourismProductOrderPeopleService.selectList(
+                new EntityWrapper<TourismProductOrderPeopleEntity>()
+                .eq("delete_state",Constant.DELETE_STATE_NO)
+                .eq("order_id",id)
+                .orderBy("create_date desc")
+        );
+        productOrderDetailsVO.setProductOrderPeopleList(productOrderPeopleList);
+        TourismProductInfoEntity productInfo=tourismProductInfoService.selectById(productOrderInfo.getProductId());
+        productOrderDetailsVO.setProductInfo(productInfo);
+        return productOrderDetailsVO;
     }
 
 }

@@ -3,6 +3,7 @@ package com.bettem.modules.tourism.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.bettem.common.utils.PageUtils;
 import com.bettem.modules.tourism.entity.TourismProductOrderEntity;
+import com.bettem.modules.tourism.entity.VO.TourismProductOrderDetailsVO;
 import com.bettem.modules.tourism.entity.VO.TourismProductOrderVO;
 
 import java.util.Map;
@@ -32,5 +33,12 @@ public interface TourismProductOrderService extends IService<TourismProductOrder
      * @param tourismProductOrderVO
      */
     void saveTourismProductOrderVO(TourismProductOrderVO tourismProductOrderVO);
+
+    /**
+     * 按照id查询订单详情
+     * @param id
+     * @return
+     */
+    TourismProductOrderDetailsVO getTourismProductOrderDetails(String id);
 }
 
