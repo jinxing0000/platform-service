@@ -50,12 +50,24 @@ public class TourismProductOrderServiceImpl extends ServiceImpl<TourismProductOr
         }
         //渠道商
         String channelMerchantsId= (String) params.get("channelMerchantsId");
+
+        String productName= (String) params.get("productName");
+        String contactsName= (String) params.get("contactsName");
+        String contactNumber= (String) params.get("contactNumber");
+        String channelMerchantsName= (String) params.get("channelMerchantsName");
+        String supplierName= (String) params.get("supplierName");
+
         Page<TourismProductOrderEntity> page = this.selectPage(
                 new Query<TourismProductOrderEntity>(params).getPage(),
                 new EntityWrapper<TourismProductOrderEntity>()
                 .eq("delete_state",Constant.DELETE_STATE_NO)
                 .eq(state!=null,"state",state)
                 .eq(channelMerchantsId!=null,"channel_merchants_id",channelMerchantsId)
+                .like(productName!=null,"product_name",productName)
+                .like(contactsName!=null,"contacts_name",contactsName)
+                .like(contactNumber!=null,"contact_number",contactNumber)
+                .like(channelMerchantsName!=null,"channel_merchants_name",channelMerchantsName)
+                .like(supplierName!=null,"supplier_name",supplierName)
                 .orderBy("create_date desc")
         );
         return new PageUtils(page);

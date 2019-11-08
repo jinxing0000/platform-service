@@ -7,6 +7,7 @@ import com.bettem.common.utils.Constant;
 import com.bettem.common.utils.ShiroTokenUtils;
 import com.bettem.common.validator.group.AddGroup;
 import com.bettem.common.validator.ValidatorUtils;
+import com.bettem.modules.tourism.entity.VO.TourismProductOrderDetailsVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,8 +57,8 @@ public class TourismProductOrderController {
     @RequestMapping(value = "info",method = RequestMethod.GET)
     @RequiresPermissions("tourism:productOrder:info")
     public R info(@RequestParam("id") String id){
-        TourismProductOrderEntity tourismProductOrder = tourismProductOrderService.selectById(id);
-        return R.ok(tourismProductOrder);
+        TourismProductOrderDetailsVO productOrderDetailsVO = tourismProductOrderService.getTourismProductOrderDetails(id);
+        return R.ok(productOrderDetailsVO);
     }
     /**
      * @Param [tourismProductOrder]
@@ -91,7 +92,8 @@ public class TourismProductOrderController {
         ValidatorUtils.validateEntity(tourismProductOrder, AddGroup.class);
         tourismProductOrder.setModifyDate(new Date());
         tourismProductOrder.setModifyUserId(shiroTokenUtils.getUserId());
-        tourismProductOrderService.updateById(tourismProductOrder);//全部更新
+        //全部更新
+        tourismProductOrderService.updateById(tourismProductOrder);
         return R.ok();
     }
     /**
