@@ -7,6 +7,7 @@ import com.bettem.common.utils.Constant;
 import com.bettem.common.utils.ShiroTokenUtils;
 import com.bettem.common.validator.group.AddGroup;
 import com.bettem.common.validator.ValidatorUtils;
+import com.bettem.common.validator.group.UpdateGroup;
 import com.bettem.modules.tourism.entity.VO.TourismProductOrderDetailsVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,60 @@ public class TourismProductOrderController {
     @RequiresPermissions("tourism:productOrder:delete")
     public R delete(@RequestBody String[] ids){
         tourismProductOrderService.deleteByIds(ids);
+        return R.ok();
+    }
+
+    /**
+     *  订单处理
+     * @param tourismProductOrder
+     * @return
+     */
+    @SysLog("订单处理")
+    @RequestMapping(value = "handle",method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @RequiresPermissions("tourism:productOrder:handle")
+    public R handle(@RequestBody TourismProductOrderEntity tourismProductOrder){
+        ValidatorUtils.validateEntity(tourismProductOrder, UpdateGroup.class);
+        tourismProductOrder.setModifyDate(new Date());
+        tourismProductOrder.setModifyUserId(shiroTokenUtils.getUserId());
+        tourismProductOrder.setState("02");
+        //全部更新
+        tourismProductOrderService.updateById(tourismProductOrder);
+        return R.ok();
+    }
+
+    /**
+     *  订单完成
+     * @param tourismProductOrder
+     * @return
+     */
+    @SysLog("订单完成")
+    @RequestMapping(value = "complete",method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @RequiresPermissions("tourism:productOrder:complete")
+    public R complete(@RequestBody TourismProductOrderEntity tourismProductOrder){
+        ValidatorUtils.validateEntity(tourismProductOrder, UpdateGroup.class);
+        tourismProductOrder.setModifyDate(new Date());
+        tourismProductOrder.setModifyUserId(shiroTokenUtils.getUserId());
+        tourismProductOrder.setState("03");
+        //全部更新
+        tourismProductOrderService.updateById(tourismProductOrder);
+        return R.ok();
+    }
+
+    /**
+     *  订单取消
+     * @param tourismProductOrder
+     * @return
+     */
+    @SysLog("订单取消")
+    @RequestMapping(value = "cancel",method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @RequiresPermissions("tourism:productOrder:cancel")
+    public R cancel(@RequestBody TourismProductOrderEntity tourismProductOrder){
+        ValidatorUtils.validateEntity(tourismProductOrder, UpdateGroup.class);
+        tourismProductOrder.setModifyDate(new Date());
+        tourismProductOrder.setModifyUserId(shiroTokenUtils.getUserId());
+        tourismProductOrder.setState("04");
+        //全部更新
+        tourismProductOrderService.updateById(tourismProductOrder);
         return R.ok();
     }
 }
