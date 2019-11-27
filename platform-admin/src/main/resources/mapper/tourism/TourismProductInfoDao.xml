@@ -77,6 +77,9 @@
             <if test="productName !=null and productName != ''">
                 and product_name  like CONCAT(CONCAT('%', #{productName,jdbcType=VARCHAR}),'%')
             </if>
+            <if test="lineType !=null and lineType !=''">
+                and line_type = #{lineType,jdbcType=VARCHAR}
+            </if>
             order by create_date desc,state
         </where>
     </select>
