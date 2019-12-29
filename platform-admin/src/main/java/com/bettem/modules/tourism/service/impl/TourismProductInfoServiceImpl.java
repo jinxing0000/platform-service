@@ -100,11 +100,14 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
         tourismProductInfoVO.setCreateDate(date);
         tourismProductInfoVO.setDeleteState(Constant.DELETE_STATE_NO);
         List<TourismProductPicEntity> picList=tourismProductInfoVO.getPicList();
+        int countNum=1;
         for(TourismProductPicEntity tourismProductPicEntity:picList){
             tourismProductPicEntity.setProductId(id);
             tourismProductPicEntity.setCreateDate(date);
             tourismProductPicEntity.setCreateUserId(userId);
             tourismProductPicEntity.setDeleteState(Constant.DELETE_STATE_NO);
+            tourismProductPicEntity.setSortNum(countNum);
+            countNum++;
         }
         String productGuidePicUrl="";
         if(picList.size()>0){
@@ -119,7 +122,7 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
     @Override
     public TourismProductInfoVO findProductInfoVOById(String id) {
         TourismProductInfoVO tourismProductInfoVO=this.baseMapper.selectProductInfoVOById(id);
-        List<TourismProductPicEntity>  picList=tourismProductPicService.selectList(new EntityWrapper<TourismProductPicEntity>().eq("product_id",id).eq("delete_state",Constant.DELETE_STATE_NO).orderBy("create_date desc"));
+        List<TourismProductPicEntity>  picList=tourismProductPicService.selectList(new EntityWrapper<TourismProductPicEntity>().eq("product_id",id).eq("delete_state",Constant.DELETE_STATE_NO).orderBy("sort_num"));
         tourismProductInfoVO.setPicList(picList);
         return tourismProductInfoVO;
     }
@@ -135,12 +138,15 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
         Map<String,Object> params=new HashMap<>();
         params.put("product_id",id);
         tourismProductPicService.deleteByMap(params);
+        int countNum=1;
         List<TourismProductPicEntity> picList=tourismProductInfoVO.getPicList();
         for(TourismProductPicEntity tourismProductPicEntity:picList){
             tourismProductPicEntity.setProductId(id);
             tourismProductPicEntity.setCreateDate(date);
             tourismProductPicEntity.setCreateUserId(userId);
             tourismProductPicEntity.setDeleteState(Constant.DELETE_STATE_NO);
+            tourismProductPicEntity.setSortNum(countNum);
+            countNum++;
         }
         String productGuidePicUrl="";
         if(picList.size()>0){

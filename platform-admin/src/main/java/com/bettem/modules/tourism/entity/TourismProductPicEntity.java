@@ -30,6 +30,10 @@ public class TourismProductPicEntity extends BaseEntity {
 	 * minio下载路径
 	 */
 	private String minioPath;
+	/**
+	 *  图片排序号
+	 */
+	private Integer sortNum;
 
 	/**
 	 * 设置：产品id
@@ -66,5 +70,14 @@ public class TourismProductPicEntity extends BaseEntity {
 	 */
 	public String getMinioPath() {
 		return minioPath;
+	}
+
+	public void setSortNum(Integer sortNum) {
+		this.sortNum = sortNum;
+	}
+
+
+	public Integer getSortNum() {
+		return sortNum;
 	}
 }
