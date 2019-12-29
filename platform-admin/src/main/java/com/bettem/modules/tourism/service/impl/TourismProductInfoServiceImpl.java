@@ -8,6 +8,7 @@ import com.bettem.modules.tourism.entity.TourismProductPicEntity;
 import com.bettem.modules.tourism.entity.VO.TourismProductInfoVO;
 import com.bettem.modules.tourism.service.TourismProductPicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -34,6 +35,10 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
     @Autowired
     private TourismProductPicService tourismProductPicService;
 
+    //图片地址
+    @Value("${bettem.imagePath}")
+    private String imagePath;
+
 
     /** 生成主键策略 */
     public String createId() {
@@ -58,6 +63,9 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
     public PageUtils queryPageApp(Map<String, Object> params) {
         Page<Map<String,Object>> page = new Query<Map<String,Object>>(params).getPage();
         List<Map<String,Object>> list=this.baseMapper.selectProductListByParams(params,page);
+        for(Map<String,Object> data:list){
+            data.put("productGuidePicUrl",imagePath+data.get("productGuidePicUrl"));
+        }
         page.setRecords(list);
         return new PageUtils(page);
     }
@@ -123,6 +131,9 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
     public TourismProductInfoVO findProductInfoVOById(String id) {
         TourismProductInfoVO tourismProductInfoVO=this.baseMapper.selectProductInfoVOById(id);
         List<TourismProductPicEntity>  picList=tourismProductPicService.selectList(new EntityWrapper<TourismProductPicEntity>().eq("product_id",id).eq("delete_state",Constant.DELETE_STATE_NO).orderBy("sort_num"));
+        for(TourismProductPicEntity tourismProductPic:picList){
+            tourismProductPic.setThumbUrl(imagePath+tourismProductPic.getThumbUrl());
+        }
         tourismProductInfoVO.setPicList(picList);
         return tourismProductInfoVO;
     }

@@ -62,10 +62,15 @@ public class SysFileServiceImpl extends BaseMongdbServiceImpl<TourismProductInfo
     @Value("${bettem.uploadFileType}")
     private String uploadFileType;
 
+    //图片地址
+    @Value("${bettem.imagePath}")
+    private String imagePath;
+
     @Override
     public Map<String, Object> uploadFile(MultipartFile file) {
         UploadFileUtil uploadFileUtil=new UploadFileUtil(minioServerUrl,accessKey,secretKey,bucketName,uploadFileSize,uploadFileType);
         Map<String, Object> resultMap=uploadFileUtil.uploadFile(file);
+        resultMap.put("minioPath",imagePath+resultMap.get("fileUrl"));
         return resultMap;
     }
 

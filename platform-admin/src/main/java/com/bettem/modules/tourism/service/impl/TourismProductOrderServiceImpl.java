@@ -11,6 +11,7 @@ import com.bettem.modules.tourism.entity.VO.TourismProductOrderVO;
 import com.bettem.modules.tourism.service.TourismProductInfoService;
 import com.bettem.modules.tourism.service.TourismProductOrderPeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Date;
@@ -41,6 +42,10 @@ public class TourismProductOrderServiceImpl extends ServiceImpl<TourismProductOr
     @Autowired
     private TourismProductInfoService tourismProductInfoService;
 
+    //图片地址
+    @Value("${bettem.imagePath}")
+    private String imagePath;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String state= (String) params.get("state");
@@ -70,6 +75,11 @@ public class TourismProductOrderServiceImpl extends ServiceImpl<TourismProductOr
                 .like(supplierName!=null,"supplier_name",supplierName)
                 .orderBy("create_date desc")
         );
+        List<TourismProductOrderEntity> list=page.getRecords();
+        for(TourismProductOrderEntity tourismProductOrder:list){
+            tourismProductOrder.setProductGuidePicUrl(imagePath+tourismProductOrder.getProductGuidePicUrl());
+        }
+        page.setRecords(list);
         return new PageUtils(page);
     }
 

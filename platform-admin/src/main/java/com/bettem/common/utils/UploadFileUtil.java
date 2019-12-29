@@ -105,10 +105,9 @@ public class UploadFileUtil {
 				in=new ByteArrayInputStream(buffer);
 			}
 			MinioClientUtils minioClientUtils=new MinioClientUtils(minioServerUrl,accessKey,secretKey,bucketName);
-			String fileUrl=minioClientUtils.uploadFile(in,minioPath,contentType);
+			minioClientUtils.uploadFile(in,minioPath,contentType);
 			bos.close();
-			resultMap.put("minioPath",minioPath);
-			resultMap.put("fileUrl",fileUrl);
+			resultMap.put("fileUrl","/"+bucketName+minioPath);
 		}
 		catch (RRException e) {
 			throw new RRException(e.getCode(),e.getMsg());
