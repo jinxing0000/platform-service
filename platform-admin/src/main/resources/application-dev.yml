@@ -5,14 +5,14 @@ spring:
     druid:
       first:  #数据源1
 #        url: jdbc:oracle:thin:@192.168.2.243:1521:ORCL
-        url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
-        username: root
-        password: root
+        url: jdbc:mysql://192.168.0.4:3310/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+        username: platform
+        password: yjx@1234
       second:  #数据源2
 #        url: jdbc:oracle:thin:@192.168.2.243:1521:ORCL
-        url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
-        username: root
-        password: root
+        url: jdbc:mysql://192.168.0.4:3310/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+        username: platform
+        password: yjx@1234
       initial-size: 10
       max-active: 100
       min-idle: 10
@@ -40,8 +40,8 @@ spring:
             multi-statement-allow: true
   redis:
       database: 3
-      host: 127.0.0.1
-      port: 6379
+      host: 192.168.0.4
+      port: 6380
       password:      # 密码（默认为空）
       timeout: 6000ms  # 连接超时时长（毫秒）
       jedis:
@@ -50,10 +50,10 @@ spring:
           max-wait: -1ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
           max-idle: 10      # 连接池中的最大空闲连接
           min-idle: 5       # 连接池中的最小空闲连接
-  data:
-      mongodb:
-        uri: mongodb://192.168.3.171:27017,192.168.3.177:27017,192.168.3.50:27017
-        database: bettem
+#  data:
+#      mongodb:
+#        uri: mongodb://192.168.3.171:27017,192.168.3.177:27017,192.168.3.50:27017
+#        database: bettem
 #  rabbitmq:
 #      host: 127.0.0.1
 #      port: 5672
@@ -69,11 +69,11 @@ spring:
 bettem:
    minio:
      serverUrl:
-       http://127.0.0.1:9000
+       http://192.168.0.4:9001
      accessKey:
-       91IU3P04CR3BKDPRX7WM
+       platform
      secretKey:
-       F5wZx1vFQIK8nJbTcDScFQ55mmd+zP++NIDnetRE
+       yjx@1234
      bucketName:
        platform
    uploadFilePath:
@@ -87,7 +87,7 @@ bettem:
    ftpPassword:
        nongbuFTP
    imagePath:
-       http://192.168.2.183:8081
+       http://106.12.52.72:8082
    isOpenSms:
        false
    uploadFileType:
@@ -119,4 +119,3 @@ WeChat:
     wxff3949a3c4fb6334
   appSecret:
     4d553abfebf8a502ecb0dba3151dcdab
-

@@ -1,7 +1,6 @@
 FROM java:8
-EXPOSE 8080
-
 VOLUME /tmp
-ADD atsp-admin.jar /app.jar
-RUN bash -c 'touch /app.jar'
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY target/platform-admin.jar platform-admin.jar
+RUN bash -c "touch /platform-admin.jar"
+EXPOSE 8081
+ENTRYPOINT ["java","-jar","platform-admin.jar"]
