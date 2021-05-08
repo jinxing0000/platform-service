@@ -11,7 +11,7 @@
 
 	<properties>
 		<quartz.version>2.3.0</quartz.version>
-		<shiro.version>1.4.0</shiro.version>
+		<shiro.version>1.6.0</shiro.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.version>2.7.0</swagger.version>
 		<velocity.version>1.7</velocity.version>
