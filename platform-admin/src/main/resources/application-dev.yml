@@ -5,14 +5,14 @@ spring:
     druid:
       first:  #数据源1
 #        url: jdbc:oracle:thin:@192.168.2.243:1521:ORCL
-        url: jdbc:mysql://192.168.0.4:3310/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
-        username: platform
-        password: yjx@1234
+        url: jdbc:mysql://47.117.142.149:3310/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+        username: root
+        password: zyh1q2w3e4r
       second:  #数据源2
 #        url: jdbc:oracle:thin:@192.168.2.243:1521:ORCL
-        url: jdbc:mysql://192.168.0.4:3310/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
-        username: platform
-        password: yjx@1234
+        url: jdbc:mysql://47.117.142.149:3310/platform?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+        username: root
+        password: zyh1q2w3e4r
       initial-size: 10
       max-active: 100
       min-idle: 10
@@ -40,7 +40,7 @@ spring:
             multi-statement-allow: true
   redis:
       database: 3
-      host: 192.168.0.4
+      host: 47.117.143.73
       port: 6380
       password:      # 密码（默认为空）
       timeout: 6000ms  # 连接超时时长（毫秒）
@@ -69,11 +69,11 @@ spring:
 bettem:
    minio:
      serverUrl:
-       http://192.168.0.4:9001
+       http://47.117.142.149:9001
      accessKey:
        platform
      secretKey:
-       yjx@1234
+       zyh1q2w3e4r
      bucketName:
        platform
    uploadFilePath:
@@ -87,7 +87,7 @@ bettem:
    ftpPassword:
        nongbuFTP
    imagePath:
-       http://106.12.52.72:8082
+       https://img.sxlyapp.com
    isOpenSms:
        false
    uploadFileType:
@@ -103,7 +103,7 @@ bettem:
    rabbitListener:
        fanout.A
    serverUrl:
-       http://127.0.0.1:8080/api
+       https://www.sxlyapp.com/api
    jwtExpiration:
        # 以小时计算
        4

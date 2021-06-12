@@ -99,6 +99,30 @@ public class TourismProductOrderEntity extends BaseEntity {
 	 * 供应商名称
 	 */
 	private String supplierName;
+	/**
+	 * 合同编号
+	 */
+	private String contractNum;
+	/**
+	 * 订单号
+	 */
+	private String orderNum;
+
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	public String getContractNum() {
+		return contractNum;
+	}
+
+	public void setContractNum(String contractNum) {
+		this.contractNum = contractNum;
+	}
 
 	/**
 	 * 设置：产品id

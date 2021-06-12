@@ -10,6 +10,7 @@ import com.bettem.modules.tourism.entity.VO.TourismProductOrderDetailsVO;
 import com.bettem.modules.tourism.entity.VO.TourismProductOrderVO;
 import com.bettem.modules.tourism.service.TourismProductInfoService;
 import com.bettem.modules.tourism.service.TourismProductOrderPeopleService;
+import com.bettem.modules.tourism.utils.OrderCodecUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -111,6 +112,7 @@ public class TourismProductOrderServiceImpl extends ServiceImpl<TourismProductOr
         //订单id
         String orderId= PrimaryKeyUtils.createId();
         tourismProductOrderVO.setId(orderId);
+        tourismProductOrderVO.setOrderNum(OrderCodecUtil.getOrderNo());
         tourismProductOrderVO.setChannelMerchantsName(channelMerchantsInfo.getChannelName());
         tourismProductOrderVO.setState(Constant.ORDER_STATE_PENDING_DISPOSAL);
         tourismProductOrderVO.setCreateDate(toDay);

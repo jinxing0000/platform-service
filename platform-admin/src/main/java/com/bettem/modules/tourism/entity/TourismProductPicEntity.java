@@ -34,6 +34,18 @@ public class TourismProductPicEntity extends BaseEntity {
 	 *  图片排序号
 	 */
 	private Integer sortNum;
+	/**
+	 *  文件后缀
+	 */
+	private String fileSuffix;
+
+	public String getFileSuffix() {
+		return fileSuffix;
+	}
+
+	public void setFileSuffix(String fileSuffix) {
+		this.fileSuffix = fileSuffix;
+	}
 
 	/**
 	 * 设置：产品id

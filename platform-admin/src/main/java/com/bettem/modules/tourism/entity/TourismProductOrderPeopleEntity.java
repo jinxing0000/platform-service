@@ -49,6 +49,21 @@ public class TourismProductOrderPeopleEntity extends BaseEntity {
 	private Integer age;
 
 	/**
+	 * 出发日期
+	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date startDate;
+
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	/**
 	 * 设置：订单id
 	 */
 	public void setOrderId(String orderId) {
