@@ -9,6 +9,7 @@ import com.bettem.modules.base.entity.BaseChannelMerchantsInfoEntity;
 import com.bettem.modules.base.service.BaseChannelMerchantsInfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -20,6 +21,11 @@ public class AppBaseChannelMerchantsInfoController {
     @Autowired
     private BaseChannelMerchantsInfoService baseChannelMerchantsInfoService;
 
+
+    //图片地址
+    @Value("${bettem.imagePath}")
+    private String imagePath;
+
     /**
      * 按照id查询渠道商信息接口
      * @param id
@@ -29,6 +35,9 @@ public class AppBaseChannelMerchantsInfoController {
     @RequestMapping(value = "info",method = RequestMethod.GET)
     public R info(@RequestParam("id") String id){
         BaseChannelMerchantsInfoEntity baseChannelMerchantsInfo = baseChannelMerchantsInfoService.selectById(id);
+        if(baseChannelMerchantsInfo!=null){
+            baseChannelMerchantsInfo.setQrcodeUrl(imagePath+baseChannelMerchantsInfo.getQrcodeUrl());
+        }
         return R.ok(baseChannelMerchantsInfo);
     }
 

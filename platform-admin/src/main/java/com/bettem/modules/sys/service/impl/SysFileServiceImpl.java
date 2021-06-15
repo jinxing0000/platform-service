@@ -10,6 +10,7 @@ import com.bettem.modules.tourism.dao.TourismProductInfoMongdbDao;
 //import com.mongodb.client.FindIterable;
 //import org.bson.Document;
 //import org.bson.conversions.Bson;
+import com.bettem.modules.tourism.utils.QRCodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import org.springframework.data.domain.Sort;
 //import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -68,6 +71,16 @@ public class SysFileServiceImpl implements SysFileService {
     public Map<String, Object> uploadFile(MultipartFile file) {
         UploadFileUtil uploadFileUtil=new UploadFileUtil(minioServerUrl,accessKey,secretKey,bucketName,uploadFileSize,uploadFileType);
         Map<String, Object> resultMap=uploadFileUtil.uploadFile(file);
+        resultMap.put("minioPath",imagePath+resultMap.get("fileUrl"));
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> generateQRCode(String content) {
+        UploadFileUtil uploadFileUtil=new UploadFileUtil(minioServerUrl,accessKey,secretKey,bucketName,uploadFileSize,uploadFileType);
+        String logoPath=this.getClass().getResource("/QRCode/logo.png").getPath();
+        InputStream inputStream=QRCodeUtils.generateQRCode(content,logoPath,true);
+        Map<String, Object> resultMap=uploadFileUtil.uploadQRCode(inputStream);
         resultMap.put("minioPath",imagePath+resultMap.get("fileUrl"));
         return resultMap;
     }

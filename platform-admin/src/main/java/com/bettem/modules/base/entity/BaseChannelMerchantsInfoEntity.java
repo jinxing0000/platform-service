@@ -1,5 +1,6 @@
 package com.bettem.modules.base.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.bettem.common.base.entity.BaseEntity;
 import com.bettem.common.validator.group.AddGroup;
@@ -10,7 +11,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 渠道商信息表
@@ -65,6 +68,43 @@ public class BaseChannelMerchantsInfoEntity extends BaseEntity {
 	 * 状态，1为未开通，2为开通，3为禁用
 	 */
 	private String state;
+	/**
+	 * 二维码地址
+	 */
+	private String qrcodeUrl;
+	/**
+	 * 父级用户id
+	 */
+	private String parentUserId;
+	/**
+	 * 查询下级节点
+	 */
+	@TableField(exist=false)
+	private List<BaseChannelMerchantsInfoEntity> children=new ArrayList<>();
+
+	public List<BaseChannelMerchantsInfoEntity> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<BaseChannelMerchantsInfoEntity> children) {
+		this.children = children;
+	}
+
+	public String getParentUserId() {
+		return parentUserId;
+	}
+
+	public void setParentUserId(String parentUserId) {
+		this.parentUserId = parentUserId;
+	}
+
+	public String getQrcodeUrl() {
+		return qrcodeUrl;
+	}
+
+	public void setQrcodeUrl(String qrcodeUrl) {
+		this.qrcodeUrl = qrcodeUrl;
+	}
 
 	/**
 	 * 设置：渠道商名称

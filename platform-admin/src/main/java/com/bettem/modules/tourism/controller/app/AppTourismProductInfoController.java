@@ -3,15 +3,18 @@ package com.bettem.modules.tourism.controller.app;
 import com.bettem.common.annotation.SysLog;
 import com.bettem.common.utils.PageUtils;
 import com.bettem.common.utils.R;
+import com.bettem.modules.tourism.entity.TourismProductPicEntity;
 import com.bettem.modules.tourism.entity.VO.TourismProductInfoVO;
 import com.bettem.modules.tourism.service.TourismProductInfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +30,10 @@ public class AppTourismProductInfoController {
 
     @Autowired
     private TourismProductInfoService tourismProductInfoService;
+
+    //图片地址
+    @Value("${bettem.imagePath}")
+    private String imagePath;
 
     /**
      * @Param [params]
@@ -49,6 +56,10 @@ public class AppTourismProductInfoController {
     @RequestMapping(value = "info",method = RequestMethod.GET)
     public R info(@RequestParam("id") String id){
         TourismProductInfoVO productInfoVO=tourismProductInfoService.findProductInfoVOById(id);
+        List<TourismProductPicEntity> picList=productInfoVO.getPicList();
+        for(TourismProductPicEntity tourismProductPic:picList){
+            tourismProductPic.setThumbUrl(imagePath+tourismProductPic.getThumbUrl());
+        }
         return R.ok(productInfoVO);
     }
 }

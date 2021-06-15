@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.bettem.common.utils.PageUtils;
 import com.bettem.modules.base.entity.BaseChannelMerchantsInfoEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,5 +32,12 @@ public interface BaseChannelMerchantsInfoService extends IService<BaseChannelMer
      * @param channelMerchantsInfoEntity
      */
     void saveChannelMerchantsInfo(BaseChannelMerchantsInfoEntity channelMerchantsInfoEntity);
+
+    /**
+     * 按照id查询下级数据
+     * @param id
+     * @return
+     */
+    List<BaseChannelMerchantsInfoEntity> getChildrenList(String id);
 }
 

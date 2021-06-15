@@ -1,5 +1,6 @@
 package com.bettem.modules.base.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Date;
 
@@ -107,5 +108,20 @@ public class BaseChannelMerchantsInfoController {
     public R delete(@RequestBody String[] ids){
         baseChannelMerchantsInfoService.deleteByIds(ids);
         return R.ok();
+    }
+
+    /**
+     * @Param [id]
+     * @Return: com.bettem.common.utils.R
+     * @Decription: 按照id查询信息详情
+     * @CreateDate: 2019-10-04 18:43:12
+     * @Author: 颜金星
+     */
+    @SysLog("按照id查询下级数据")
+    @RequestMapping(value = "getChildrenList",method = RequestMethod.GET)
+    @RequiresPermissions("base:channelMerchantsInfo:getChildrenList")
+    public R getChildrenList(@RequestParam("id") String id){
+        List<BaseChannelMerchantsInfoEntity> list= baseChannelMerchantsInfoService.getChildrenList(id);
+        return R.ok(list);
     }
 }

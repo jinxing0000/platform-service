@@ -131,9 +131,6 @@ public class TourismProductInfoServiceImpl extends ServiceImpl<TourismProductInf
     public TourismProductInfoVO findProductInfoVOById(String id) {
         TourismProductInfoVO tourismProductInfoVO=this.baseMapper.selectProductInfoVOById(id);
         List<TourismProductPicEntity>  picList=tourismProductPicService.selectList(new EntityWrapper<TourismProductPicEntity>().eq("product_id",id).eq("delete_state",Constant.DELETE_STATE_NO).orderBy("sort_num"));
-        for(TourismProductPicEntity tourismProductPic:picList){
-            tourismProductPic.setThumbUrl(imagePath+tourismProductPic.getThumbUrl());
-        }
         tourismProductInfoVO.setPicList(picList);
         return tourismProductInfoVO;
     }

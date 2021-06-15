@@ -4,6 +4,7 @@ import com.bettem.common.exception.RRException;
 import com.bettem.common.utils.*;
 import com.bettem.modules.sys.entity.SysRoleEntity;
 import com.bettem.modules.sys.entity.VO.SysUserVO;
+import com.bettem.modules.sys.service.SysFileService;
 import com.bettem.modules.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +31,27 @@ public class BaseChannelMerchantsInfoServiceImpl extends ServiceImpl<BaseChannel
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private SysFileService sysFileService;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String channelName=(String)params.get("channelName");
+        String contactsName=(String)params.get("contactsName");
+        String contactNumber=(String)params.get("contactNumber");
+        String cardNumber=(String)params.get("cardNumber");
         Page<BaseChannelMerchantsInfoEntity> page = this.selectPage(
                 new Query<BaseChannelMerchantsInfoEntity>(params).getPage(),
-                new EntityWrapper<BaseChannelMerchantsInfoEntity>().eq("delete_state",Constant.DELETE_STATE_NO)
+                new EntityWrapper<BaseChannelMerchantsInfoEntity>().
+                        eq("delete_state",Constant.DELETE_STATE_NO)
+                        .like(channelName!=null,"channel_name",channelName)
+                        .like(contactsName!=null,"contacts_name",contactsName)
+                        .like(contactNumber!=null,"contact_number",contactNumber)
+                        .like(cardNumber!=null,"card_number",cardNumber)
+                        .eq(channelName==null&&contactsName==null&&contactNumber==null&&cardNumber==null,"parent_user_id","0")
+                        .orderBy("create_date desc")
         );
+        List<BaseChannelMerchantsInfoEntity> list=page.getRecords();
 
         return new PageUtils(page);
     }
@@ -69,11 +85,15 @@ public class BaseChannelMerchantsInfoServiceImpl extends ServiceImpl<BaseChannel
         if(!checkUser.get("userName")){
             throw new RRException(ErrorCodeConstant.ERROR,"该手机号已被注册，请更换手机号！！");
         }
+        String qrCodeStr="userId="+openId;
+        Map<String, Object> resultMap=sysFileService.generateQRCode(qrCodeStr);
+        String qrCodeFileUrl= (String) resultMap.get("fileUrl");
         channelMerchantsInfoEntity.setId(openId);
-        channelMerchantsInfoEntity.setLevel("1");
+        channelMerchantsInfoEntity.setLevel("一级");
         channelMerchantsInfoEntity.setState("2");
         channelMerchantsInfoEntity.setCreateDate(new Date());
         channelMerchantsInfoEntity.setDeleteState(Constant.DELETE_STATE_NO);
+        channelMerchantsInfoEntity.setQrcodeUrl(qrCodeFileUrl);
         this.insert(channelMerchantsInfoEntity);
         SysUserVO userVO=new SysUserVO();
         userVO.setUserId(openId);
@@ -90,6 +110,16 @@ public class BaseChannelMerchantsInfoServiceImpl extends ServiceImpl<BaseChannel
         roleList.add(role);
         userVO.setRoleIdList(roleList);
         sysUserService.save(userVO);
+    }
+
+    @Override
+    public List<BaseChannelMerchantsInfoEntity> getChildrenList(String id) {
+        List<BaseChannelMerchantsInfoEntity> list=this.selectList(new EntityWrapper<BaseChannelMerchantsInfoEntity>()
+                .eq("parent_user_id",id)
+                .eq("delete_state",Constant.DELETE_STATE_NO)
+                .orderBy("create_date desc")
+        );
+        return list;
     }
 
 }

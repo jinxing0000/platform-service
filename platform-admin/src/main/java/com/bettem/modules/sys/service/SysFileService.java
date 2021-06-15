@@ -14,5 +14,13 @@ public interface SysFileService {
      */
     Map<String,Object> uploadFile(MultipartFile file);
 
+
+    /**
+     * 生成二维码
+     * @param content
+     * @return
+     */
+    Map<String,Object> generateQRCode(String content);
+
     void mongdbTest();
 }

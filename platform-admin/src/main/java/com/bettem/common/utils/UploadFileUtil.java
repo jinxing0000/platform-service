@@ -118,6 +118,41 @@ public class UploadFileUtil {
 		}
 		return resultMap;
 	}
+
+	/**
+	 * 文件上传到FTP
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	public Map<String,Object> uploadQRCode(InputStream in){
+		Map<String,Object> resultMap=new HashMap<>();
+		try {
+			String fileType="jpg";
+			resultMap.put("fileSuffix",fileType);
+			String minioPath=getFolderName()+getFileName(fileType);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			//判断为图片类型，进行图片压缩
+			if("jpg".equals(fileType)||"png".equals(fileType)||"gif".equals(fileType)){
+				byte[] buffer=ImageUtils.imageCompress(in,fileType);
+				in=new ByteArrayInputStream(buffer);
+			}
+			MinioClientUtils minioClientUtils=new MinioClientUtils(minioServerUrl,accessKey,secretKey,bucketName);
+			minioClientUtils.uploadFile(in,minioPath,"image/jpep");
+			bos.close();
+			resultMap.put("fileUrl","/"+bucketName+minioPath);
+		}
+		catch (RRException e) {
+			throw new RRException(e.getCode(),e.getMsg());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			throw new RRException("上传文件失败！！");
+		}
+		return resultMap;
+	}
+
+
 	/**
 	 * @Param [file, fileType, uploadFileType]
 	 * @Return: void
