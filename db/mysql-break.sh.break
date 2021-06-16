@@ -1,0 +1,31 @@
+# !/bin/bash
+#设置mysql的登录用户名和密码(根据实际情况填写)
+mysql_user="root"
+mysql_password="123456"
+mysql_host="localhost"
+mysql_port="3306"
+mysql_dbname="platform"
+mysql_charset="utf8mb4"
+
+# 备份文件存放地址(根据实际情况填写)
+backup_location=/data/db/platform-db-backup
+
+# 是否删除过期数据
+expire_backup_delete="ON"
+expire_days=15
+backup_time=`date +%Y%m%d%H%M`
+backup_dir=$backup_location
+# 备份指定数据库中数据(此处假设数据库是backup_test)
+docker exec mysql80 mysqldump -u$mysql_user -p$mysql_password $mysql_dbname > $backup_dir/$mysql_dbname-$backup_time.sql
+#docker exec -ti opengauss-service-1 /bin/bash -c  '/usr/local/opengauss/bin && gs_dump -W gaussdb@Cd1q2w3e4r! -p 5432 jeectboot -f /var/lib/opengauss/gsdump_c.dmp'
+#gs_dump -W $mysql_user@$mysql_password -p 5432 $mysql_dbname -f $backup_dir/$mysql_dbname-$backup_time.dmp
+cd $backup_location
+git add . 
+git commit -m '提交'
+git push -u origin master
+echo "备份文件路径: $backup_dir/$mysql_dbname-$backup_time.sql"
+# 删除过期数据
+if [ "$expire_backup_delete" == "ON" -a  "$backup_location" != "" ];then
+        `find $backup_location/ -type f -mtime +$expire_days | xargs rm -rf`
+        echo "已清理过期的数据库备份文件..."
+fi
